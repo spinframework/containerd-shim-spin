@@ -92,7 +92,15 @@ jobs:
         if: matrix.distribution == 'k3s' && failure()
         run: |
           sudo k3s kubectl describe pods -n kwasm
+          sudo k3s kubectl logs -n kwasm k3s-provision-kwasm-dev
           sudo k3s kubectl describe pods
+      
+      - name: Collect minikube debug logs
+        if: matrix.distribution == 'minikube' && failure()
+        run: |
+          kubectl describe pods -n kwasm
+          kubectl logs -n kwasm $(kubectl get pods -n kwasm -o name | grep minikube-provision-kwasm)
+          kubectl describe pods
 
   publish:
     needs: build-and-test
