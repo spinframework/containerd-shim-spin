@@ -30,19 +30,7 @@ kubectl --context=kind-spin-test apply -f ./tests/workloads/runtime.yaml
 echo "=== Step 3: Build and deploy the KWasm node installer ==="
 if ! docker image inspect $IMAGE_NAME >/dev/null 2>&1; then
   echo "Building node installer image..."
-  PLATFORM=$(uname -m)
-  if [ "$PLATFORM" = "x86_64" ]; then
-    PLATFORM="linux/amd64"
-    ARCH="x86_64"
-  elif [ "$PLATFORM" = "aarch64" ] || [ "$PLATFORM" = "arm64" ]; then
-    PLATFORM="linux/arm64"
-    ARCH="aarch64"
-  else
-    echo "Unsupported platform: $PLATFORM"
-    exit 1
-  fi
-  
-  PLATFORM=$PLATFORM ARCH=$ARCH IMAGE_NAME=$IMAGE_NAME make build-dev-installer-image
+  IMAGE_NAME=$IMAGE_NAME make build-dev-installer-image
 fi
 
 echo "Loading node installer image into kind..."
@@ -61,42 +49,9 @@ if ! kubectl --context=kind-spin-test get pods -n kwasm | grep -q "spin-test-con
   exit 1
 fi
 
-echo "=== Step 4: Apply the workload ==="
-kubectl --context=kind-spin-test apply -f ./tests/workloads/workload.yaml
-
-echo "Waiting for deployment to be ready..."
-kubectl --context=kind-spin-test wait --for=condition=Available deployment/wasm-spin --timeout=120s
-
-echo "Checking pod status..."
-kubectl --context=kind-spin-test get pods
-
-echo "=== Step 5: Test the workload ==="
-echo "Waiting for service to be ready..."
-sleep 10
-
-echo "Testing workload with curl..."
-kubectl --context=kind-spin-test port-forward svc/wasm-spin 8888:80 &
-FORWARD_PID=$!
-sleep 5
-
-MAX_RETRIES=3
-RETRY_COUNT=0
-SUCCESS=false
-
-while [ $RETRY_COUNT -lt $MAX_RETRIES ] && [ "$SUCCESS" = false ]; do
-  if curl -s http://localhost:8888/hello | grep -q "Hello world from Spin!"; then
-    SUCCESS=true
-    echo "Workload test successful!"
-  else
-    echo "Retrying in 3 seconds..."
-    sleep 3
-    RETRY_COUNT=$((RETRY_COUNT+1))
-  fi
-done
-
-kill $FORWARD_PID
-
-if [ "$SUCCESS" = true ]; then
+echo "=== Step 4: Apply and test the workload ==="
+KUBECTL="kubectl --context=kind-spin-test" make deploy-workload
+if KUBECTL="kubectl --context=kind-spin-test" make test-workload; then
   echo "=== Integration Test Passed! ==="
   kind delete cluster --name spin-test
   exit 0

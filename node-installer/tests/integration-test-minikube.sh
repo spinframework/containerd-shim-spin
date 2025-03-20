@@ -13,19 +13,7 @@ kubectl apply -f ./tests/workloads/runtime.yaml
 echo "=== Step 3: Build and deploy the KWasm node installer ==="
 if ! docker image inspect $IMAGE_NAME >/dev/null 2>&1; then
   echo "Building node installer image..."
-  PLATFORM=$(uname -m)
-  if [ "$PLATFORM" = "x86_64" ]; then
-    PLATFORM="linux/amd64"
-    ARCH="x86_64"
-  elif [ "$PLATFORM" = "aarch64" ] || [ "$PLATFORM" = "arm64" ]; then
-    PLATFORM="linux/arm64"
-    ARCH="aarch64"
-  else
-    echo "Unsupported platform: $PLATFORM"
-    exit 1
-  fi
-  
-  PLATFORM=$PLATFORM ARCH=$ARCH IMAGE_NAME=$IMAGE_NAME make build-dev-installer-image
+  IMAGE_NAME=$IMAGE_NAME make build-dev-installer-image
 fi
 
 echo "Loading node installer image into MiniKube..."
@@ -50,44 +38,9 @@ if ! kubectl get pods -n kwasm | grep -q "minikube-provision-kwasm.*Completed"; 
   exit 1
 fi
 
-echo "=== Step 4: Apply the workload ==="
-kubectl apply -f ./tests/workloads/workload.yaml
-
-echo "Waiting for deployment to be ready..."
-kubectl wait --for=condition=Available deployment/wasm-spin --timeout=120s
-
-echo "Checking pod status..."
-kubectl get pods
-
-echo "=== Step 5: Test the workload ==="
-echo "Waiting for service to be ready..."
-sleep 10
-
-echo "Testing workload with curl..."
-PORT=8080
-kubectl port-forward service/wasm-spin $PORT:80 &
-PORT_FORWARD_PID=$!
-sleep 10
-
-SERVICE_URL="http://localhost:$PORT"
-MAX_RETRIES=3
-RETRY_COUNT=0
-SUCCESS=false
-
-while [ $RETRY_COUNT -lt $MAX_RETRIES ] && [ "$SUCCESS" = false ]; do
-  if curl -s $SERVICE_URL/hello | grep -q "Hello world from Spin!"; then
-    SUCCESS=true
-    echo "Workload test successful!"
-  else
-    echo "Retrying in 3 seconds..."
-    sleep 3
-    RETRY_COUNT=$((RETRY_COUNT+1))
-  fi
-done
-
-kill $PORT_FORWARD_PID 2>/dev/null || true
-
-if [ "$SUCCESS" = true ]; then
+echo "=== Step 4: Apply and test the workload ==="
+make deploy-workload
+if make test-workload; then
   echo "=== Integration Test Passed! ==="
   minikube delete -p minikube
   exit 0
