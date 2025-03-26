@@ -55,7 +55,7 @@ kubectl wait -n kwasm --for=condition=Ready pod --selector=job-name=k3s-provisio
 kubectl wait -n kwasm --for=jsonpath='{.status.phase}'=Succeeded pod --selector=job-name=k3s-provision-kwasm --timeout=60s
 
 # Verify the SystemdCgroup is set to true
-docker exec $NODE_NAME cat /etc/containerd/config.toml | grep -A5 "spin" | grep "SystemdCgroup = true"
+sudo cat /var/lib/rancher/k3s/agent/etc/containerd/config.toml | grep -A2 "runtimes.spin.options" | grep "SystemdCgroup = true"
 
 if ! kubectl get pods -n kwasm | grep -q "k3s-provision-kwasm.*Completed"; then
   echo "Node installer job failed!"
