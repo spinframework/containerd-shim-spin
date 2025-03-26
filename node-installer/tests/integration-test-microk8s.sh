@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+shopt -s expand_aliases
 
 : ${IMAGE_NAME:=ghcr.io/spinkube/containerd-shim-spin/node-installer:dev}
 
@@ -12,11 +13,11 @@ fi
 if ! microk8s status | grep -q "microk8s is running"; then
   echo "Starting MicroK8s..."
   sudo microk8s start
-  sleep 10
 else
   sudo microk8s reset
-  sleep 10
 fi
+
+sudo microk8s status --wait-ready
 
 sudo microk8s enable dns
 
@@ -63,7 +64,7 @@ kubectl wait -n kwasm --for=condition=Ready pod --selector=job-name=microk8s-pro
 kubectl wait -n kwasm --for=jsonpath='{.status.phase}'=Succeeded pod --selector=job-name=microk8s-provision-kwasm --timeout=60s
 
 # Verify the SystemdCgroup is set to true
-docker exec $NODE_NAME cat /etc/containerd/config.toml | grep -A5 "spin" | grep "SystemdCgroup = true"
+cat /var/snap/microk8s/current/args/containerd.toml | grep -A5 "spin" | grep "SystemdCgroup = true"
 
 if ! kubectl get pods -n kwasm | grep -q "microk8s-provision-kwasm.*Completed"; then
   echo "Node installer job failed!"
