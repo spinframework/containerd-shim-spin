@@ -5,7 +5,7 @@ This version of the image only contains the containerd-shim-spin-v2 shim, as
 opposed to the default [kwasm-node-installer image](https://github.com/KWasm/kwasm-node-installer)
 which also bundles other shims.
 
-The intention is for the [spinkube/runtime-class-manager](https://github.com/spinkube/runtime-class-manager)
+The intention is for the [spineframework/runtime-class-manager](https://github.com/spineframework/runtime-class-manager)
 project to handle this concern in the future.
 
 ## Integration Tests
