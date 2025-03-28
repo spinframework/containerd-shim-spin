@@ -1,8 +1,5 @@
-use containerd_shim_wasm::{
-    container::Instance,
-    sandbox::cli::{revision, shim_main, version},
-    Config,
-};
+use containerd_shim_wasm::shim::{Cli, Config};
+use engine::SpinShim;
 
 mod constants;
 mod engine;
@@ -16,11 +13,5 @@ fn main() {
         default_log_level: "error".to_string(),
         ..Default::default()
     };
-    shim_main::<Instance<engine::SpinEngine>>(
-        "spin",
-        version!(),
-        revision!(),
-        "v2",
-        Some(shim_config),
-    );
+    SpinShim::run(shim_config);
 }

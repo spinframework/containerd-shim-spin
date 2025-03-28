@@ -1,7 +1,7 @@
 use std::{fs::File, io::Write, path::PathBuf};
 
 use anyhow::{Context, Result};
-use containerd_shim_wasm::container::RuntimeContext;
+use containerd_shim_wasm::sandbox::context::RuntimeContext;
 use log::info;
 use oci_spec::image::MediaType;
 use spin_app::locked::LockedApp;
@@ -27,10 +27,10 @@ impl std::fmt::Debug for Source {
 impl Source {
     pub(crate) async fn from_ctx(ctx: &impl RuntimeContext, cache: &Cache) -> Result<Self> {
         match ctx.entrypoint().source {
-            containerd_shim_wasm::container::Source::File(_) => {
+            containerd_shim_wasm::sandbox::context::Source::File(_) => {
                 Ok(Source::File(constants::SPIN_MANIFEST_FILE_PATH.into()))
             }
-            containerd_shim_wasm::container::Source::Oci(layers) => {
+            containerd_shim_wasm::sandbox::context::Source::Oci(layers) => {
                 info!(" >>> configuring spin oci application {}", layers.len());
 
                 for layer in layers {

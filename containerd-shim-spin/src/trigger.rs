@@ -1,5 +1,7 @@
-use std::{collections::HashSet, future::Future, path::Path, pin::Pin};
+use std::{collections::HashSet, path::Path};
 
+use anyhow::Result;
+use futures::{future::BoxFuture, FutureExt};
 use log::info;
 use spin_app::{locked::LockedApp, App};
 use spin_runtime_factors::{FactorsBuilder, TriggerFactors};
@@ -27,7 +29,7 @@ pub(crate) async fn run<T>(
     cli_args: T::CliArgs,
     app: App,
     loader: &ComponentLoader,
-) -> anyhow::Result<Pin<Box<dyn Future<Output = anyhow::Result<()>>>>>
+) -> Result<BoxFuture<'static, Result<()>>>
 where
     T: Trigger<TriggerFactors> + 'static,
 {
@@ -38,7 +40,7 @@ where
     let future = builder
         .run(app, factors_config(), Default::default(), loader)
         .await?;
-    Ok(Box::pin(future))
+    Ok(future.boxed())
 }
 
 /// Configuration for the factors.

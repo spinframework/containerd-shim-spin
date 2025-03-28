@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::{anyhow, Context, Result};
-use containerd_shim_wasm::sandbox::WasmLayer;
+use containerd_shim_wasm::sandbox::context::WasmLayer;
 use oci_spec::image::MediaType;
 use spin_app::locked::LockedApp;
 use spin_loader::cache::Cache;

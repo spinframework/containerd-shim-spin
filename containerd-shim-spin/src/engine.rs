@@ -1,14 +1,12 @@
-use std::{
-    collections::{hash_map::DefaultHasher, HashSet},
-    env,
-    hash::{Hash, Hasher},
-};
+use std::{collections::HashSet, env, hash::Hash};
 
 use anyhow::{Context, Result};
 use containerd_shim_wasm::{
-    container::{Engine, RuntimeContext},
-    sandbox::WasmLayer,
-    version,
+    sandbox::{
+        context::{RuntimeContext, WasmLayer},
+        Sandbox,
+    },
+    shim::{version, Compiler, Shim, Version},
 };
 use futures::future;
 use log::info;
@@ -17,7 +15,6 @@ use spin_factor_outbound_networking::validate_service_chaining_for_components;
 use spin_trigger::cli::NoCliArgs;
 use spin_trigger_http::HttpTrigger;
 use spin_trigger_redis::RedisTrigger;
-use tokio::runtime::Runtime;
 use trigger_command::CommandTrigger;
 use trigger_mqtt::MqttTrigger;
 use trigger_sqs::SqsTrigger;
@@ -35,13 +32,34 @@ use crate::{
     },
 };
 
-#[derive(Clone)]
-pub struct SpinEngine {
-    pub(crate) wasmtime_engine: wasmtime::Engine,
-}
+pub struct SpinShim;
+pub struct SpinCompiler(wasmtime::Engine);
 
-impl Default for SpinEngine {
-    fn default() -> Self {
+#[derive(Default)]
+pub struct SpinSandbox;
+
+impl Shim for SpinShim {
+    type Sandbox = SpinSandbox;
+
+    fn name() -> &'static str {
+        "spin"
+    }
+
+    fn version() -> Version {
+        version!()
+    }
+
+    fn supported_layers_types() -> &'static [&'static str] {
+        &[
+            constants::OCI_LAYER_MEDIA_TYPE_WASM,
+            spin_oci::client::ARCHIVE_MEDIATYPE,
+            spin_oci::client::DATA_MEDIATYPE,
+            spin_oci::client::SPIN_APPLICATION_MEDIA_TYPE,
+        ]
+    }
+
+    #[allow(refining_impl_trait)]
+    async fn compiler() -> Option<SpinCompiler> {
         // the host expects epoch interruption to be enabled, so this has to be
         // turned on for the components we compile.
         let mut config = wasmtime::Config::default();
@@ -50,18 +68,12 @@ impl Default for SpinEngine {
         // TODO: This can be removed once the Wasmtime fix is brought into Spin
         // Issue to track: https://github.com/fermyon/spin/issues/2889
         config.native_unwind_info(false);
-        Self {
-            wasmtime_engine: wasmtime::Engine::new(&config).unwrap(),
-        }
+        Some(SpinCompiler(wasmtime::Engine::new(&config).unwrap()))
     }
 }
 
-impl Engine for SpinEngine {
-    fn name() -> &'static str {
-        "spin"
-    }
-
-    fn run_wasi(&self, ctx: &impl RuntimeContext) -> Result<i32> {
+impl Sandbox for SpinSandbox {
+    async fn run_wasi(&self, ctx: &impl RuntimeContext) -> Result<i32> {
         // Set the container environment variables which will be collected by Spin's
         // [environment variable provider]. We use these variables to configure both the Spin runtime
         // and the Spin application per the [SKIP 003] proposal.
@@ -77,12 +89,11 @@ impl Engine for SpinEngine {
         });
 
         info!("setting up wasi");
-        let rt = Runtime::new().context("failed to create runtime")?;
 
         let (abortable, abort_handle) = futures::future::abortable(self.wasm_exec_async(ctx));
         ctrlc::set_handler(move || abort_handle.abort())?;
 
-        match rt.block_on(abortable) {
+        match abortable.await {
             Ok(Ok(())) => {
                 info!("run_wasi shut down: exiting");
                 Ok(0)
@@ -98,59 +109,12 @@ impl Engine for SpinEngine {
         }
     }
 
-    fn can_handle(&self, _ctx: &impl RuntimeContext) -> Result<()> {
+    async fn can_handle(&self, _ctx: &impl RuntimeContext) -> Result<()> {
         Ok(())
-    }
-
-    fn supported_layers_types() -> &'static [&'static str] {
-        &[
-            constants::OCI_LAYER_MEDIA_TYPE_WASM,
-            spin_oci::client::ARCHIVE_MEDIATYPE,
-            spin_oci::client::DATA_MEDIATYPE,
-            spin_oci::client::SPIN_APPLICATION_MEDIA_TYPE,
-        ]
-    }
-
-    fn precompile(&self, layers: &[WasmLayer]) -> Result<Vec<Option<Vec<u8>>>> {
-        // Runwasi expects layers to be returned in the same order, so wrap each layer in an option, setting non Wasm layers to None
-        let precompiled_layers = layers
-            .iter()
-            .map(|layer| match is_wasm_content(layer) {
-                Some(wasm_layer) => {
-                    log::info!(
-                        "Precompile called for wasm layer {:?}",
-                        wasm_layer.config.digest()
-                    );
-                    if self
-                        .wasmtime_engine
-                        .detect_precompiled(&wasm_layer.layer)
-                        .is_some()
-                    {
-                        log::info!("Layer already precompiled {:?}", wasm_layer.config.digest());
-                        Ok(Some(wasm_layer.layer))
-                    } else {
-                        let component =
-                            spin_componentize::componentize_if_necessary(&wasm_layer.layer)?;
-                        let precompiled = self.wasmtime_engine.precompile_component(&component)?;
-                        Ok(Some(precompiled))
-                    }
-                }
-                None => Ok(None),
-            })
-            .collect::<anyhow::Result<_>>()?;
-        Ok(precompiled_layers)
-    }
-
-    fn can_precompile(&self) -> Option<String> {
-        let mut hasher = DefaultHasher::new();
-        self.wasmtime_engine
-            .precompile_compatibility_hash()
-            .hash(&mut hasher);
-        Some(hasher.finish().to_string())
     }
 }
 
-impl SpinEngine {
+impl SpinSandbox {
     async fn wasm_exec_async(&self, ctx: &impl RuntimeContext) -> Result<()> {
         let cache = initialize_cache().await?;
         let app_source = Source::from_ctx(ctx, &cache).await?;
@@ -174,7 +138,7 @@ impl SpinEngine {
         configure_application_variables_from_environment_variables(&locked_app)?;
         let trigger_cmds = get_supported_triggers(&locked_app)
             .with_context(|| format!("Couldn't find trigger executor for {app_source:?}"))?;
-        let _telemetry_guard = spin_telemetry::init(version!().to_string())?;
+        let _telemetry_guard = spin_telemetry::init(version!().version.to_string())?;
 
         self.run_trigger(ctx, &trigger_cmds, locked_app, app_source)
             .await
@@ -254,6 +218,38 @@ impl SpinEngine {
     }
 }
 
+impl Compiler for SpinCompiler {
+    fn cache_key(&self) -> impl Hash {
+        self.0.precompile_compatibility_hash()
+    }
+
+    async fn compile(&self, layers: &[WasmLayer]) -> Result<Vec<Option<Vec<u8>>>> {
+        // Runwasi expects layers to be returned in the same order, so wrap each layer in an option, setting non Wasm layers to None
+        let precompiled_layers = layers
+            .iter()
+            .map(|layer| match is_wasm_content(layer) {
+                Some(wasm_layer) => {
+                    log::info!(
+                        "Precompile called for wasm layer {:?}",
+                        wasm_layer.config.digest()
+                    );
+                    if self.0.detect_precompiled(&wasm_layer.layer).is_some() {
+                        log::info!("Layer already precompiled {:?}", wasm_layer.config.digest());
+                        Ok(Some(wasm_layer.layer))
+                    } else {
+                        let component =
+                            spin_componentize::componentize_if_necessary(&wasm_layer.layer)?;
+                        let precompiled = self.0.precompile_component(&component)?;
+                        Ok(Some(precompiled))
+                    }
+                }
+                None => Ok(None),
+            })
+            .collect::<anyhow::Result<_>>()?;
+        Ok(precompiled_layers)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::str::FromStr as _;
@@ -262,8 +258,8 @@ mod tests {
 
     use super::*;
 
-    #[test]
-    fn precompile() {
+    #[tokio::test]
+    async fn precompile() {
         let module = wat::parse_str("(module)").unwrap();
         let wasmtime_engine = wasmtime::Engine::default();
         let component = wasmtime::component::Component::new(&wasmtime_engine, "(component)")
@@ -308,10 +304,11 @@ mod tests {
                 ),
             },
         ];
-        let spin_engine = SpinEngine::default();
-        let precompiled = spin_engine
-            .precompile(&wasm_layers)
-            .expect("precompile failed");
+        let compiler = SpinCompiler(wasmtime_engine);
+        let precompiled = compiler
+            .compile(&wasm_layers)
+            .await
+            .expect("compile failed");
         assert_eq!(precompiled.len(), 3);
         assert_ne!(precompiled[0].as_deref().expect("no first entry"), module);
         assert_eq!(
