@@ -1959,9 +1959,9 @@ dependencies = [
 
 [[package]]
 name = "containerd-shim-wasm"
-version = "1.0.0-rc.1"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae2cbd3f44b1c099a369fd46c1e67144e3aae45e5c7b9ec15315201c7fc9402e"
+checksum = "4d86b4754a7ca0b13a55dbab6836ae9abbc83f12d68ae0c9bbabab14edc58a28"
 dependencies = [
  "anyhow",
  "caps",
@@ -1986,7 +1986,7 @@ dependencies = [
  "tokio-stream",
  "trait-variant",
  "ttrpc-codegen",
- "wasmparser 0.227.1",
+ "wasmparser 0.228.0",
  "wat",
  "windows-sys 0.59.0",
 ]
@@ -4182,9 +4182,9 @@ checksum = "09edd9e8b54e49e587e4f6295a7d29c3ea94d469cb40ab8ca70b288248a81db2"
 
 [[package]]
 name = "libc"
-version = "0.2.171"
+version = "0.2.172"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c19937216e9d3aa9956d9bb8dfc0b0c8beb6058fc4f7a4dc4d850edf86a237d6"
+checksum = "d750af042f7ef4f724306de029d18836c26c1765a54a6a3f094cbd23a7267ffa"
 
 [[package]]
 name = "libcgroups"
@@ -10000,26 +10000,15 @@ dependencies = [
 
 [[package]]
 name = "wasmparser"
-version = "0.227.1"
+version = "0.228.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f51cad774fb3c9461ab9bccc9c62dfb7388397b5deda31bf40e8108ccd678b2"
+checksum = "4abf1132c1fdf747d56bbc1bb52152400c70f336870f968b85e89ea422198ae3"
 dependencies = [
  "bitflags 2.6.0",
  "hashbrown 0.15.2",
  "indexmap 2.7.0",
  "semver",
  "serde",
-]
-
-[[package]]
-name = "wasmparser"
-version = "0.228.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4abf1132c1fdf747d56bbc1bb52152400c70f336870f968b85e89ea422198ae3"
-dependencies = [
- "bitflags 2.6.0",
- "indexmap 2.7.0",
- "semver",
 ]
 
 [[package]]
