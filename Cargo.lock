@@ -1920,7 +1920,7 @@ version = "0.19.0"
 dependencies = [
  "anyhow",
  "curl",
- "redis 0.29.2",
+ "redis 0.30.0",
  "rumqttc",
  "tokio",
 ]
@@ -6410,12 +6410,13 @@ dependencies = [
 
 [[package]]
 name = "redis"
-version = "0.29.2"
+version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b110459d6e323b7cda23980c46c77157601199c9da6241552b284cd565a7a133"
+checksum = "438a4e5f8e9aa246d6f3666d6978441bf1b37d5f417b50c4dd220be09f5fcc17"
 dependencies = [
  "arc-swap",
  "bytes",
+ "cfg-if 1.0.0",
  "combine",
  "futures-util",
  "itoa",
