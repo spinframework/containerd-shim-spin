@@ -138,7 +138,7 @@ impl SpinSandbox {
         configure_application_variables_from_environment_variables(&locked_app)?;
         let trigger_cmds = get_supported_triggers(&locked_app)
             .with_context(|| format!("Couldn't find trigger executor for {app_source:?}"))?;
-        let _telemetry_guard = spin_telemetry::init(version!().version.to_string())?;
+        spin_telemetry::init(version!().version.to_string())?;
 
         self.run_trigger(ctx, &trigger_cmds, locked_app, app_source)
             .await
@@ -167,9 +167,11 @@ impl SpinSandbox {
         let mut futures_list = Vec::new();
         let mut trigger_type_map = Vec::new();
         // The `HOSTNAME` environment variable should contain the fully unique container name
-        let app_id = std::env::var("HOSTNAME").unwrap_or_else(|_| "unknown".into());
+        let app_id = std::sync::Arc::<str>::from(
+            std::env::var("HOSTNAME").unwrap_or_else(|_| "unknown".into()),
+        );
         for trigger_type in trigger_types.iter() {
-            let app = spin_app::App::new(&app_id, app.clone());
+            let app = spin_app::App::new(app_id.clone(), app.clone());
             let f = match trigger_type.as_str() {
                 HTTP_TRIGGER_TYPE => {
                     let address_str = env::var(constants::SPIN_HTTP_LISTEN_ADDR_ENV)
@@ -233,7 +235,7 @@ impl Compiler for SpinCompiler {
                         "Precompile called for wasm layer {:?}",
                         wasm_layer.config.digest()
                     );
-                    if self.0.detect_precompiled(&wasm_layer.layer).is_some() {
+                    if wasmtime::Engine::detect_precompiled(&wasm_layer.layer).is_some() {
                         log::info!("Layer already precompiled {:?}", wasm_layer.config.digest());
                         Ok(Some(wasm_layer.layer))
                     } else {
