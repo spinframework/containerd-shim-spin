@@ -4,6 +4,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [v0.20.0] - 2025-06-25
+
+### Changed
+
+- Update to use Spin v3.3.1 dependencies ([#331](https://github.com/spinframework/containerd-shim-spin/pull/331))
+- Bump containerd-shim-wasm to v1.0.0 ([#314](https://github.com/spinframework/containerd-shim-spin/pull/314))
+- Add project security policy ([#310](https://github.com/spinframework/containerd-shim-spin/pull/310))
+
+
 ## [v0.19.0] - 2025-03-28
 
 ### Changed

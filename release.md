@@ -53,11 +53,11 @@ following:
 
     ```console
     k3d cluster create wasm-cluster \
-      --image ghcr.io/spinframework/containerd-shim-spin/k3d:v0.19.0 \
+      --image ghcr.io/spinframework/containerd-shim-spin/k3d:v0.15.0 \
       -p "8081:80@loadbalancer" \
       --agents 2
-   kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.19.0/runtime.yaml
-   kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.19.0/workload.yaml
+   kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.15.0/runtime.yaml
+   kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.15.0/workload.yaml
     ```
    
 This will create a k3d cluster with the new release and deploy a test workload to it.
