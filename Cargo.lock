@@ -1860,6 +1860,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2f8a2ca5ac02d09563609681103aada9e1777d54fc57a5acd7a41404f9c93b6e"
 
 [[package]]
+name = "const_format"
+version = "0.2.34"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "126f97965c8ad46d6d9163268ff28432e8f6a1196a55578867832e3049df63dd"
+dependencies = [
+ "const_format_proc_macros",
+]
+
+[[package]]
+name = "const_format_proc_macros"
+version = "0.2.34"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1d57c2eccfb16dbac1f4e61e206105db5820c9d26c3c472bc17c774259ef7744"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "unicode-xid",
+]
+
+[[package]]
 name = "containerd-client"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1890,7 +1910,7 @@ dependencies = [
  "log",
  "mio",
  "nix 0.29.0",
- "oci-spec",
+ "oci-spec 0.7.1",
  "os_pipe",
  "page_size",
  "prctl",
@@ -1935,7 +1955,7 @@ dependencies = [
  "ctrlc",
  "futures",
  "log",
- "oci-spec",
+ "oci-spec 0.8.1",
  "openssl",
  "spin-app",
  "spin-componentize",
@@ -1977,7 +1997,7 @@ dependencies = [
  "log",
  "mio",
  "nix 0.29.0",
- "oci-spec",
+ "oci-spec 0.7.1",
  "serde",
  "serde_bytes",
  "serde_json",
@@ -2010,7 +2030,7 @@ dependencies = [
  "log",
  "mio",
  "nix 0.29.0",
- "oci-spec",
+ "oci-spec 0.7.1",
  "opentelemetry 0.23.0",
  "opentelemetry-otlp 0.16.0",
  "opentelemetry_sdk 0.23.0",
@@ -4222,7 +4242,7 @@ checksum = "297f546e249532eae2595d93ebb2a2edc2e97462873b3277ee7238de83cee887"
 dependencies = [
  "fixedbitset 0.5.7",
  "nix 0.28.0",
- "oci-spec",
+ "oci-spec 0.7.1",
  "procfs",
  "serde",
  "thiserror 2.0.12",
@@ -4243,7 +4263,7 @@ dependencies = [
  "libseccomp",
  "nc",
  "nix 0.28.0",
- "oci-spec",
+ "oci-spec 0.7.1",
  "once_cell",
  "prctl",
  "procfs",
@@ -4970,7 +4990,7 @@ dependencies = [
  "http-auth",
  "jwt 0.16.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 1.5.0",
- "oci-spec",
+ "oci-spec 0.7.1",
  "olpc-cjson",
  "regex",
  "reqwest 0.12.20",
@@ -5021,6 +5041,23 @@ dependencies = [
  "strum 0.26.3",
  "strum_macros 0.26.4",
  "thiserror 2.0.12",
+]
+
+[[package]]
+name = "oci-spec"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "57e9beda9d92fac7bf4904c34c83340ef1024159faee67179a04e0277523da33"
+dependencies = [
+ "const_format",
+ "derive_builder 0.20.2",
+ "getset",
+ "regex",
+ "serde",
+ "serde_json",
+ "strum 0.27.1",
+ "strum_macros 0.27.1",
+ "thiserror 2.0.11",
 ]
 
 [[package]]
@@ -8429,6 +8466,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8fec0f0aef304996cf250b31b5a10dee7980c85da9d759361292b8bca5a18f06"
 
 [[package]]
+name = "strum"
+version = "0.27.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f64def088c51c9510a8579e3c5d67c65349dcf755e5479ad3d010aa6454e2c32"
+
+[[package]]
 name = "strum_macros"
 version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8452,6 +8495,19 @@ dependencies = [
  "quote",
  "rustversion",
  "syn 2.0.103",
+]
+
+[[package]]
+name = "strum_macros"
+version = "0.27.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c77a8c5abcaf0f9ce05d62342b7d298c346515365c36b673df4ebe3ced01fde8"
+dependencies = [
+ "heck 0.5.0",
+ "proc-macro2",
+ "quote",
+ "rustversion",
+ "syn 2.0.90",
 ]
 
 [[package]]
