@@ -1795,7 +1795,7 @@ dependencies = [
  "rust-ini",
  "serde",
  "serde_json",
- "toml",
+ "toml 0.8.23",
  "yaml-rust2",
 ]
 
@@ -1950,7 +1950,7 @@ dependencies = [
  "temp-env",
  "tempfile",
  "tokio",
- "toml",
+ "toml 0.9.4",
  "trigger-command",
  "trigger-mqtt",
  "trigger-sqs",
@@ -2023,7 +2023,7 @@ dependencies = [
  "time",
  "tokio",
  "tokio-async-drop",
- "toml",
+ "toml 0.8.23",
  "tracing",
  "tracing-opentelemetry 0.24.0",
  "tracing-subscriber",
@@ -7387,6 +7387,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "serde_spanned"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "40734c41988f7306bb04f0ecf60ec0f3f1caa34290e4e8ea471dcd3346483b83"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "serde_urlencoded"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7731,7 +7740,7 @@ dependencies = [
  "spin-world",
  "thiserror 2.0.12",
  "tokio",
- "toml",
+ "toml 0.8.23",
  "tracing",
 ]
 
@@ -7749,7 +7758,7 @@ dependencies = [
  "spin-telemetry",
  "spin-world",
  "tokio",
- "toml",
+ "toml 0.8.23",
  "tracing",
  "url",
 ]
@@ -7919,7 +7928,7 @@ dependencies = [
  "spin-app",
  "spin-factors-derive",
  "thiserror 2.0.12",
- "toml",
+ "toml 0.8.23",
  "wasmtime",
 ]
 
@@ -8061,7 +8070,7 @@ dependencies = [
  "tempfile",
  "terminal",
  "tokio",
- "toml",
+ "toml 0.8.23",
  "tracing",
  "wasm-pkg-client",
 ]
@@ -8093,7 +8102,7 @@ dependencies = [
  "spin-serde",
  "terminal",
  "thiserror 2.0.12",
- "toml",
+ "toml 0.8.23",
  "url",
  "wasm-pkg-common",
 ]
@@ -8159,7 +8168,7 @@ dependencies = [
  "spin-sqlite",
  "spin-trigger",
  "spin-variables",
- "toml",
+ "toml 0.8.23",
 ]
 
 [[package]]
@@ -8212,7 +8221,7 @@ dependencies = [
  "spin-factors",
  "spin-sqlite-inproc",
  "spin-sqlite-libsql",
- "toml",
+ "toml 0.8.23",
 ]
 
 [[package]]
@@ -8970,9 +8979,24 @@ checksum = "dc1beb996b9d83529a9e75c17a1686767d148d70663143c7854d8b4a09ced362"
 dependencies = [
  "indexmap 2.9.0",
  "serde",
- "serde_spanned",
- "toml_datetime",
+ "serde_spanned 0.6.9",
+ "toml_datetime 0.6.11",
  "toml_edit",
+]
+
+[[package]]
+name = "toml"
+version = "0.9.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "41ae868b5a0f67631c14589f7e250c1ea2c574ee5ba21c6c8dd4b1485705a5a1"
+dependencies = [
+ "indexmap 2.9.0",
+ "serde",
+ "serde_spanned 1.0.0",
+ "toml_datetime 0.7.0",
+ "toml_parser",
+ "toml_writer",
+ "winnow",
 ]
 
 [[package]]
@@ -8985,6 +9009,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "toml_datetime"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bade1c3e902f58d73d3f294cd7f20391c1cb2fbcb643b73566bc773971df91e3"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "toml_edit"
 version = "0.22.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8992,9 +9025,18 @@ checksum = "41fe8c660ae4257887cf66394862d21dbca4a6ddd26f04a3560410406a2f819a"
 dependencies = [
  "indexmap 2.9.0",
  "serde",
- "serde_spanned",
- "toml_datetime",
+ "serde_spanned 0.6.9",
+ "toml_datetime 0.6.11",
  "toml_write",
+ "winnow",
+]
+
+[[package]]
+name = "toml_parser"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "97200572db069e74c512a14117b296ba0a80a30123fbbb5aa1f4a348f639ca30"
+dependencies = [
  "winnow",
 ]
 
@@ -9003,6 +9045,12 @@ name = "toml_write"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5d99f8c9a7727884afe522e9bd5edbfc91a3312b36a77b5fb8926e4c31a41801"
+
+[[package]]
+name = "toml_writer"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fcc842091f2def52017664b53082ecbbeb5c7731092bad69d2c63050401dfd64"
 
 [[package]]
 name = "tonic"
@@ -10044,7 +10092,7 @@ dependencies = [
  "thiserror 1.0.69",
  "tokio",
  "tokio-util",
- "toml",
+ "toml 0.8.23",
  "tracing",
  "tracing-subscriber",
  "url",
@@ -10074,7 +10122,7 @@ dependencies = [
  "sha2",
  "thiserror 1.0.69",
  "tokio",
- "toml",
+ "toml 0.8.23",
  "tracing",
 ]
 
@@ -10277,7 +10325,7 @@ dependencies = [
  "serde",
  "serde_derive",
  "sha2",
- "toml",
+ "toml 0.8.23",
  "windows-sys 0.59.0",
  "zstd",
 ]
