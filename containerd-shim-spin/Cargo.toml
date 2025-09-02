@@ -16,7 +16,7 @@ log = "0.4"
 spin-app = { git = "https://github.com/spinframework/spin", tag = "v3.4.0" }
 spin-componentize = { git = "https://github.com/spinframework/spin", tag = "v3.4.0" }
 # Enable loading components precompiled by the shim
-spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v3.4.0", features = [
+spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v3.4.1", features = [
     "unsafe-aot-compilation",
 ] }
 spin-trigger-http = { git = "https://github.com/spinframework/spin", tag = "v3.4.0" }
