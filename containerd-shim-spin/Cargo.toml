@@ -24,7 +24,7 @@ spin-trigger-redis = { git = "https://github.com/spinframework/spin", tag = "v3.
 trigger-mqtt = { git = "https://github.com/spinframework/spin-trigger-mqtt", tag = "v0.5.0" }
 trigger-sqs = { git = "https://github.com/spinframework/spin-trigger-sqs", tag = "v0.10.0" }
 trigger-command = { git = "https://github.com/spinframework/spin-trigger-command", tag = "v0.4.0" }
-spin-loader = { git = "https://github.com/spinframework/spin", tag = "v3.4.0" }
+spin-loader = { git = "https://github.com/spinframework/spin", tag = "v3.4.1" }
 spin-oci = { git = "https://github.com/spinframework/spin", tag = "v3.4.0" }
 spin-telemetry = { git = "https://github.com/spinframework/spin", tag = "v3.4.0" }
 spin-runtime-factors = { git = "https://github.com/spinframework/spin", tag = "v3.4.0" }
