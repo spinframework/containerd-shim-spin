@@ -60,7 +60,7 @@ jobs:
         with:
           install_only: true
 
-      - uses: medyagh/setup-minikube@v0.0.20
+      - uses: medyagh/setup-minikube@v0.0.21
         if: matrix.distribution == 'minikube'
         with:
           start: false
