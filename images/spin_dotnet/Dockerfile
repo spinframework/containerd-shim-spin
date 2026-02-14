@@ -1,10 +1,10 @@
 FROM --platform=${BUILDPLATFORM} mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim-amd64 AS build
 WORKDIR /opt/build
 RUN apt-get update && apt-get install xz-utils
-RUN curl -LO https://github.com/bytecodealliance/wizer/releases/download/dev/wizer-dev-x86_64-linux.tar.xz \
-    && tar -xvf wizer-dev-x86_64-linux.tar.xz \
-    && rm wizer-dev-x86_64-linux.tar.xz \
-    && install wizer-dev-x86_64-linux/wizer /usr/local/bin
+RUN curl -LO https://github.com/bytecodealliance/wizer/releases/download/v10.0.0/wizer-v10.0.0-x86_64-linux.tar.xz \
+    && tar -xvf wizer-v10.0.0-x86_64-linux.tar.xz \
+    && rm wizer-v10.0.0-x86_64-linux.tar.xz \
+    && install wizer-v10.0.0-x86_64-linux/wizer /usr/local/bin
 
 FROM build AS build-dotnet
 COPY . .
