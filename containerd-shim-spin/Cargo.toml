@@ -13,32 +13,35 @@ Containerd shim for running Spin workloads.
 [dependencies]
 containerd-shim-wasm = { version = "1.0.0", default-features = false, features = ["opentelemetry"]}
 log = "0.4"
-spin-app = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-componentize = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
+spin-app = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+spin-componentize = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
 # Enable loading components precompiled by the shim
-spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v3.5.0", features = [
+spin-trigger = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05", features = [
     "unsafe-aot-compilation",
 ] }
-spin-trigger-http = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-trigger-redis = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-trigger-mqtt = { git = "https://github.com/spinframework/spin-trigger-mqtt", tag = "v0.6.0" }
-trigger-sqs = { git = "https://github.com/spinframework/spin-trigger-sqs", tag = "v0.11.0" }
-trigger-command = { git = "https://github.com/spinframework/spin-trigger-command", tag = "v0.5.0" }
-spin-loader = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-oci = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-telemetry = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-runtime-factors = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-spin-factor-outbound-networking = { git = "https://github.com/spinframework/spin", tag = "v3.5.0" }
-wasmtime = "37.0.1"
+spin-trigger-http = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+spin-trigger-redis = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+trigger-mqtt = { git = "https://github.com/spinframework/spin-trigger-mqtt", branch = "spin-2f8e05" }
+trigger-sqs = { git = "https://github.com/spinframework/spin-trigger-sqs", branch = "spin-2f8e05" }
+trigger-command = { git = "https://github.com/spinframework/spin-trigger-command", branch = "spin-2f8e05" }
+spin-loader = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+spin-oci = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+spin-telemetry = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+spin-runtime-factors = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+spin-factor-outbound-networking = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+wasmtime = "41.0.0"
 openssl = { version = "*", features = ["vendored"] }
 anyhow = "1.0"
 oci-spec = "0.7"
 futures = "0.3"
 ctrlc = { version = "3.4", features = ["termination"] }
+url = "2.3"
+serde_json = "1.0"
+tokio = { version = "1", features = ["fs"] }
 
 [dev-dependencies]
 wat = "1"
 temp-env = "0.3.6"
 toml = "0.9"
 tempfile = "3"
-tokio = { version = "1", features = ["rt"] }
+tokio = { version = "1", features = ["rt", "fs"] }

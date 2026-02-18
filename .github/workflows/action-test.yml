@@ -31,6 +31,9 @@ jobs:
 
       - name: Install k3d
         run: make install-k3d
+      
+      - name: Install wkg
+        run: make install-wkg
 
       - name: Run integration tests
         run: BIN_DIR="./bin" IS_CI=true make integration-tests

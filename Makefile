@@ -41,7 +41,7 @@ build-cross-%: install-cross
 
 # test
 
-.PHONY: test unit-tests integration-tests integration-docker-build-push-tests integration-spin-registry-push-tests tests/collect-debug-logs
+.PHONY: test unit-tests integration-tests integration-docker-build-push-tests integration-spin-registry-push-tests integration-wkg-oci-push-tests tests/collect-debug-logs
 
 test: unit-tests integration-tests
 
@@ -50,7 +50,7 @@ unit-tests: build
 	cross test $(RELEASE_FLAG) --target $(TARGET) -p containerd-shim-spin-v2 $(VERBOSE_FLAG)
 
 # integration-tests
-integration-tests: prepare-cluster-and-images integration-docker-build-push-tests integration-spin-registry-push-tests
+integration-tests: prepare-cluster-and-images integration-docker-build-push-tests integration-spin-registry-push-tests integration-wkg-oci-push-tests
 	echo "Integration tests complete. You may run 'make tests/clean' to clean up the test environment."
 
 free-disk:
@@ -63,6 +63,10 @@ integration-docker-build-push-tests:
 # integration-tests for workloads pushed using spin registry push
 integration-spin-registry-push-tests:
 	./scripts/run-integration-tests.sh "workloads-pushed-using-spin-registry-push"
+
+# integration-tests for workloads pushed using wkg oci push
+integration-wkg-oci-push-tests:
+	./scripts/run-integration-tests.sh "workloads-pushed-using-wkg-oci-push"
 
 tests/collect-debug-logs:
 	./scripts/collect-debug-logs.sh 2>&1
@@ -113,7 +117,7 @@ run-%: install load
 
 # deploy
 
-./PHONY: up move-bins deploy-workloads-pushed-using-docker-build-push deploy-workloads-pushed-using-spin-registry-push pod-terminates-test prepare-cluster-and-images
+./PHONY: up move-bins deploy-workloads-pushed-using-docker-build-push deploy-workloads-pushed-using-spin-registry-push deploy-workloads-pushed-using-wkg-oci-push pod-terminates-test prepare-cluster-and-images
 
 up:
 	./scripts/up.sh
@@ -126,6 +130,9 @@ deploy-workloads-pushed-using-docker-build-push:
 
 deploy-workloads-pushed-using-spin-registry-push:
 	./scripts/deploy-workloads.sh "workloads-pushed-using-spin-registry-push"
+
+deploy-workloads-pushed-using-wkg-oci-push:
+	./scripts/deploy-workloads.sh "workloads-pushed-using-wkg-oci-push"
 
 pod-terminates-test:
 	./scripts/pod-terminates-test.sh
@@ -152,6 +159,9 @@ install-cross:
 
 install-k3d:
 	wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+
+install-wkg: 
+	cargo install wkg
 
 check-bins:
 	./scripts/check-bins.sh

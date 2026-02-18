@@ -1,13 +1,14 @@
 #[cfg(test)]
 mod test {
-    use std::{
-        process::Command,
-        thread,
-        time::{self, Duration},
-    };
+    use std::time::Duration;
+    #[cfg(not(feature = "wkg-tests"))]
+    use std::{process::Command, thread};
 
-    use anyhow::{Context, Result};
+    #[cfg(not(feature = "wkg-tests"))]
+    use anyhow::Context;
+    use anyhow::Result;
     use curl::easy::Easy;
+    #[cfg(not(feature = "wkg-tests"))]
     use redis::AsyncCommands;
 
     const RETRY_TIMES: u32 = 5;
@@ -50,6 +51,7 @@ mod test {
         Ok(buf)
     }
 
+    #[cfg(not(feature = "wkg-tests"))]
     #[tokio::test]
     async fn spin_test() -> Result<()> {
         let host_port = 8082;
@@ -67,6 +69,25 @@ mod test {
         Ok(())
     }
 
+    #[cfg(feature = "wkg-tests")]
+    #[tokio::test]
+    async fn spin_wkg_test() -> Result<()> {
+        let host_port = 8082;
+
+        // curl for hello
+        println!(" >>> curl http://localhost:{host_port}/spin/hello");
+        let res = retry_get(
+            &format!("http://localhost:{host_port}/spin/hello"),
+            RETRY_TIMES,
+            INTERVAL_IN_SECS,
+        )
+        .await?;
+        assert_eq!(String::from_utf8_lossy(&res), "Hello world from Spin!");
+
+        Ok(())
+    }
+
+    #[cfg(not(feature = "wkg-tests"))]
     #[tokio::test]
     async fn spin_keyvalue_test() -> Result<()> {
         let host_port = 8082;
@@ -84,6 +105,7 @@ mod test {
         Ok(())
     }
 
+    #[cfg(not(feature = "wkg-tests"))]
     #[tokio::test]
     async fn spin_inbound_redis_outbound_redis_test() -> Result<()> {
         let host_port = 8082;
@@ -118,6 +140,7 @@ mod test {
         Ok(())
     }
 
+    #[cfg(not(feature = "wkg-tests"))]
     #[tokio::test]
     async fn spin_multi_trigger_app_test() -> Result<()> {
         let host_port = 8082;
@@ -151,7 +174,7 @@ mod test {
         con.publish::<_, _, ()>("testchannel", "some-payload")
             .await?;
 
-        let one_sec = time::Duration::from_secs(1);
+        let one_sec = Duration::from_secs(1);
         thread::sleep(one_sec);
 
         let value = con.get::<&str, String>("redis-trigger-app-key").await?;
@@ -160,6 +183,7 @@ mod test {
         Ok(())
     }
 
+    #[cfg(not(feature = "wkg-tests"))]
     #[tokio::test]
     async fn spin_mqtt_trigger_app_test() -> Result<()> {
         use std::time::Duration;
@@ -209,7 +233,7 @@ mod test {
         for _i in 0..iterations {
             eventloop.poll().await?;
         }
-        thread::sleep(time::Duration::from_secs(5));
+        thread::sleep(Duration::from_secs(5));
 
         // Ensure that the message was received and logged by the spin app
         let log = get_logs_by_label("app=spin-mqtt-message-logger").await?;
@@ -217,6 +241,7 @@ mod test {
         Ok(())
     }
 
+    #[cfg(not(feature = "wkg-tests"))]
     #[tokio::test]
     async fn spin_static_assets_test() -> Result<()> {
         let host_port = 8082;
@@ -234,6 +259,7 @@ mod test {
         Ok(())
     }
 
+    #[cfg(not(feature = "wkg-tests"))]
     async fn is_kubectl_installed() -> anyhow::Result<bool> {
         let output: Result<std::process::Output, std::io::Error> =
             tokio::process::Command::new("kubectl")
@@ -248,6 +274,7 @@ mod test {
         }
     }
 
+    #[cfg(not(feature = "wkg-tests"))]
     async fn port_forward_svc(svc_port: u16, svc_name: &str) -> Result<u16> {
         let port = get_random_port()?;
 
@@ -262,6 +289,7 @@ mod test {
         Ok(port)
     }
 
+    #[cfg(not(feature = "wkg-tests"))]
     async fn get_logs_by_label(label: &str) -> Result<String> {
         let output = tokio::process::Command::new("kubectl")
             .arg("logs")
@@ -274,6 +302,7 @@ mod test {
         Ok(log.to_owned())
     }
 
+    #[cfg(not(feature = "wkg-tests"))]
     /// Uses a track to get a random unused port
     fn get_random_port() -> anyhow::Result<u16> {
         Ok(std::net::TcpListener::bind("localhost:0")?

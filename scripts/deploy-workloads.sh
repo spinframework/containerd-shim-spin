@@ -30,10 +30,17 @@ if [ "$1" == "workloads-pushed-using-spin-registry-push" ]; then
     update_mqtt_workload_with_broker_cluster_ip "tests/workloads-pushed-using-spin-registry-push"
     echo "deploying spin apps pushed to registry using 'spin registry push' command"
     kubectl apply -f tests/workloads-pushed-using-spin-registry-push
-else
+elif [ "$1" == "workloads-pushed-using-docker-build-push" ]; then
     update_mqtt_workload_with_broker_cluster_ip "tests/workloads-pushed-using-docker-build-push"
     echo "deploying spin apps pushed to registry using 'docker build && k3d image import' command"
     kubectl apply -f tests/workloads-pushed-using-docker-build-push
+elif [ "$1" == "workloads-pushed-using-wkg-oci-push" ]; then
+    update_mqtt_workload_with_broker_cluster_ip "tests/workloads-pushed-using-wkg-oci-push"
+    echo "deploying spin apps pushed to registry using 'wkg oci push' command"
+    kubectl apply -f tests/workloads-pushed-using-wkg-oci-push
+else
+    echo "Invalid argument. Please provide one of the following arguments: workloads-pushed-using-spin-registry-push, workloads-pushed-using-docker-build-push, workloads-pushed-using-wkg-oci-push"
+    exit 1
 fi
 
 # wait for all the pods to be ready

@@ -10,6 +10,8 @@ pub(crate) const SPIN_HTTP_LISTEN_ADDR_ENV: &str = "SPIN_HTTP_LISTEN_ADDR";
 pub(crate) const RUNTIME_CONFIG_PATH: &str = "/runtime-config.toml";
 /// Describes an OCI layer with Wasm content
 pub(crate) const OCI_LAYER_MEDIA_TYPE_WASM: &str = "application/vnd.wasm.content.layer.v1+wasm";
+// Media type for a Wasm binary pushed by wkg
+pub(crate) const OCI_LAYER_MEDIA_TYPE_WASM_WKG: &str = "application/wasm";
 /// Expected location of the Spin manifest when loading from a file rather than
 /// an OCI image
 pub(crate) const SPIN_MANIFEST_FILE_PATH: &str = "/spin.toml";
