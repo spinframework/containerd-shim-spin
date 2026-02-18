@@ -8,7 +8,7 @@ dockerfile_path="deployments/k3d" # path to the Dockerfile
 DOCKER_IMAGES=("spin" "spin-keyvalue" "spin-outbound-redis" "spin-multi-trigger-app" "spin-static-assets" "spin-mqtt-message-logger")
 OUT_DIRS=("test/out_spin" "test/out_spin_keyvalue" "test/out_spin_outbound_redis" "test/out_spin_multi_trigger_app" "test/out_spin_static_assets" "test/out_spin_mqtt_message_logger")
 IMAGES=("spin-hello-world" "spin-keyvalue" "spin-outbound-redis" "spin-multi-trigger-app" "spin-static-assets" "spin-mqtt-message-logger")
-WKG_IMAGE="spin-hello-world-wkg"
+WKG_IMAGE="spin-hello-world"
 WKG_SOURCE="spin"
 
 # build the Docker image for the k3d cluster
@@ -40,10 +40,10 @@ for i in "${!DOCKER_IMAGES[@]}"; do
   spin registry push "localhost:5000/spin-registry-push/${IMAGES[$i]}:latest" -f "./images/${DOCKER_IMAGES[$i]}/spin.toml" -k
 done
 
-# Build with cargo and push with wkg the simple Spin hello world app
+# Build with cargo and push with wkg the simple Spin hello world app. Use ttl.sh since wkg does not support localhost registries with http. See https://github.com/bytecodealliance/wasm-pkg-tools/issues/149.
 TEMP_DIR=$( mktemp -d )
 cargo build --release --target=wasm32-wasip1 --manifest-path ./images/${WKG_SOURCE}/Cargo.toml --target-dir "$TEMP_DIR"
-wkg oci push "localhost:5000/spin-registry-push/${WKG_IMAGE}:latest" "$TEMP_DIR/wasm32-wasip1/release/spin_rust_hello.wasm"
+wkg oci push "ttl.sh/containerd-shim-tests/wkg-oci-push/${WKG_IMAGE}:latest" "$TEMP_DIR/wasm32-wasip1/release/spin_rust_hello.wasm"
 rm -rf "$TEMP_DIR"
 
 sleep 5

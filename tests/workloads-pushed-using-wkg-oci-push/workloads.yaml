@@ -15,7 +15,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: testwasm
-          image: test-registry:5000/spin-registry-push/spin-hello-world-wkg:latest
+          image: ttl.sh/containerd-shim-tests/wkg-oci-push/spin-hello-world:latest
           imagePullPolicy: IfNotPresent
           command: ["/"]
           resources: # limit the resources to 128Mi of memory and 100m of CPU
