@@ -13,22 +13,22 @@ Containerd shim for running Spin workloads.
 [dependencies]
 containerd-shim-wasm = { version = "1.0.0", default-features = false, features = ["opentelemetry"]}
 log = "0.4"
-spin-app = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
-spin-componentize = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+spin-app = { git = "https://github.com/spinframework/spin", tag = "v3.6.1" }
+spin-componentize = { git = "https://github.com/spinframework/spin", tag = "v3.6.1" }
 # Enable loading components precompiled by the shim
-spin-trigger = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05", features = [
+spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v3.6.1", features = [
     "unsafe-aot-compilation",
 ] }
-spin-trigger-http = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
-spin-trigger-redis = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
-trigger-mqtt = { git = "https://github.com/spinframework/spin-trigger-mqtt", branch = "spin-2f8e05" }
-trigger-sqs = { git = "https://github.com/spinframework/spin-trigger-sqs", branch = "spin-2f8e05" }
-trigger-command = { git = "https://github.com/spinframework/spin-trigger-command", branch = "spin-2f8e05" }
-spin-loader = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
-spin-oci = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
-spin-telemetry = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
-spin-runtime-factors = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
-spin-factor-outbound-networking = { git = "https://github.com/spinframework/spin", ref = "9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05" }
+spin-trigger-http = { git = "https://github.com/spinframework/spin", tag = "v3.6.1" }
+spin-trigger-redis = { git = "https://github.com/spinframework/spin", tag = "v3.6.1" }
+trigger-mqtt = { git = "https://github.com/spinframework/spin-trigger-mqtt", rev = "0437be00b991ac851ff1f95945df368cbfe79d9c" } # Spin 3.6.1 dependencies
+trigger-sqs = { git = "https://github.com/spinframework/spin-trigger-sqs", rev = "76642c3620c7738c1751a01b580f5ac2f449a92c" } # Spin 3.6.1 dependencies
+trigger-command = { git = "https://github.com/spinframework/spin-trigger-command", rev = "f7d7c97334176f973a89e90b99132ea64ada1987" } # Spin 3.6.1 dependencies
+spin-loader = { git = "https://github.com/spinframework/spin", tag = "v3.6.1" }
+spin-oci = { git = "https://github.com/spinframework/spin", tag = "v3.6.1" }
+spin-telemetry = { git = "https://github.com/spinframework/spin", tag = "v3.6.1" }
+spin-runtime-factors = { git = "https://github.com/spinframework/spin", tag = "v3.6.1" }
+spin-factor-outbound-networking = { git = "https://github.com/spinframework/spin", tag = "v3.6.1" }
 wasmtime = "41.0.0"
 openssl = { version = "*", features = ["vendored"] }
 anyhow = "1.0"

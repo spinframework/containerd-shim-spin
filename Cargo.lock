@@ -7522,8 +7522,8 @@ dependencies = [
 
 [[package]]
 name = "spin-app"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "serde",
@@ -7533,8 +7533,8 @@ dependencies = [
 
 [[package]]
 name = "spin-common"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "dirs 6.0.0",
@@ -7546,8 +7546,8 @@ dependencies = [
 
 [[package]]
 name = "spin-componentize"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "tracing",
@@ -7560,8 +7560,8 @@ dependencies = [
 
 [[package]]
 name = "spin-compose"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7578,8 +7578,8 @@ dependencies = [
 
 [[package]]
 name = "spin-core"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7589,8 +7589,8 @@ dependencies = [
 
 [[package]]
 name = "spin-expressions"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7601,8 +7601,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-key-value"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "serde",
@@ -7621,8 +7621,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-llm"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7641,8 +7641,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-otel"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "indexmap 2.13.0",
@@ -7660,8 +7660,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-outbound-http"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "bytes",
@@ -7690,8 +7690,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-outbound-mqtt"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "rumqttc",
@@ -7707,8 +7707,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-outbound-mysql"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "mysql_async",
@@ -7725,8 +7725,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-outbound-networking"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "futures-util",
@@ -7749,8 +7749,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-outbound-pg"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "bytes",
@@ -7776,8 +7776,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-outbound-redis"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "redis",
@@ -7793,8 +7793,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-sqlite"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "async-trait",
  "spin-factor-otel",
@@ -7808,8 +7808,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-variables"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "spin-expressions",
  "spin-factor-otel",
@@ -7821,8 +7821,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factor-wasi"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "async-trait",
  "bytes",
@@ -7835,8 +7835,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factors"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "serde",
@@ -7849,8 +7849,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factors-derive"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -7859,8 +7859,8 @@ dependencies = [
 
 [[package]]
 name = "spin-factors-executor"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "spin-app",
@@ -7872,8 +7872,8 @@ dependencies = [
 
 [[package]]
 name = "spin-http"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "http 1.3.1",
@@ -7895,8 +7895,8 @@ dependencies = [
 
 [[package]]
 name = "spin-http-routes"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "indexmap 2.13.0",
@@ -7908,8 +7908,8 @@ dependencies = [
 
 [[package]]
 name = "spin-key-value-aws"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-once-cell",
@@ -7923,8 +7923,8 @@ dependencies = [
 
 [[package]]
 name = "spin-key-value-azure"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -7939,8 +7939,8 @@ dependencies = [
 
 [[package]]
 name = "spin-key-value-redis"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "redis",
@@ -7953,8 +7953,8 @@ dependencies = [
 
 [[package]]
 name = "spin-key-value-spin"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "rusqlite",
@@ -7967,8 +7967,8 @@ dependencies = [
 
 [[package]]
 name = "spin-llm-remote-http"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "reqwest 0.12.20",
@@ -7981,8 +7981,8 @@ dependencies = [
 
 [[package]]
 name = "spin-loader"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "dirs 6.0.0",
@@ -8010,8 +8010,8 @@ dependencies = [
 
 [[package]]
 name = "spin-locked-app"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8024,8 +8024,8 @@ dependencies = [
 
 [[package]]
 name = "spin-manifest"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "indexmap 2.13.0",
@@ -8042,8 +8042,8 @@ dependencies = [
 
 [[package]]
 name = "spin-oci"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-compression",
@@ -8075,8 +8075,8 @@ dependencies = [
 
 [[package]]
 name = "spin-outbound-networking-config"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "futures-util",
@@ -8091,13 +8091,13 @@ dependencies = [
 
 [[package]]
 name = "spin-resource-table"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 
 [[package]]
 name = "spin-runtime-config"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "serde",
@@ -8131,8 +8131,8 @@ dependencies = [
 
 [[package]]
 name = "spin-runtime-factors"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "clap 3.2.25",
@@ -8160,8 +8160,8 @@ dependencies = [
 
 [[package]]
 name = "spin-serde"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -8173,8 +8173,8 @@ dependencies = [
 
 [[package]]
 name = "spin-sqlite"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "serde",
  "spin-factor-sqlite",
@@ -8186,8 +8186,8 @@ dependencies = [
 
 [[package]]
 name = "spin-sqlite-inproc"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8199,8 +8199,8 @@ dependencies = [
 
 [[package]]
 name = "spin-sqlite-libsql"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8212,8 +8212,8 @@ dependencies = [
 
 [[package]]
 name = "spin-telemetry"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "http 0.2.12",
@@ -8230,8 +8230,8 @@ dependencies = [
 
 [[package]]
 name = "spin-trigger"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "clap 3.2.25",
@@ -8257,8 +8257,8 @@ dependencies = [
 
 [[package]]
 name = "spin-trigger-http"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "clap 3.2.25",
@@ -8297,8 +8297,8 @@ dependencies = [
 
 [[package]]
 name = "spin-trigger-redis"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "futures",
@@ -8315,8 +8315,8 @@ dependencies = [
 
 [[package]]
 name = "spin-variables-azure"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "azure_core 0.20.0",
  "azure_identity 0.20.0",
@@ -8330,8 +8330,8 @@ dependencies = [
 
 [[package]]
 name = "spin-variables-env"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "dotenvy",
  "serde",
@@ -8344,8 +8344,8 @@ dependencies = [
 
 [[package]]
 name = "spin-variables-static"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "serde",
  "serde_json",
@@ -8357,8 +8357,8 @@ dependencies = [
 
 [[package]]
 name = "spin-variables-vault"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "serde",
  "spin-expressions",
@@ -8369,8 +8369,8 @@ dependencies = [
 
 [[package]]
 name = "spin-world"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8667,8 +8667,8 @@ dependencies = [
 
 [[package]]
 name = "terminal"
-version = "3.7.0-pre0"
-source = "git+https://github.com/spinframework/spin#9ec77fd2429b06fdeaac1a1b99b63799bb2f8e05"
+version = "3.6.1"
+source = "git+https://github.com/spinframework/spin?tag=v3.6.1#33b06e57416980a6e14d278498f75d20cbb1ae06"
 dependencies = [
  "termcolor",
 ]
@@ -9320,7 +9320,7 @@ dependencies = [
 [[package]]
 name = "trigger-command"
 version = "0.5.1"
-source = "git+https://github.com/spinframework/spin-trigger-command?branch=spin-2f8e05#e3312ce7ab5216a261475b426cf522abe5c51f4e"
+source = "git+https://github.com/spinframework/spin-trigger-command?rev=f7d7c97334176f973a89e90b99132ea64ada1987#f7d7c97334176f973a89e90b99132ea64ada1987"
 dependencies = [
  "anyhow",
  "clap 3.2.25",
@@ -9340,7 +9340,7 @@ dependencies = [
 [[package]]
 name = "trigger-mqtt"
 version = "0.7.0"
-source = "git+https://github.com/spinframework/spin-trigger-mqtt?branch=spin-2f8e05#3b35fbeebf4170f933e6410da15dc0543e325f24"
+source = "git+https://github.com/spinframework/spin-trigger-mqtt?rev=0437be00b991ac851ff1f95945df368cbfe79d9c#0437be00b991ac851ff1f95945df368cbfe79d9c"
 dependencies = [
  "anyhow",
  "clap 3.2.25",
@@ -9363,7 +9363,7 @@ dependencies = [
 [[package]]
 name = "trigger-sqs"
 version = "0.12.0"
-source = "git+https://github.com/spinframework/spin-trigger-sqs?branch=spin-2f8e05#c13b49826a8408fa63043300a4ed083812dae96c"
+source = "git+https://github.com/spinframework/spin-trigger-sqs?rev=76642c3620c7738c1751a01b580f5ac2f449a92c#76642c3620c7738c1751a01b580f5ac2f449a92c"
 dependencies = [
  "anyhow",
  "aws-config",
