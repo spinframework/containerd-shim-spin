@@ -12,3 +12,6 @@ curl = { version = "0.4", features = ["static-curl"] }
 redis = { version = "0.32", features = ["tokio-comp"] }
 rumqttc = "0.24.0"
 tokio = { version = "1", features = ["rt", "macros", "process"] }
+
+[features]
+wkg-tests = []

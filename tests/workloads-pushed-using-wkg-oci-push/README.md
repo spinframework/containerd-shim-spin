@@ -1,0 +1,1 @@
+This folder has yaml file to apply workloads which are built using native language toolchains (e.g. `cargo build`) and pushed to a registry using `wkg oci push` command.

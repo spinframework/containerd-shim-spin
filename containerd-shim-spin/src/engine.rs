@@ -52,6 +52,7 @@ impl Shim for SpinShim {
     fn supported_layers_types() -> &'static [&'static str] {
         &[
             constants::OCI_LAYER_MEDIA_TYPE_WASM,
+            constants::OCI_LAYER_MEDIA_TYPE_WASM_WKG,
             spin_oci::client::ARCHIVE_MEDIATYPE,
             spin_oci::client::DATA_MEDIATYPE,
             spin_oci::client::SPIN_APPLICATION_MEDIA_TYPE,
@@ -153,7 +154,7 @@ impl SpinSandbox {
     ) -> Result<()> {
         let mut loader = spin_trigger::loader::ComponentLoader::default();
         match app_source {
-            Source::Oci => unsafe {
+            Source::OciSpin | Source::OciWkg(_) => unsafe {
                 // Configure the loader to support loading AOT compiled components..
                 // Since all components were compiled by the shim (during `precompile`),
                 // this operation can be considered safe.
@@ -182,6 +183,13 @@ impl SpinSandbox {
                         tls_cert: None,
                         tls_key: None,
                         find_free_port: false,
+                        http1_max_buf_size: None,
+                        max_instance_reuse_count: None,
+                        max_instance_concurrent_reuse_count: None,
+                        request_timeout: None,
+                        idle_instance_timeout: spin_trigger_http::Range::Value(
+                            std::time::Duration::from_secs(1),
+                        ),
                     };
                     trigger::run::<HttpTrigger>(cli_args, app, &loader).await?
                 }
