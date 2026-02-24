@@ -20,7 +20,7 @@ jobs:
     env:
       ARCH: ${{ matrix.config.arch }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           cache-key: rust-cache-${{ matrix.config.os }}-${{ matrix.config.arch}}
