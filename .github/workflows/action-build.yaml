@@ -45,7 +45,7 @@ jobs:
           cd _dist
           tar czf containerd-shim-spin-v2-${{ env.RUNNER_OS }}-${{ matrix.config.arch }}.tar.gz containerd-shim-spin-v2
       - name: Upload shim artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: containerd-shim-spin-v2-${{ env.RUNNER_OS }}-${{ matrix.config.arch }}
           path: _dist/containerd-shim-spin-v2-${{ env.RUNNER_OS }}-${{ matrix.config.arch }}.tar.gz
