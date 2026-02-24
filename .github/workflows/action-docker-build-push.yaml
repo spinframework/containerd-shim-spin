@@ -23,7 +23,7 @@ jobs:
           - imageName: examples/spin-outbound-redis
             context: images/spin-outbound-redis
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set RELEASE_VERSION ENV var
         run: echo "RELEASE_VERSION=$(echo -n ${GITHUB_REF} | cut -d '/' -f 3)" >> $GITHUB_ENV
       - name: lowercase the runner OS name
