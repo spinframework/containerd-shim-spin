@@ -37,7 +37,7 @@ jobs:
             echo "RELEASE_VERSION=$(date +%Y%m%d-%H%M%S)-g$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           fi
 
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           path: _artifacts
           pattern: "!*.dockerbuild"
