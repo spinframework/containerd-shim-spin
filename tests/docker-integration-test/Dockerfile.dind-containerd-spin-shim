@@ -1,0 +1,29 @@
+ARG DOCKER_VERSION=27
+FROM docker:${DOCKER_VERSION}-dind
+
+ARG CONTAINERD_SPIN_SHIM_VERSION=v0.22.0
+ARG SHIM_FILE=""
+
+# Enable the containerd snapshotter
+RUN mkdir -p /etc/docker && \
+    echo '{ \
+  "features": { \
+    "containerd-snapshotter": true \
+  } \
+}' > /etc/docker/daemon.json
+
+# Download or use copied shim
+RUN apk add --no-cache curl && \
+    if [ -n "${SHIM_FILE}" ]; then \
+      echo "Will use local shim file..."; \
+    else \
+      echo "Downloading shim version ${CONTAINERD_SPIN_SHIM_VERSION}..." && \
+      curl -LRO https://github.com/spinframework/containerd-shim-spin/releases/download/${CONTAINERD_SPIN_SHIM_VERSION}/containerd-shim-spin-v2-linux-x86_64.tar.gz && \
+      tar -xzf containerd-shim-spin-v2-linux-x86_64.tar.gz -C /usr/local/bin/ && \
+      rm containerd-shim-spin-v2-linux-x86_64.tar.gz; \
+    fi
+
+# Expose port for the Spin application
+EXPOSE 8080
+
+CMD ["dockerd-entrypoint.sh"]
