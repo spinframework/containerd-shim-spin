@@ -39,7 +39,7 @@ jobs:
         run: BIN_DIR="./bin" IS_CI=true make integration-tests
 
       - name: Run Docker integration tests
-        run: DOCKER_VERSION=27 BIN_DIR="./bin" make docker-integration-test
+        run: DOCKER_VERSION=28 BIN_DIR="./bin" make docker-integration-test
 
       - name: Collect debug logs
         if: failure()
