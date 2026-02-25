@@ -2,7 +2,7 @@
 name = "mqtt-message-logger"
 authors = ["Kate Goldenring <kate.goldenring@fermyon.com>"]
 description = "Triggered by MQTT"
-version = "0.22.0"
+version = "0.23.0"
 edition = "2021"
 
 [lib]

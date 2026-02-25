@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 - 
+
+## [v0.23.0] - 2026-02-25
+
+### Added
+- Add integration test for directly running the shim with docker ([#377](https://github.com/spinframework/containerd-shim-spin/pull/377))
+
+### Changed
+- Update to use Spin v3.6.1 dependencies and support packages pushed with `wkg` ([#392](https://github.com/spinframework/containerd-shim-spin/pull/392))
+- Dependency updates ([#372](https://github.com/spinframework/containerd-shim-spin/pull/372), [#373](https://github.com/spinframework/containerd-shim-spin/pull/373), [#375](https://github.com/spinframework/containerd-shim-spin/pull/375), [#393](https://github.com/spinframework/containerd-shim-spin/pull/393))
+
+### Fixed
+- Fix node-installer logic for k3s and rke2 ([#389](https://github.com/spinframework/containerd-shim-spin/pull/389))
+- Fix broken spin dotnet container build ([#391](https://github.com/spinframework/containerd-shim-spin/pull/391))
+
 ## [v0.22.0] - 2025-10-31
 
 ### Changed
@@ -87,7 +101,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
-[Unreleased]: <https://github.com/spinkube/containerd-shim-spin/compare/v0.22.0..HEAD>
+[Unreleased]: <https://github.com/spinframework/containerd-shim-spin/compare/v0.23.0..HEAD>
+[v0.23.0]: <https://github.com/spinframework/containerd-shim-spin/compare/v0.22.0...v0.23.0>
 [v0.22.0]: <https://github.com/spinkube/containerd-shim-spin/compare/v0.21.0...v0.22.0>
 [v0.21.0]: <https://github.com/spinkube/containerd-shim-spin/compare/v0.20.0...v0.21.0>
 [v0.20.0]: <https://github.com/spinkube/containerd-shim-spin/compare/v0.19.0...v0.20.0>

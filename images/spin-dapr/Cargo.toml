@@ -2,7 +2,7 @@
 name = "spin-dapr"
 authors = ["Sven Pfennig <s.pfennig@reply.de>"]
 description = "Example application to use Dapr with Spin"
-version = "0.22.0"
+version = "0.23.0"
 edition = "2021"
 
 [lib]
