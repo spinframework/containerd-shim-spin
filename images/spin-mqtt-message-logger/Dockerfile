@@ -1,4 +1,4 @@
-FROM --platform=${BUILDPLATFORM} rust:1.86 AS build
+FROM --platform=${BUILDPLATFORM} rust:1.91 AS build
 WORKDIR /opt/build
 RUN rustup target add wasm32-wasip1
 COPY . .
