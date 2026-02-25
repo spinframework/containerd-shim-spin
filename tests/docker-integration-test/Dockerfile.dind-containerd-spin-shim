@@ -12,10 +12,14 @@ RUN mkdir -p /etc/docker && \
   } \
 }' > /etc/docker/daemon.json
 
+# Copy local shim binary from build context (only present when SHIM_FILE is set)
+COPY tests/docker-integration-test/containerd-shim-spin-v2* /tmp/local-shim/
+
 # Download or use copied shim
 RUN apk add --no-cache curl && \
     if [ -n "${SHIM_FILE}" ]; then \
-      echo "Will use local shim file..."; \
+      echo "Installing local shim file..." && \
+      install -m 755 /tmp/local-shim/containerd-shim-spin-v2 /usr/local/bin/containerd-shim-spin-v2; \
     else \
       echo "Downloading shim version ${CONTAINERD_SPIN_SHIM_VERSION}..." && \
       curl -LRO https://github.com/spinframework/containerd-shim-spin/releases/download/${CONTAINERD_SPIN_SHIM_VERSION}/containerd-shim-spin-v2-linux-x86_64.tar.gz && \
