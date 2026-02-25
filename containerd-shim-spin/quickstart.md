@@ -14,7 +14,7 @@ Before you begin, you need to have the following installed:
 Start a k3d cluster with the wasm shims already installed:
 
 ```bash
-k3d cluster create wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/k3d:v0.22.0 -p "8081:80@loadbalancer" --agents 2 --registry-create mycluster-registry:12345
+k3d cluster create wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/k3d:v0.23.0 -p "8081:80@loadbalancer" --agents 2 --registry-create mycluster-registry:12345
 ```
 
 Apply RuntimeClass for spin applications to use the spin wasm shim:
@@ -131,7 +131,7 @@ You have two choices for publishing spin apps.  The steps to deploy are the same
 Create a `Dockerfile` at the root of the application directory with the following:
 
 ```dockerfile
-FROM --platform=${BUILDPLATFORM} rust:1.86 AS build
+FROM --platform=${BUILDPLATFORM} rust:1.91 AS build
 WORKDIR /opt/build
 COPY . .
 RUN rustup target add wasm32-wasip1 && cargo build --target wasm32-wasip1 --release
