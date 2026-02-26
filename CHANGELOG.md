@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Add integration test for directly running the shim with docker ([#377](https://github.com/spinframework/containerd-shim-spin/pull/377))
 
 ### Changed
+- Update to use Spin v3.6.2 dependencies ([#397](https://github.com/spinframework/containerd-shim-spin/pull/397))
 - Update to use Spin v3.6.1 dependencies and support packages pushed with `wkg` ([#392](https://github.com/spinframework/containerd-shim-spin/pull/392))
 - Dependency updates ([#372](https://github.com/spinframework/containerd-shim-spin/pull/372), [#373](https://github.com/spinframework/containerd-shim-spin/pull/373), [#375](https://github.com/spinframework/containerd-shim-spin/pull/375), [#393](https://github.com/spinframework/containerd-shim-spin/pull/393))
 
