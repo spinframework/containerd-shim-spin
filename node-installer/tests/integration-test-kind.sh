@@ -71,15 +71,15 @@ echo "Waiting for service to be ready..."
 sleep 10
 
 echo "Testing workload with curl..."
-kubectl --context=kind-spin-test port-forward svc/wasm-spin 8888:80 &
-FORWARD_PID=$!
-sleep 5
-
-MAX_RETRIES=3
+MAX_RETRIES=5
 RETRY_COUNT=0
 SUCCESS=false
 
 while [ $RETRY_COUNT -lt $MAX_RETRIES ] && [ "$SUCCESS" = false ]; do
+  kubectl --context=kind-spin-test port-forward svc/wasm-spin 8888:80 &
+  FORWARD_PID=$!
+  sleep 5
+
   if curl -s http://localhost:8888/hello | grep -q "Hello world from Spin!"; then
     SUCCESS=true
     echo "Workload test successful!"
@@ -88,9 +88,8 @@ while [ $RETRY_COUNT -lt $MAX_RETRIES ] && [ "$SUCCESS" = false ]; do
     sleep 3
     RETRY_COUNT=$((RETRY_COUNT+1))
   fi
+  kill $FORWARD_PID 2>/dev/null || true
 done
-
-kill $FORWARD_PID
 
 if [ "$SUCCESS" = true ]; then
   echo "=== Integration Test Passed! ==="
