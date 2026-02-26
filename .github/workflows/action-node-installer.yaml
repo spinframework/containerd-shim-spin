@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        distribution: [kind, minikube, microk8s, k3s]
+        distribution: [minikube, microk8s, k3s] # TODO: add kind back we
     outputs:
       release_version: ${{ steps.set_version.outputs.RELEASE_VERSION }}
     steps:
