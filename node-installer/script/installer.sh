@@ -1,6 +1,10 @@
 #!/usr/bin/env sh
 set -euo pipefail
 
+# Note: this script is now deprecated and no longer used in the context of more recent versions
+# of SpinKube. Instead, the runtime-class-manager project handles installation of the Spin shim.
+# See https://github.com/spinframework/runtime-class-manager/blob/main/README.md for more details.
+
 # Based on https://github.com/KWasm/kwasm-node-installer/blob/main/script/installer.sh
 # Distilled to only configuring the Spin shim
 
