@@ -6,6 +6,7 @@ TARGET ?= $(ARCH)-unknown-linux-musl
 CONTAINERD_NAMESPACE ?= default
 TEST_IMG_NAME ?= wasmtest_spin:latest
 CTR_FLAGS ?=
+DOCKER_VERSION ?= 27
 ifeq ($(VERBOSE),)
 VERBOSE_FLAG :=
 else
@@ -41,7 +42,7 @@ build-cross-%: install-cross
 
 # test
 
-.PHONY: test unit-tests integration-tests integration-docker-build-push-tests integration-spin-registry-push-tests integration-wkg-oci-push-tests tests/collect-debug-logs
+.PHONY: test unit-tests integration-tests integration-docker-build-push-tests integration-spin-registry-push-tests integration-wkg-oci-push-tests docker-integration-test tests/collect-debug-logs
 
 test: unit-tests integration-tests
 
@@ -67,6 +68,10 @@ integration-spin-registry-push-tests:
 # integration-tests for workloads pushed using wkg oci push
 integration-wkg-oci-push-tests:
 	./scripts/run-integration-tests.sh "workloads-pushed-using-wkg-oci-push"
+
+# docker-integration-test runs the Docker-in-Docker integration test using the shim binary from BIN_DIR
+docker-integration-test:
+	SHIM_FILE="$(BIN_DIR)/containerd-shim-spin-v2" DOCKER_VERSION=$(DOCKER_VERSION) ./tests/docker-integration-test/docker-integration-test.sh
 
 tests/collect-debug-logs:
 	./scripts/collect-debug-logs.sh 2>&1
