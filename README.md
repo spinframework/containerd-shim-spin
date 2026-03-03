@@ -52,7 +52,7 @@ In order to run Spin applications on your cluster, you must complete the followi
 2. Update the containerd configuration to recognize the shim
 3. Apply the Kubernetes `RuntimeClass` for the shim
 
-Repeating steps 1 and 2 for each node on a cluster can be a time-consuming and manual process. For this reason, SpinKube provides a [`runtime-class-manager`](https://www.spinkube.dev/docs/topics/architecture/#runtime-class-manager) (previously the `kwasm` operator) that enables you to skip over step 1 and 2. See the [SpinKube installation guide](https://www.spinkube.dev/docs/install/installing-with-helm/) for more information on installing with Helm.
+Repeating these steps for each node on a cluster can be a time-consuming and manual process. For this reason, SpinKube provides a [`runtime-class-manager`](https://www.spinkube.dev/docs/topics/architecture/#runtime-class-manager) (previously the `kwasm` operator) that automates all of the steps. See the [SpinKube installation guide](https://www.spinkube.dev/docs/install/installing-with-helm/) for more information on installing with Helm.
 
 To carry out the installation step-by-step, do the following:
 
@@ -80,7 +80,7 @@ To carry out the installation step-by-step, do the following:
       SystemdCgroup = true
     ```
 
-    The [Node Installer script](./node-installer/script/installer.sh) that is used by the [`runtime-class-manager`](https://www.spinkube.dev/docs/topics/architecture/#runtime-class-manager) does this for you and is a good reference to understand the common paths to the containerd configuration file for popular Kubernetes distributions.
+    The deprecated [Node Installer script](./node-installer/script/installer.sh) that was used by the [`kwasm-operator`](https://github.com/kwasm/kwasm-operator) (now superseded by [`runtime-class-manager`](https://www.spinkube.dev/docs/topics/architecture/#runtime-class-manager) which has its own installation logic) is a good reference to understand the common paths to the containerd configuration file for popular Kubernetes distributions.
 
 3. Apply a runtime class that contains a handler that matches the "spin" config runtime name from step 2.
 
