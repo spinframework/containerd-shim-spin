@@ -48,7 +48,7 @@ jobs:
           sudo systemctl restart docker
       
       - name: Build and load (test run)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         if: ${{ inputs.test }}
         with:
           context: ${{ matrix.image.context }}
@@ -56,7 +56,7 @@ jobs:
           tags: containerd-shim-spin/${{ matrix.image.imageName }}:test
           platforms: wasi/wasm
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         if: ${{ !inputs.test }}
         with:
           push: true
