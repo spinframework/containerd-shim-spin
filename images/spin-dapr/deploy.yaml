@@ -44,8 +44,8 @@ metadata:
   name: spin-dapr
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
-    kubernetes.io/ingress.class: traefik
 spec:
+  ingressClassName: traefik
   rules:
     - http:
         paths:
