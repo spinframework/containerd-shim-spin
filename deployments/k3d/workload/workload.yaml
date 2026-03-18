@@ -37,7 +37,6 @@ metadata:
   name: wasm-ingress
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
-    traefik.ingress.kubernetes.io/router.middlewares: default-strip-prefix@kubernetescrd
 spec:
   ingressClassName: traefik
   rules:

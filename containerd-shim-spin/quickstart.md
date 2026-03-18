@@ -31,13 +31,13 @@ Deploy a pre-built sample spin application:
 kubectl apply -f https://raw.githubusercontent.com/spinframework/containerd-shim-spin/main/deployments/workloads/workload.yaml
 echo "waiting 5 seconds for workload to be ready"
 sleep 5
-curl -v http://0.0.0.0:8081/spin/hello
+curl -v http://0.0.0.0:8081/hello
 ```
 
 Confirm you see a response from the sample application. For example:
 
 ```output
-$ curl -v http://0.0.0.0:8081/spin/hello
+$ curl -v http://0.0.0.0:8081/hello
 *   Trying 0.0.0.0:8081...
 * TCP_NODELAY set
 * Connected to 0.0.0.0 (127.0.0.1) port 8081 (#0)
