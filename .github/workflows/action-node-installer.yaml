@@ -42,7 +42,7 @@ jobs:
         uses: docker/setup-qemu-action@v3
 
       - name: Setup buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Extract musl artifacts into ./node-installer/.tmp/linux/(amd64|arm64) dir
         run: |
@@ -130,7 +130,7 @@ jobs:
         uses: docker/setup-qemu-action@v3
 
       - name: Setup buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Extract musl artifacts into ./node-installer/.tmp/linux/(amd64|arm64) dir
         run: |
