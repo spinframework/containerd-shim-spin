@@ -1,6 +1,11 @@
 ARG CROSS_BASE_IMAGE
 FROM $CROSS_BASE_IMAGE
 
+# Cross passes these when building from the official GHCR image; with other bases or BuildKit,
+# set them in Cross.toml under `dockerfile.build-args` (see repository Cross.toml).
+ARG CROSS_CMAKE_SYSTEM_PROCESSOR
+ARG CROSS_SYSROOT
+
 # Install Alpine's `apk` to be able to install musl packages
 COPY --from=jorgeprendes420/apk-anywhere / /
 ENV MARCH=${CROSS_CMAKE_SYSTEM_PROCESSOR}

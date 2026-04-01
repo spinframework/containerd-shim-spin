@@ -3,6 +3,7 @@ use std::{fs::File, io::Write, path::PathBuf};
 use anyhow::{Context, Result};
 use containerd_shim_wasm::sandbox::context::RuntimeContext;
 use log::info;
+use tracing::instrument;
 use oci_spec::image::MediaType;
 use spin_app::locked::LockedApp;
 use spin_loader::{cache::Cache, FilesMountStrategy};
@@ -27,6 +28,7 @@ impl std::fmt::Debug for Source {
 }
 
 impl Source {
+    #[instrument(skip(ctx, cache), err)]
     pub(crate) async fn from_ctx(ctx: &impl RuntimeContext, cache: &Cache) -> Result<Self> {
         match ctx.entrypoint().source {
             containerd_shim_wasm::sandbox::context::Source::File(_) => {
@@ -45,7 +47,12 @@ impl Source {
                             if name == spin_oci::client::SPIN_APPLICATION_MEDIA_TYPE =>
                         {
                             let path = PathBuf::from("/spin.json");
-                            log::info!("writing spin oci config to {path:?}");
+                            log::info!("writing spin oci config to {path:?} ({} bytes)", artifact.layer.len());
+                            // Log the raw spin.json content so we can confirm executor field presence
+                            match std::str::from_utf8(&artifact.layer) {
+                                Ok(s) => log::info!("spin.json content: {s}"),
+                                Err(_) => log::warn!("spin.json layer is not valid UTF-8"),
+                            }
                             File::create(&path)
                                 .context("failed to create spin.json")?
                                 .write_all(&artifact.layer)
@@ -111,6 +118,7 @@ impl Source {
         }
     }
 
+    #[instrument(skip(self, cache), err)]
     pub(crate) async fn to_locked_app(&self, cache: &Cache) -> Result<LockedApp> {
         let locked_app = match self {
             Source::File(source) => {
@@ -126,8 +134,22 @@ impl Source {
                 let locked_content = tokio::fs::read("/spin.json")
                     .await
                     .context("failed to read from \"/spin.json\"")?;
+                // Log what we actually read back from disk to catch any write/read mismatch
+                match std::str::from_utf8(&locked_content) {
+                    Ok(s) => log::info!("spin.json read back from disk: {s}"),
+                    Err(_) => log::warn!("spin.json read back is not valid UTF-8"),
+                }
                 let mut locked_app = LockedApp::from_json(&locked_content)
                     .context("failed to decode locked app from \"/spin.json\"")?;
+                // Log the parsed trigger configs to confirm executor survives deserialization
+                for trigger in &locked_app.triggers {
+                    log::info!(
+                        "parsed trigger id={:?} type={:?} config={}",
+                        trigger.id,
+                        trigger.trigger_type,
+                        trigger.trigger_config,
+                    );
+                }
                 for component in &mut locked_app.components {
                     loader
                         .resolve_component_content_refs(component, cache)
