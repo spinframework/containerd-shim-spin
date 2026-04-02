@@ -1730,6 +1730,7 @@ dependencies = [
  "serde_json",
  "spin-app",
  "spin-componentize",
+ "spin-core",
  "spin-factor-outbound-networking",
  "spin-loader",
  "spin-oci",
