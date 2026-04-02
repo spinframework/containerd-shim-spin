@@ -28,6 +28,7 @@ spin-loader = { git = "https://github.com/spinframework/spin", tag = "v3.6.2" }
 spin-oci = { git = "https://github.com/spinframework/spin", tag = "v3.6.2" }
 spin-telemetry = { git = "https://github.com/spinframework/spin", tag = "v3.6.2" }
 spin-runtime-factors = { git = "https://github.com/spinframework/spin", tag = "v3.6.2" }
+spin-core = { git = "https://github.com/spinframework/spin", tag = "v3.6.2" }
 spin-factor-outbound-networking = { git = "https://github.com/spinframework/spin", tag = "v3.6.2" }
 wasmtime = "41.0.4"
 openssl = { version = "*", features = ["vendored"] }
