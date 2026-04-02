@@ -23,3 +23,13 @@ pub(crate) const SPIN_TRIGGER_WORKING_DIR: &str = "/";
 /// Defines the subset of application components that should be executable by the shim
 /// If empty or DNE, all components will be supported
 pub(crate) const SPIN_COMPONENTS_TO_RETAIN_ENV: &str = "SPIN_COMPONENTS_TO_RETAIN";
+/// Environment variable to set the idle instance timeout for the HTTP trigger
+pub(crate) const SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_ENV: &str = "SPIN_HTTP_IDLE_INSTANCE_TIMEOUT";
+/// Environment variable to set the max instance reuse count for the HTTP trigger
+pub(crate) const SPIN_HTTP_MAX_INSTANCE_REUSE_COUNT_ENV: &str =
+    "SPIN_HTTP_MAX_INSTANCE_REUSE_COUNT";
+/// Environment variable to set the max concurrent instance reuse count for the HTTP trigger
+pub(crate) const SPIN_HTTP_MAX_INSTANCE_CONCURRENT_REUSE_COUNT_ENV: &str =
+    "SPIN_HTTP_MAX_INSTANCE_CONCURRENT_REUSE_COUNT";
+/// Environment variable to set the request timeout for the HTTP trigger
+pub(crate) const SPIN_HTTP_REQUEST_TIMEOUT_ENV: &str = "SPIN_HTTP_REQUEST_TIMEOUT";
