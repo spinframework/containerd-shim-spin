@@ -9,8 +9,9 @@ use containerd_shim_wasm::{
     shim::{version, Compiler, Shim, Version},
 };
 use futures::future;
-use log::info;
+use log::{error, info};
 use spin_app::locked::LockedApp;
+use tracing::{debug, instrument};
 use spin_factor_outbound_networking::validate_service_chaining_for_components;
 use spin_trigger::cli::NoCliArgs;
 use spin_trigger_http::HttpTrigger;
@@ -74,6 +75,7 @@ impl Shim for SpinShim {
 }
 
 impl Sandbox for SpinSandbox {
+    #[instrument(skip(self, ctx), err)]
     async fn run_wasi(&self, ctx: &impl RuntimeContext) -> Result<i32> {
         // Set the container environment variables which will be collected by Spin's
         // [environment variable provider]. We use these variables to configure both the Spin runtime
@@ -84,10 +86,12 @@ impl Sandbox for SpinSandbox {
         //
         // [SKIP 003]: https://github.com/spinkube/skips/tree/main/proposals/003-shim-runtime-options
         // [environment variable provider]: https://github.com/fermyon/spin/blob/v3.0.0/crates/variables/src/env.rs
+        let env_count = ctx.envs().len();
         ctx.envs().iter().for_each(|v| {
             let (key, value) = v.split_once('=').unwrap_or((v.as_str(), ""));
             env::set_var(key, value);
         });
+        debug!(env_count, "injected container env vars");
 
         info!("setting up wasi");
 
@@ -100,7 +104,7 @@ impl Sandbox for SpinSandbox {
                 Ok(0)
             }
             Ok(Err(err)) => {
-                log::error!("run_wasi ERROR >>>  failed: {err:?}");
+                error!("run_wasi ERROR >>>  failed: {err:?}");
                 Err(err)
             }
             Err(aborted) => {
@@ -116,6 +120,7 @@ impl Sandbox for SpinSandbox {
 }
 
 impl SpinSandbox {
+    #[instrument(skip(self, ctx), err)]
     async fn wasm_exec_async(&self, ctx: &impl RuntimeContext) -> Result<()> {
         let cache = initialize_cache().await?;
         let app_source = Source::from_ctx(ctx, &cache).await?;
@@ -125,6 +130,7 @@ impl SpinSandbox {
                 .split(',')
                 .filter(|s| !s.is_empty())
                 .collect::<Vec<&str>>();
+            debug!("retaining {} component(s): {:?}", components.len(), components);
             locked_app = spin_app::retain_components(
                 locked_app,
                 &components,
@@ -139,12 +145,17 @@ impl SpinSandbox {
         configure_application_variables_from_environment_variables(&locked_app)?;
         let trigger_cmds = get_supported_triggers(&locked_app)
             .with_context(|| format!("Couldn't find trigger executor for {app_source:?}"))?;
-        spin_telemetry::init(version!().version.to_string())?;
-
+        debug!(
+            "app loaded from {:?} with {} trigger(s): {:?}",
+            app_source,
+            trigger_cmds.len(),
+            trigger_cmds
+        );
         self.run_trigger(ctx, &trigger_cmds, locked_app, app_source)
             .await
     }
 
+    #[instrument(skip(self, ctx, app, app_source), fields(trigger_count = trigger_types.len()), err)]
     async fn run_trigger(
         &self,
         ctx: &impl RuntimeContext,
@@ -153,17 +164,15 @@ impl SpinSandbox {
         app_source: Source,
     ) -> Result<()> {
         let mut loader = spin_trigger::loader::ComponentLoader::default();
-        match app_source {
-            Source::OciSpin | Source::OciWkg(_) => unsafe {
-                // Configure the loader to support loading AOT compiled components..
-                // Since all components were compiled by the shim (during `precompile`),
-                // this operation can be considered safe.
+        let aot_enabled = matches!(app_source, Source::OciSpin | Source::OciWkg(_));
+        if aot_enabled {
+            unsafe {
+                // Components were precompiled by the shim during `compile`, so loading
+                // AOT-compiled components is safe here.
                 loader.enable_loading_aot_compiled_components();
-            },
-            // Currently, it is only possible to precompile applications distributed using
-            // `spin registry push`
-            Source::File(_) => {}
-        };
+            }
+        }
+        debug!(aot_enabled, source = ?app_source, "component loader configured");
 
         let mut futures_list = Vec::new();
         let mut trigger_type_map = Vec::new();
@@ -178,6 +187,7 @@ impl SpinSandbox {
                     let address_str = env::var(constants::SPIN_HTTP_LISTEN_ADDR_ENV)
                         .unwrap_or_else(|_| constants::SPIN_ADDR_DEFAULT.to_string());
                     let address = parse_addr(&address_str)?;
+                    debug!("HTTP trigger listening on {}", address);
                     let cli_args = spin_trigger_http::CliArgs {
                         address,
                         tls_cert: None,
@@ -234,23 +244,24 @@ impl Compiler for SpinCompiler {
         self.0.precompile_compatibility_hash()
     }
 
+    #[instrument(skip(self, layers), fields(layer_count = layers.len()), err)]
     async fn compile(&self, layers: &[WasmLayer]) -> Result<Vec<Option<Vec<u8>>>> {
         // Runwasi expects layers to be returned in the same order, so wrap each layer in an option, setting non Wasm layers to None
         let precompiled_layers = layers
             .iter()
             .map(|layer| match is_wasm_content(layer) {
                 Some(wasm_layer) => {
-                    log::info!(
-                        "Precompile called for wasm layer {:?}",
-                        wasm_layer.config.digest()
-                    );
+                    let digest = wasm_layer.config.digest();
+                    let size = wasm_layer.layer.len();
+                    log::info!("Precompile called for wasm layer {digest:?} ({size} bytes)");
                     if wasmtime::Engine::detect_precompiled(&wasm_layer.layer).is_some() {
-                        log::info!("Layer already precompiled {:?}", wasm_layer.config.digest());
+                        log::info!("Layer already precompiled {digest:?}");
                         Ok(Some(wasm_layer.layer))
                     } else {
                         let component =
                             spin_componentize::componentize_if_necessary(&wasm_layer.layer)?;
                         let precompiled = self.0.precompile_component(&component)?;
+                        debug!(%digest, input_bytes = size, output_bytes = precompiled.len(), "layer precompiled");
                         Ok(Some(precompiled))
                     }
                 }

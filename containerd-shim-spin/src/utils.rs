@@ -9,6 +9,7 @@ use containerd_shim_wasm::sandbox::context::WasmLayer;
 use oci_spec::image::MediaType;
 use spin_app::locked::LockedApp;
 use spin_loader::cache::Cache;
+use tracing::instrument;
 
 use crate::constants;
 
@@ -16,15 +17,18 @@ use crate::constants;
 // this is needed for the spin LocalLoader to work
 // TODO: spin should provide a more flexible `loader::from_file` that
 // does not assume the existence of a cache directory
+#[instrument(err)]
 pub(crate) async fn initialize_cache() -> Result<Cache, anyhow::Error> {
     let cache_dir = PathBuf::from("/.cache");
     let cache = Cache::new(Some(cache_dir.clone()))
         .await
         .context("failed to create cache")?;
     env::set_var("XDG_CACHE_HOME", &cache_dir);
+    tracing::debug!(cache_dir = %cache_dir.display(), "cache initialized");
     Ok(cache)
 }
 
+#[instrument(skip(cache, bytes, digest), err)]
 pub(crate) async fn handle_archive_layer(
     cache: &Cache,
     bytes: impl AsRef<[u8]>,
