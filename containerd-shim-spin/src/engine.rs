@@ -178,6 +178,10 @@ impl SpinSandbox {
                     let address_str = env::var(constants::SPIN_HTTP_LISTEN_ADDR_ENV)
                         .unwrap_or_else(|_| constants::SPIN_ADDR_DEFAULT.to_string());
                     let address = parse_addr(&address_str)?;
+                    let idle_secs = env::var(constants::SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_SECS_ENV)
+                        .ok()
+                        .and_then(|v| v.parse::<u64>().ok())
+                        .unwrap_or(1);
                     let cli_args = spin_trigger_http::CliArgs {
                         address,
                         tls_cert: None,
@@ -188,7 +192,7 @@ impl SpinSandbox {
                         max_instance_concurrent_reuse_count: None,
                         request_timeout: None,
                         idle_instance_timeout: spin_trigger_http::Range::Value(
-                            std::time::Duration::from_secs(1),
+                            std::time::Duration::from_secs(idle_secs),
                         ),
                     };
                     trigger::run::<HttpTrigger>(cli_args, app, &loader).await?
