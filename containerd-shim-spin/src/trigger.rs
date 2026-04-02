@@ -3,6 +3,7 @@ use std::{collections::HashSet, path::Path};
 use anyhow::Result;
 use futures::{future::BoxFuture, FutureExt};
 use log::{debug, info};
+use tracing::instrument;
 use spin_app::{locked::LockedApp, App};
 use spin_runtime_factors::{FactorsBuilder, TriggerAppArgs, TriggerFactors};
 use spin_trigger::{
@@ -25,6 +26,7 @@ pub(crate) const MQTT_TRIGGER_TYPE: &str = <MqttTrigger as Trigger<TriggerFactor
 pub(crate) const COMMAND_TRIGGER_TYPE: &str = <CommandTrigger as Trigger<TriggerFactors>>::TYPE;
 
 /// Run the trigger with the given CLI args, [`App`] and [`ComponentLoader`].
+#[instrument(skip(cli_args, app, loader), fields(trigger_type = T::TYPE), err)]
 pub(crate) async fn run<T>(
     cli_args: T::CliArgs,
     app: App,
