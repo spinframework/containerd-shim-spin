@@ -47,10 +47,11 @@ test: unit-tests integration-tests
 
 # Shim unit tests: `containerd-shim-wasm` pulls `libcontainer`/`procfs` under `cfg(unix)`, so
 # native `cargo test` only works on Linux. On macOS/Windows use cross (same target as release).
-unit-tests: install-cross
 ifeq ($(UNAME_S),Linux)
+unit-tests:
 	cargo test $(RELEASE_FLAG) -p containerd-shim-spin-v2 $(VERBOSE_FLAG)
 else
+unit-tests: install-cross
 	cross test $(RELEASE_FLAG) --target $(TARGET) -p containerd-shim-spin-v2 $(VERBOSE_FLAG)
 endif
 

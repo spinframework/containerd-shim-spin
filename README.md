@@ -44,6 +44,17 @@ You may open another terminal and run the following command to test the shim:
 curl 0.0.0.0:80/hello
 ```
 
+### Building
+
+```bash
+make build
+```
+
+> **Workaround:** `Cross.dev.toml` provides a fallback using third-party Docker Hub mirrors of the official cross-rs images. These are not org-controlled, use at your own risk:
+> ```bash
+> CROSS_CONFIG=Cross.dev.toml make build
+> ```
+
 ## Installing the `containerd-shim-spin` on Kubernetes Nodes
 
 In order to run Spin applications on your cluster, you must complete the following three steps:
