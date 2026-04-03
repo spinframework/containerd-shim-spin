@@ -23,3 +23,9 @@ pub(crate) const SPIN_TRIGGER_WORKING_DIR: &str = "/";
 /// Defines the subset of application components that should be executable by the shim
 /// If empty or DNE, all components will be supported
 pub(crate) const SPIN_COMPONENTS_TO_RETAIN_ENV: &str = "SPIN_COMPONENTS_TO_RETAIN";
+/// Override the number of seconds a component instance is kept alive after
+/// handling a request before it is discarded. Defaults to 1 second.
+/// Increase this on pods with bursty or low-frequency traffic to avoid
+/// repeated cold starts between requests.
+pub(crate) const SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_SECS_ENV: &str =
+    "SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_SECS";
