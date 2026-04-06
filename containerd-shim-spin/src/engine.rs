@@ -61,15 +61,10 @@ impl Shim for SpinShim {
 
     #[allow(refining_impl_trait)]
     async fn compiler() -> Option<SpinCompiler> {
-        // the host expects epoch interruption to be enabled, so this has to be
-        // turned on for the components we compile.
-        let mut config = wasmtime::Config::default();
-        config.epoch_interruption(true);
-        // Turn off native unwinding to avoid faulty libunwind detection error
-        // TODO: This can be removed once the Wasmtime fix is brought into Spin
-        // Issue to track: https://github.com/fermyon/spin/issues/2889
-        config.native_unwind_info(false);
-        Some(SpinCompiler(wasmtime::Engine::new(&config).unwrap()))
+        let mut config = spin_core::Config::default();
+        Some(SpinCompiler(
+            wasmtime::Engine::new(config.wasmtime_config()).unwrap(),
+        ))
     }
 }
 
