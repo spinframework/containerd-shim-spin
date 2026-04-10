@@ -7,6 +7,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 - 
 
+## [v0.24.0] - 2026-04-10
+
+### Changed
+- Advertise that node-installer is being deprecated in favor of runtime class manager ([#388](https://github.com/spinframework/containerd-shim-spin/pull/388))
+- Use Wasmtime configuration defaults from `spin_core` crate ([#423](https://github.com/spinframework/containerd-shim-spin/pull/423))
+- Dependencies updates ([#403](https://github.com/spinframework/containerd-shim-spin/pull/403), [#404](https://github.com/spinframework/containerd-shim-spin/pull/404), [#406](https://github.com/spinframework/containerd-shim-spin/pull/406), [#407](https://github.com/spinframework/containerd-shim-spin/pull/407))
+- Bump to Spin 3.6.3 release for Wasmtime security updates ([#427](https://github.com/spinframework/containerd-shim-spin/pull/427))
+
+### Fixed
+- Update traefik API group and remove strip-prefix middleware ([#417](https://github.com/spinframework/containerd-shim-spin/pull/417))
+- Update K3d k3s image to Kubernetes 1.35.2 ([#415](https://github.com/spinframework/containerd-shim-spin/pull/415))
+- Update Cross image to build libseccomp from source, drop jorgeprendes420 images ([#428](https://github.com/spinframework/containerd-shim-spin/pull/428))
+
 ## [v0.23.0] - 2026-02-25
 
 ### Added
