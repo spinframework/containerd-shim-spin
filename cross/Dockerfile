@@ -1,6 +1,9 @@
 ARG CROSS_BASE_IMAGE
 FROM $CROSS_BASE_IMAGE
 
+ARG SCCACHE_VERSION
+ARG SCCACHE_DIR
+
 # Build libseccomp from source against the musl sysroot.
 # libseccomp-rs requires a static musl-linked libseccomp; we compile it here
 # using the cross-rs musl toolchain so we don't depend on any third-party images.
@@ -27,3 +30,10 @@ ENV LIBSECCOMP_LIB_PATH="${CROSS_SYSROOT}/lib"
 ## as per analysis done in https://github.com/fermyon/spin/pull/2287#issuecomment-1970145410 we need
 ## to disable the cmake config in cross-rs. Setting CROSS_SYSROOT=/ seems to have done the trick
 ENV CROSS_SYSROOT=/
+
+# Install sccache for build caching inside the cross container.
+COPY cross/sccache.sh /
+RUN /sccache.sh "$(uname -m)-unknown-linux-musl"
+ENV RUSTC_WRAPPER="/usr/bin/sccache"
+ENV SCCACHE_DIR=${SCCACHE_DIR:-/tmp/sccache}
+RUN mkdir -p ${SCCACHE_DIR} "/.cache/sccache" && chmod 777 ${SCCACHE_DIR} "/.cache/sccache"

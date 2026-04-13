@@ -1,6 +1,12 @@
 [build]
 default-target = "x86_64-unknown-linux-musl"
 
+[build.env]
+passthrough = [
+    "SCCACHE_ERROR_LOG",
+    "SCCACHE_LOG",
+]
+
 [target.x86_64-unknown-linux-musl]
 dockerfile = "./cross/Dockerfile"
 

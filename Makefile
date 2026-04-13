@@ -17,6 +17,9 @@ BIN_DIR ?=
 
 UNAME_S := $(shell uname -s)
 
+SCCACHE_HOST_DIR ?= $(HOME)/.cache/sccache
+CROSS_CONTAINER_OPTS ?= -v $(SCCACHE_HOST_DIR):/tmp/sccache
+
 export
 
 
