@@ -1,6 +1,11 @@
 ARG CROSS_BASE_IMAGE
 FROM $CROSS_BASE_IMAGE
 
+ARG CROSS_CMAKE_SYSTEM_PROCESSOR
+ARG CROSS_SYSROOT
+
+ENV CROSS_TOOLCHAIN_PREFIX=${CROSS_CMAKE_SYSTEM_PROCESSOR}-linux-musl-
+
 # Build libseccomp from source against the musl sysroot.
 # libseccomp-rs requires a static musl-linked libseccomp; we compile it here
 # using the cross-rs musl toolchain so we don't depend on any third-party images.

@@ -3,6 +3,7 @@ PREFIX ?= /usr/local
 INSTALL ?= install
 ARCH ?= x86_64
 TARGET ?= $(ARCH)-unknown-linux-musl
+DOCKER_DEFAULT_PLATFORM ?= linux/amd64
 CONTAINERD_NAMESPACE ?= default
 TEST_IMG_NAME ?= wasmtest_spin:latest
 CTR_FLAGS ?=
