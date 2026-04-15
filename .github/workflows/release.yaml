@@ -83,7 +83,7 @@ jobs:
           for f in ./_artifacts/*/*-aarch64.tar.gz; do tar -xf $f --directory ./deployments/k3d/.tmp/linux/arm64; done
 
       - name: Build and push k3d shim image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           push: true
           tags: |
