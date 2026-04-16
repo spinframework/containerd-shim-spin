@@ -2,10 +2,10 @@ use std::{fs::File, io::Write, path::PathBuf};
 
 use anyhow::{Context, Result};
 use containerd_shim_wasm::sandbox::context::RuntimeContext;
-use log::info;
 use oci_spec::image::MediaType;
 use spin_app::locked::LockedApp;
 use spin_loader::{cache::Cache, FilesMountStrategy};
+use tracing::instrument;
 
 use crate::{constants, utils::handle_archive_layer};
 
@@ -27,13 +27,14 @@ impl std::fmt::Debug for Source {
 }
 
 impl Source {
+    #[instrument(name = "spin::serve::from_ctx", skip(ctx, cache), err)]
     pub(crate) async fn from_ctx(ctx: &impl RuntimeContext, cache: &Cache) -> Result<Self> {
         match ctx.entrypoint().source {
             containerd_shim_wasm::sandbox::context::Source::File(_) => {
                 Ok(Source::File(constants::SPIN_MANIFEST_FILE_PATH.into()))
             }
             containerd_shim_wasm::sandbox::context::Source::Oci(layers) => {
-                info!(" >>> configuring spin oci application {}", layers.len());
+                log::info!(" >>> configuring spin oci application {}", layers.len());
 
                 for layer in layers {
                     log::debug!("<<< layer config: {:?}", layer.config);
@@ -111,6 +112,7 @@ impl Source {
         }
     }
 
+    #[instrument(name = "spin::serve::to_locked_app", skip(self, cache), err)]
     pub(crate) async fn to_locked_app(&self, cache: &Cache) -> Result<LockedApp> {
         let locked_app = match self {
             Source::File(source) => {
@@ -128,6 +130,11 @@ impl Source {
                     .context("failed to read from \"/spin.json\"")?;
                 let mut locked_app = LockedApp::from_json(&locked_content)
                     .context("failed to decode locked app from \"/spin.json\"")?;
+                log::debug!(
+                    "loaded app with {} trigger(s) and {} component(s)",
+                    locked_app.triggers.len(),
+                    locked_app.components.len()
+                );
                 for component in &mut locked_app.components {
                     loader
                         .resolve_component_content_refs(component, cache)
