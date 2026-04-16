@@ -3,7 +3,6 @@ use std::{collections::HashSet, path::Path};
 use anyhow::Result;
 use futures::{future::BoxFuture, FutureExt};
 use log;
-use tracing::instrument;
 use spin_app::{locked::LockedApp, App};
 use spin_runtime_factors::{FactorsBuilder, TriggerAppArgs, TriggerFactors};
 use spin_trigger::{
@@ -13,6 +12,7 @@ use spin_trigger::{
 };
 use spin_trigger_http::HttpTrigger;
 use spin_trigger_redis::RedisTrigger;
+use tracing::instrument;
 use trigger_command::CommandTrigger;
 use trigger_mqtt::MqttTrigger;
 use trigger_sqs::SqsTrigger;

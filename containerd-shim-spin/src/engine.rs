@@ -11,11 +11,11 @@ use containerd_shim_wasm::{
 use futures::future;
 use log;
 use spin_app::locked::LockedApp;
-use tracing::{info_span, instrument, Instrument};
 use spin_factor_outbound_networking::validate_service_chaining_for_components;
 use spin_trigger::cli::NoCliArgs;
 use spin_trigger_http::HttpTrigger;
 use spin_trigger_redis::RedisTrigger;
+use tracing::{info_span, instrument, Instrument};
 use trigger_command::CommandTrigger;
 use trigger_mqtt::MqttTrigger;
 use trigger_sqs::SqsTrigger;
@@ -129,7 +129,11 @@ impl SpinSandbox {
                 .split(',')
                 .filter(|s| !s.is_empty())
                 .collect::<Vec<&str>>();
-            log::debug!("retaining {} component(s): {:?}", components.len(), components);
+            log::debug!(
+                "retaining {} component(s): {:?}",
+                components.len(),
+                components
+            );
             locked_app = spin_app::retain_components(
                 locked_app,
                 &components,
