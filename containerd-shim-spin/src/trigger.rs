@@ -2,7 +2,8 @@ use std::{collections::HashSet, path::Path};
 
 use anyhow::Result;
 use futures::{future::BoxFuture, FutureExt};
-use log::{debug, info};
+use log;
+use tracing::instrument;
 use spin_app::{locked::LockedApp, App};
 use spin_runtime_factors::{FactorsBuilder, TriggerAppArgs, TriggerFactors};
 use spin_trigger::{
@@ -25,6 +26,7 @@ pub(crate) const MQTT_TRIGGER_TYPE: &str = <MqttTrigger as Trigger<TriggerFactor
 pub(crate) const COMMAND_TRIGGER_TYPE: &str = <CommandTrigger as Trigger<TriggerFactors>>::TYPE;
 
 /// Run the trigger with the given CLI args, [`App`] and [`ComponentLoader`].
+#[instrument(name = "spin::serve::run", skip(cli_args, app, loader), fields(trigger_type = T::TYPE), err)]
 pub(crate) async fn run<T>(
     cli_args: T::CliArgs,
     app: App,
@@ -33,12 +35,12 @@ pub(crate) async fn run<T>(
 where
     T: Trigger<TriggerFactors> + 'static,
 {
-    info!(" >>> running {} trigger", T::TYPE);
+    log::info!(" >>> running {} trigger", T::TYPE);
     let trigger = T::new(cli_args, &app)?;
     let builder: TriggerAppBuilder<_, FactorsBuilder> = TriggerAppBuilder::new(trigger);
     let builder_args = match std::env::var("SPIN_MAX_INSTANCE_MEMORY") {
         Ok(limit) => {
-            debug!("Setting instance max memory to {limit} bytes");
+            log::debug!("Setting instance max memory to {limit} bytes");
             let mut args = TriggerAppArgs::default();
             args.max_instance_memory = limit.parse().ok();
             args

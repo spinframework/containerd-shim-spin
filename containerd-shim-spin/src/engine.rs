@@ -9,8 +9,9 @@ use containerd_shim_wasm::{
     shim::{version, Compiler, Shim, Version},
 };
 use futures::future;
-use log::info;
+use log;
 use spin_app::locked::LockedApp;
+use tracing::{info_span, instrument, Instrument};
 use spin_factor_outbound_networking::validate_service_chaining_for_components;
 use spin_trigger::cli::NoCliArgs;
 use spin_trigger_http::HttpTrigger;
@@ -84,14 +85,21 @@ impl Sandbox for SpinSandbox {
             env::set_var(key, value);
         });
 
-        info!("setting up wasi");
+        spin_telemetry::init(version!().version.to_string())?;
 
-        let (abortable, abort_handle) = futures::future::abortable(self.wasm_exec_async(ctx));
+        let container_id = env::var("HOSTNAME").unwrap_or_default();
+        log::info!("starting wasi runtime (container={container_id})");
+
+        // Create a root span that groups all startup work into a single trace.
+        let root_span = info_span!("spin::serve", "container.id" = %container_id);
+
+        let (abortable, abort_handle) =
+            futures::future::abortable(self.wasm_exec_async(ctx).instrument(root_span));
         ctrlc::set_handler(move || abort_handle.abort())?;
 
         match abortable.await {
             Ok(Ok(())) => {
-                info!("run_wasi shut down: exiting");
+                log::info!("run_wasi shut down: exiting");
                 Ok(0)
             }
             Ok(Err(err)) => {
@@ -99,7 +107,7 @@ impl Sandbox for SpinSandbox {
                 Err(err)
             }
             Err(aborted) => {
-                info!("Received signal to abort: {aborted:?}");
+                log::info!("Received signal to abort: {aborted:?}");
                 Ok(0)
             }
         }
@@ -111,6 +119,7 @@ impl Sandbox for SpinSandbox {
 }
 
 impl SpinSandbox {
+    #[instrument(name = "spin::serv::wasm_exec_async", skip(self, ctx), err)]
     async fn wasm_exec_async(&self, ctx: &impl RuntimeContext) -> Result<()> {
         let cache = initialize_cache().await?;
         let app_source = Source::from_ctx(ctx, &cache).await?;
@@ -120,6 +129,7 @@ impl SpinSandbox {
                 .split(',')
                 .filter(|s| !s.is_empty())
                 .collect::<Vec<&str>>();
+            log::debug!("retaining {} component(s): {:?}", components.len(), components);
             locked_app = spin_app::retain_components(
                 locked_app,
                 &components,
@@ -134,12 +144,16 @@ impl SpinSandbox {
         configure_application_variables_from_environment_variables(&locked_app)?;
         let trigger_cmds = get_supported_triggers(&locked_app)
             .with_context(|| format!("Couldn't find trigger executor for {app_source:?}"))?;
-        spin_telemetry::init(version!().version.to_string())?;
-
+        log::info!(
+            "application ready: {} component(s), {} trigger(s), source={app_source:?}",
+            locked_app.components.len(),
+            trigger_cmds.len(),
+        );
         self.run_trigger(ctx, &trigger_cmds, locked_app, app_source)
             .await
     }
 
+    #[instrument(name = "spin::serve::run_trigger", skip(self, ctx, app, app_source), fields(trigger_count = trigger_types.len(), source = ?app_source), err)]
     async fn run_trigger(
         &self,
         ctx: &impl RuntimeContext,
@@ -173,6 +187,7 @@ impl SpinSandbox {
                     let address_str = env::var(constants::SPIN_HTTP_LISTEN_ADDR_ENV)
                         .unwrap_or_else(|_| constants::SPIN_ADDR_DEFAULT.to_string());
                     let address = parse_addr(&address_str)?;
+                    log::debug!("HTTP trigger listening on {address}");
                     let cli_args = spin_trigger_http::CliArgs {
                         address,
                         tls_cert: None,
@@ -206,17 +221,15 @@ impl SpinSandbox {
                 }
             };
 
+            log::debug!("trigger initialized: {trigger_type}");
             trigger_type_map.push(trigger_type.clone());
             futures_list.push(f);
         }
 
-        info!(" >>> notifying main thread we are about to start");
+        log::debug!("all triggers ready, serving");
 
         // exit as soon as any of the trigger completes/exits
-        let (result, index, rest) = future::select_all(futures_list).await;
-        let trigger_type = &trigger_type_map[index];
-
-        info!(" >>> trigger type '{trigger_type}' exited");
+        let (result, _, rest) = future::select_all(futures_list).await;
 
         drop(rest);
 
@@ -229,18 +242,17 @@ impl Compiler for SpinCompiler {
         self.0.precompile_compatibility_hash()
     }
 
+    #[instrument(name = "spin::compile", skip(self, layers), fields(layer_count = layers.len()), err)]
     async fn compile(&self, layers: &[WasmLayer]) -> Result<Vec<Option<Vec<u8>>>> {
         // Runwasi expects layers to be returned in the same order, so wrap each layer in an option, setting non Wasm layers to None
         let precompiled_layers = layers
             .iter()
             .map(|layer| match is_wasm_content(layer) {
                 Some(wasm_layer) => {
-                    log::info!(
-                        "Precompile called for wasm layer {:?}",
-                        wasm_layer.config.digest()
-                    );
+                    let digest = wasm_layer.config.digest();
+                    log::info!("Precompile called for wasm layer {:?}", digest);
                     if wasmtime::Engine::detect_precompiled(&wasm_layer.layer).is_some() {
-                        log::info!("Layer already precompiled {:?}", wasm_layer.config.digest());
+                        log::info!("Layer already precompiled {:?}", digest);
                         Ok(Some(wasm_layer.layer))
                     } else {
                         let component =
