@@ -9,7 +9,6 @@ use containerd_shim_wasm::{
     shim::{version, Compiler, Shim, Version},
 };
 use futures::future;
-use log;
 use spin_app::locked::LockedApp;
 use spin_factor_outbound_networking::validate_service_chaining_for_components;
 use spin_trigger::cli::NoCliArgs;

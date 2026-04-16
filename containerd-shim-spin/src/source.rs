@@ -2,7 +2,6 @@ use std::{fs::File, io::Write, path::PathBuf};
 
 use anyhow::{Context, Result};
 use containerd_shim_wasm::sandbox::context::RuntimeContext;
-use log;
 use oci_spec::image::MediaType;
 use spin_app::locked::LockedApp;
 use spin_loader::{cache::Cache, FilesMountStrategy};

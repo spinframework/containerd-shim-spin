@@ -2,7 +2,6 @@ use std::{collections::HashSet, path::Path};
 
 use anyhow::Result;
 use futures::{future::BoxFuture, FutureExt};
-use log;
 use spin_app::{locked::LockedApp, App};
 use spin_runtime_factors::{FactorsBuilder, TriggerAppArgs, TriggerFactors};
 use spin_trigger::{
