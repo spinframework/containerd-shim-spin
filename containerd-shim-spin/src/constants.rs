@@ -25,6 +25,8 @@ pub(crate) const SPIN_TRIGGER_WORKING_DIR: &str = "/";
 pub(crate) const SPIN_COMPONENTS_TO_RETAIN_ENV: &str = "SPIN_COMPONENTS_TO_RETAIN";
 /// Environment variable to set the idle instance timeout for the HTTP trigger
 pub(crate) const SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_ENV: &str = "SPIN_HTTP_IDLE_INSTANCE_TIMEOUT";
+/// Default idle instance timeout, matching the spin-trigger-http default
+pub(crate) const SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_DEFAULT: &str = "1s";
 /// Environment variable to set the max instance reuse count for the HTTP trigger
 pub(crate) const SPIN_HTTP_MAX_INSTANCE_REUSE_COUNT_ENV: &str =
     "SPIN_HTTP_MAX_INSTANCE_REUSE_COUNT";

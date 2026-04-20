@@ -213,7 +213,7 @@ impl SpinSandbox {
 /// HTTP trigger configuration read from environment variables.
 struct HttpTriggerEnvConfig {
     listen: String,
-    idle_instance_timeout: Option<String>,
+    idle_instance_timeout: String,
     max_instance_reuse_count: Option<String>,
     max_instance_concurrent_reuse_count: Option<String>,
     request_timeout: Option<String>,
@@ -225,7 +225,8 @@ fn http_trigger_env_config() -> HttpTriggerEnvConfig {
     HttpTriggerEnvConfig {
         listen: env::var(constants::SPIN_HTTP_LISTEN_ADDR_ENV)
             .unwrap_or_else(|_| constants::SPIN_ADDR_DEFAULT.to_string()),
-        idle_instance_timeout: env::var(constants::SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_ENV).ok(),
+        idle_instance_timeout: env::var(constants::SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_ENV)
+            .unwrap_or_else(|_| constants::SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_DEFAULT.to_string()),
         max_instance_reuse_count: env::var(constants::SPIN_HTTP_MAX_INSTANCE_REUSE_COUNT_ENV).ok(),
         max_instance_concurrent_reuse_count: env::var(
             constants::SPIN_HTTP_MAX_INSTANCE_CONCURRENT_REUSE_COUNT_ENV,
@@ -247,15 +248,15 @@ fn build_http_cli_args() -> Result<spin_trigger_http::CliArgs> {
 
     let config = http_trigger_env_config();
 
-    // Pass --listen explicitly so the shim default (0.0.0.0:80) takes precedence
-    // over spin's default (127.0.0.1:3000).
+    // Pass --listen and --idle-instance-timeout explicitly so shim defaults take
+    // precedence over spin's defaults
     let mut argv = vec![
         "spin-http-trigger".to_string(),
         format!("--listen={}", config.listen),
+        format!("--idle-instance-timeout={}", config.idle_instance_timeout),
     ];
 
     for (val, flag) in [
-        (config.idle_instance_timeout, "--idle-instance-timeout"),
         (
             config.max_instance_reuse_count,
             "--max-instance-reuse-count",
