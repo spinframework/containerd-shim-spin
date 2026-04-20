@@ -237,7 +237,7 @@ fn http_trigger_env_config() -> HttpTriggerEnvConfig {
 
 /// Builds [`spin_trigger_http::CliArgs`] from the HTTP trigger environment configuration.
 ///
-/// Values support the same formats as the CLI flags, including range syntax and duration. 
+/// Values support the same formats as the CLI flags, including range syntax and duration.
 fn build_http_cli_args() -> Result<spin_trigger_http::CliArgs> {
     #[derive(Parser)]
     struct HttpArgsParser {
@@ -256,7 +256,10 @@ fn build_http_cli_args() -> Result<spin_trigger_http::CliArgs> {
 
     for (val, flag) in [
         (config.idle_instance_timeout, "--idle-instance-timeout"),
-        (config.max_instance_reuse_count, "--max-instance-reuse-count"),
+        (
+            config.max_instance_reuse_count,
+            "--max-instance-reuse-count",
+        ),
         (
             config.max_instance_concurrent_reuse_count,
             "--max-instance-concurrent-reuse-count",
