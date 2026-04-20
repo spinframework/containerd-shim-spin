@@ -1728,7 +1728,7 @@ dependencies = [
  "oci-spec",
  "openssl",
  "serde_json",
- "spin-app",
+ "spin-app 4.0.0",
  "spin-componentize",
  "spin-core",
  "spin-factor-outbound-networking",
@@ -4537,12 +4537,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e5ce46fe64a9d73be07dcbe690a38ce1b293be448fd8ce1e6c1b8062c9f72c6a"
 
 [[package]]
-name = "multimap"
-version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d87ecb2933e8aeadb3e3a02b828fed80a7528047e68b4f424523a0981a3a084"
-
-[[package]]
 name = "mysql_async"
 version = "0.35.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5911,7 +5905,7 @@ dependencies = [
  "heck 0.3.3",
  "itertools 0.10.5",
  "log",
- "multimap 0.8.3",
+ "multimap",
  "petgraph 0.5.1",
  "prost 0.8.0",
  "prost-types 0.8.0",
@@ -5927,9 +5921,9 @@ checksum = "22505a5c94da8e3b7c2996394d1c933236c4d743e81a410bcca4e6989fc066a4"
 dependencies = [
  "bytes",
  "heck 0.5.0",
- "itertools 0.12.1",
+ "itertools 0.10.5",
  "log",
- "multimap 0.10.1",
+ "multimap",
  "once_cell",
  "petgraph 0.6.5",
  "prettyplease",
@@ -5947,9 +5941,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be769465445e8c1474e9c5dac2018218498557af32d9ed057325ec9a41ae81bf"
 dependencies = [
  "heck 0.5.0",
- "itertools 0.14.0",
+ "itertools 0.10.5",
  "log",
- "multimap 0.10.1",
+ "multimap",
  "once_cell",
  "petgraph 0.7.1",
  "prettyplease",
@@ -5980,7 +5974,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81bddcdb20abf9501610992b6759a4c888aef7d1a7247ef75e2404275ac24af1"
 dependencies = [
  "anyhow",
- "itertools 0.12.1",
+ "itertools 0.10.5",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -5993,7 +5987,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8a56d757972c98b346a9b766e3f02746cde6dd1cd1d1d563472929fdd74bec4d"
 dependencies = [
  "anyhow",
- "itertools 0.14.0",
+ "itertools 0.10.5",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -7686,7 +7680,18 @@ dependencies = [
  "anyhow",
  "serde",
  "serde_json",
- "spin-locked-app",
+ "spin-locked-app 3.6.3",
+]
+
+[[package]]
+name = "spin-app"
+version = "4.0.0"
+source = "git+https://github.com/spinframework/spin?tag=v4.0.0#5f3aa19c50d1609592f7ea2f6362209a04da52ac"
+dependencies = [
+ "anyhow",
+ "serde",
+ "serde_json",
+ "spin-locked-app 4.0.0",
 ]
 
 [[package]]
@@ -7725,10 +7730,10 @@ dependencies = [
  "async-trait",
  "indexmap 2.13.0",
  "semver",
- "spin-app",
+ "spin-app 3.6.3",
  "spin-common",
  "spin-componentize",
- "spin-serde",
+ "spin-serde 3.6.3",
  "thiserror 2.0.18",
  "tokio",
  "wac-graph",
@@ -7753,7 +7758,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "futures",
- "spin-locked-app",
+ "spin-locked-app 3.6.3",
  "thiserror 2.0.18",
 ]
 
@@ -7767,7 +7772,7 @@ dependencies = [
  "spin-core",
  "spin-factor-otel",
  "spin-factors",
- "spin-locked-app",
+ "spin-locked-app 3.6.3",
  "spin-resource-table",
  "spin-telemetry",
  "spin-world",
@@ -7789,7 +7794,7 @@ dependencies = [
  "spin-factor-otel",
  "spin-factors",
  "spin-llm-remote-http",
- "spin-locked-app",
+ "spin-locked-app 3.6.3",
  "spin-telemetry",
  "spin-world",
  "tokio",
@@ -7903,10 +7908,10 @@ dependencies = [
  "spin-factor-variables",
  "spin-factor-wasi",
  "spin-factors",
- "spin-locked-app",
+ "spin-locked-app 3.6.3",
  "spin-manifest",
  "spin-outbound-networking-config",
- "spin-serde",
+ "spin-serde 3.6.3",
  "tracing",
  "url",
  "webpki-roots 0.26.11",
@@ -7967,7 +7972,7 @@ dependencies = [
  "async-trait",
  "spin-factor-otel",
  "spin-factors",
- "spin-locked-app",
+ "spin-locked-app 3.6.3",
  "spin-resource-table",
  "spin-world",
  "tokio",
@@ -8010,7 +8015,7 @@ source = "git+https://github.com/spinframework/spin?tag=v3.6.3#88d51cf1dafa23c41
 dependencies = [
  "anyhow",
  "serde",
- "spin-app",
+ "spin-app 3.6.3",
  "spin-factors-derive",
  "thiserror 2.0.18",
  "toml 0.8.23",
@@ -8033,7 +8038,7 @@ version = "3.6.3"
 source = "git+https://github.com/spinframework/spin?tag=v3.6.3#88d51cf1dafa23c4177f5fbf122b3beca46d1941"
 dependencies = [
  "anyhow",
- "spin-app",
+ "spin-app 3.6.3",
  "spin-core",
  "spin-factors",
  "spin-telemetry",
@@ -8054,7 +8059,7 @@ dependencies = [
  "percent-encoding",
  "routefinder",
  "serde",
- "spin-app",
+ "spin-app 3.6.3",
  "spin-factor-outbound-http",
  "spin-http-routes",
  "terminal",
@@ -8168,10 +8173,10 @@ dependencies = [
  "sha2",
  "spin-common",
  "spin-expressions",
- "spin-locked-app",
+ "spin-locked-app 3.6.3",
  "spin-manifest",
  "spin-outbound-networking-config",
- "spin-serde",
+ "spin-serde 3.6.3",
  "tempfile",
  "terminal",
  "tokio",
@@ -8190,7 +8195,21 @@ dependencies = [
  "itertools 0.14.0",
  "serde",
  "serde_json",
- "spin-serde",
+ "spin-serde 3.6.3",
+ "thiserror 2.0.18",
+]
+
+[[package]]
+name = "spin-locked-app"
+version = "4.0.0"
+source = "git+https://github.com/spinframework/spin?tag=v4.0.0#5f3aa19c50d1609592f7ea2f6362209a04da52ac"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "itertools 0.14.0",
+ "serde",
+ "serde_json",
+ "spin-serde 4.0.0",
  "thiserror 2.0.18",
 ]
 
@@ -8204,7 +8223,7 @@ dependencies = [
  "schemars 0.8.22",
  "semver",
  "serde",
- "spin-serde",
+ "spin-serde 3.6.3",
  "terminal",
  "thiserror 2.0.18",
  "toml 0.8.23",
@@ -8234,7 +8253,7 @@ dependencies = [
  "spin-common",
  "spin-compose",
  "spin-loader",
- "spin-locked-app",
+ "spin-locked-app 3.6.3",
  "tar",
  "tempfile",
  "tokio",
@@ -8344,6 +8363,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "spin-serde"
+version = "4.0.0"
+source = "git+https://github.com/spinframework/spin?tag=v4.0.0#5f3aa19c50d1609592f7ea2f6362209a04da52ac"
+dependencies = [
+ "anyhow",
+ "base64 0.22.1",
+ "schemars 0.8.22",
+ "semver",
+ "serde",
+ "wasm-pkg-common",
+]
+
+[[package]]
 name = "spin-sqlite"
 version = "3.6.3"
 source = "git+https://github.com/spinframework/spin?tag=v3.6.3#88d51cf1dafa23c4177f5fbf122b3beca46d1941"
@@ -8412,7 +8444,7 @@ dependencies = [
  "sanitize-filename",
  "serde",
  "serde_json",
- "spin-app",
+ "spin-app 3.6.3",
  "spin-common",
  "spin-compose",
  "spin-core",
@@ -8447,7 +8479,7 @@ dependencies = [
  "rustls-pki-types",
  "serde",
  "serde_json",
- "spin-app",
+ "spin-app 3.6.3",
  "spin-core",
  "spin-factor-otel",
  "spin-factor-outbound-http",
@@ -9560,7 +9592,7 @@ dependencies = [
  "futures",
  "paho-mqtt",
  "serde",
- "spin-app",
+ "spin-app 3.6.3",
  "spin-core",
  "spin-expressions",
  "spin-factor-variables",
