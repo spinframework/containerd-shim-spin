@@ -13,7 +13,7 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           pattern: "!*.dockerbuild"
-      - uses: azure/setup-kubectl@v4
+      - uses: azure/setup-kubectl@v5
       - uses: fermyon/actions/spin/setup@v1
         with:
           version: "v2.7.0"
