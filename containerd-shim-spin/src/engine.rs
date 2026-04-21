@@ -185,6 +185,7 @@ impl SpinSandbox {
                         idle_instance_timeout: spin_trigger_http::Range::Value(
                             std::time::Duration::from_secs(1),
                         ),
+                        format: spin_trigger_http::OutputFormat::default(),
                     };
                     trigger::run::<HttpTrigger>(cli_args, app, &loader).await?
                 }

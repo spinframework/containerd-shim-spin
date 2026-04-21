@@ -117,7 +117,7 @@ impl Source {
                 // TODO: This should be configurable, see https://github.com/deislabs/containerd-wasm-shims/issues/166
                 // TODO: ^^ Move aforementioned issue to this repo
                 let files_mount_strategy = FilesMountStrategy::Direct;
-                spin_loader::from_file(&source, files_mount_strategy, None).await
+                spin_loader::from_file(&source, files_mount_strategy, None, None).await
             }
             Source::OciSpin => {
                 let working_dir = PathBuf::from("/");
