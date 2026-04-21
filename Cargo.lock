@@ -1721,6 +1721,7 @@ name = "containerd-shim-spin-v2"
 version = "0.24.0"
 dependencies = [
  "anyhow",
+ "clap 3.2.25",
  "containerd-shim-wasm",
  "ctrlc",
  "futures",

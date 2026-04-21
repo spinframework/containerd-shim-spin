@@ -1,6 +1,7 @@
 use std::{collections::HashSet, env, hash::Hash};
 
 use anyhow::{Context, Result};
+use clap::Parser;
 use containerd_shim_wasm::{
     sandbox::{
         context::{RuntimeContext, WasmLayer},
@@ -28,7 +29,7 @@ use crate::{
     },
     utils::{
         configure_application_variables_from_environment_variables, initialize_cache,
-        is_wasm_content, parse_addr,
+        is_wasm_content,
     },
 };
 
@@ -170,22 +171,7 @@ impl SpinSandbox {
             let app = spin_app::App::new(app_id.clone(), app.clone());
             let f = match trigger_type.as_str() {
                 HTTP_TRIGGER_TYPE => {
-                    let address_str = env::var(constants::SPIN_HTTP_LISTEN_ADDR_ENV)
-                        .unwrap_or_else(|_| constants::SPIN_ADDR_DEFAULT.to_string());
-                    let address = parse_addr(&address_str)?;
-                    let cli_args = spin_trigger_http::CliArgs {
-                        address,
-                        tls_cert: None,
-                        tls_key: None,
-                        find_free_port: false,
-                        http1_max_buf_size: None,
-                        max_instance_reuse_count: None,
-                        max_instance_concurrent_reuse_count: None,
-                        request_timeout: None,
-                        idle_instance_timeout: spin_trigger_http::Range::Value(
-                            std::time::Duration::from_secs(1),
-                        ),
-                    };
+                    let cli_args = build_http_cli_args()?;
                     trigger::run::<HttpTrigger>(cli_args, app, &loader).await?
                 }
                 REDIS_TRIGGER_TYPE => trigger::run::<RedisTrigger>(NoCliArgs, app, &loader).await?,
@@ -222,6 +208,73 @@ impl SpinSandbox {
 
         result
     }
+}
+
+/// HTTP trigger configuration read from environment variables.
+struct HttpTriggerEnvConfig {
+    listen: String,
+    idle_instance_timeout: String,
+    max_instance_reuse_count: Option<String>,
+    max_instance_concurrent_reuse_count: Option<String>,
+    request_timeout: Option<String>,
+}
+
+/// Reads all HTTP trigger configuration from environment variables, falling back to
+/// shim defaults where applicable.
+fn http_trigger_env_config() -> HttpTriggerEnvConfig {
+    HttpTriggerEnvConfig {
+        listen: env::var(constants::SPIN_HTTP_LISTEN_ADDR_ENV)
+            .unwrap_or_else(|_| constants::SPIN_ADDR_DEFAULT.to_string()),
+        idle_instance_timeout: env::var(constants::SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_ENV)
+            .unwrap_or_else(|_| constants::SPIN_HTTP_IDLE_INSTANCE_TIMEOUT_DEFAULT.to_string()),
+        max_instance_reuse_count: env::var(constants::SPIN_HTTP_MAX_INSTANCE_REUSE_COUNT_ENV).ok(),
+        max_instance_concurrent_reuse_count: env::var(
+            constants::SPIN_HTTP_MAX_INSTANCE_CONCURRENT_REUSE_COUNT_ENV,
+        )
+        .ok(),
+        request_timeout: env::var(constants::SPIN_HTTP_REQUEST_TIMEOUT_ENV).ok(),
+    }
+}
+
+/// Builds [`spin_trigger_http::CliArgs`] from the HTTP trigger environment configuration.
+///
+/// Values support the same formats as the CLI flags, including range syntax and duration.
+fn build_http_cli_args() -> Result<spin_trigger_http::CliArgs> {
+    #[derive(Parser)]
+    struct HttpArgsParser {
+        #[clap(flatten)]
+        inner: spin_trigger_http::CliArgs,
+    }
+
+    let config = http_trigger_env_config();
+
+    // Pass --listen and --idle-instance-timeout explicitly so shim defaults take
+    // precedence over spin's defaults
+    let mut argv = vec![
+        "spin-http-trigger".to_string(),
+        format!("--listen={}", config.listen),
+        format!("--idle-instance-timeout={}", config.idle_instance_timeout),
+    ];
+
+    for (val, flag) in [
+        (
+            config.max_instance_reuse_count,
+            "--max-instance-reuse-count",
+        ),
+        (
+            config.max_instance_concurrent_reuse_count,
+            "--max-instance-concurrent-reuse-count",
+        ),
+        (config.request_timeout, "--request-timeout"),
+    ] {
+        if let Some(v) = val {
+            argv.push(format!("{flag}={v}"));
+        }
+    }
+
+    HttpArgsParser::try_parse_from(argv)
+        .map(|a| a.inner)
+        .map_err(|e| anyhow::anyhow!("invalid HTTP trigger configuration: {e}"))
 }
 
 impl Compiler for SpinCompiler {

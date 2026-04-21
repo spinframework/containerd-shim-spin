@@ -1,10 +1,9 @@
 use std::{
     env,
-    net::{SocketAddr, ToSocketAddrs},
     path::PathBuf,
 };
 
-use anyhow::{anyhow, Context, Result};
+use anyhow::{Context, Result};
 use containerd_shim_wasm::sandbox::context::WasmLayer;
 use oci_spec::image::MediaType;
 use spin_app::locked::LockedApp;
@@ -53,14 +52,6 @@ pub(crate) fn is_wasm_content(layer: &WasmLayer) -> Option<WasmLayer> {
         }
     }
     None
-}
-
-pub(crate) fn parse_addr(addr: &str) -> Result<SocketAddr> {
-    let addrs: SocketAddr = addr
-        .to_socket_addrs()?
-        .next()
-        .ok_or_else(|| anyhow!("could not parse address: {addr}"))?;
-    Ok(addrs)
 }
 
 // For each Spin app variable, checks if a container environment variable with
@@ -128,13 +119,6 @@ mod tests {
                 assert!(env::var("SHOULD_BE_PREFIXED").is_ok());
             },
         );
-    }
-
-    #[test]
-    fn can_parse_spin_address() {
-        let parsed = parse_addr(constants::SPIN_ADDR_DEFAULT).unwrap();
-        assert_eq!(parsed.clone().port(), 80);
-        assert_eq!(parsed.ip().to_string(), "0.0.0.0");
     }
 
     #[test]
