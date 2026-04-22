@@ -38,6 +38,15 @@ jobs:
       - name: Run integration tests
         run: BIN_DIR="./bin" IS_CI=true make integration-tests
 
+      - name: Output cluster info on failure
+        if: failure()
+        run: |
+          kubectl get pods
+          kubectl get pods --no-headers | awk '$3 != "Running" && $3 != "Completed" {print $1}' | while read pod; do
+            echo "=== Describing pod $pod ==="
+            kubectl describe pod "$pod"
+          done
+
       - name: Collect debug logs
         if: failure()
         run: make tests/collect-debug-logs
