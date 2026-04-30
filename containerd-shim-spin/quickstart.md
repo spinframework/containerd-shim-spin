@@ -4,17 +4,17 @@
 Before you begin, you need to have the following installed:
 
 - [Docker](https://docs.docker.com/install/) version 4.13.1 (90346) or later with [containerd enabled](https://docs.docker.com/desktop/containerd/)
-- [k3d](https://k3d.io/v5.4.6/#installation)
+- [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [Spin v2.0+ and templates](https://developer.fermyon.com/spin/quickstart/)
 - [Rust 1.71+](https://www.rust-lang.org/tools/install)
 
-## Start and configure a k3d cluster
+## Start and configure a Kind cluster
 
-Start a k3d cluster with the wasm shims already installed:
+Start a Kind cluster with the wasm shims already installed:
 
 ```bash
-k3d cluster create wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/k3d:v0.24.0 -p "8081:80@loadbalancer" --agents 2 --registry-create mycluster-registry:12345
+kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.24.0
 ```
 
 Apply RuntimeClass for spin applications to use the spin wasm shim:
@@ -150,11 +150,11 @@ source = "qs_wasm_spin.wasm"
 ...
 ```
 
-Use `docker` to build the container image and push it to the k3d registry:
+Use `docker` to build the container image and push it to a local registry:
 
 ```bash
-docker buildx build --platform=wasip1/wasm -t localhost:12345/qs-wasm-spin .
-docker push localhost:12345/qs-wasm-spin:latest
+docker buildx build --platform=wasip1/wasm -t localhost:5000/qs-wasm-spin .
+docker push localhost:5000/qs-wasm-spin:latest
 ```
 
 ### Creating a OCI WASM Image
@@ -163,7 +163,7 @@ It is possible to publish spin applications to [OCI registries](https://develope
 
 ```
 # must be spin 2.0
-spin registry push localhost:12345/spin-wasm-shim:latest-2.0
+spin registry push localhost:5000/spin-wasm-shim:latest-2.0
 ```
 
 ## Deploy the application
@@ -188,7 +188,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: testwasm
-          image: mycluster-registry:12345/qs-wasm-spin:latest
+          image: localhost:5000/qs-wasm-spin:latest
           command: ["/"]
 ---
 apiVersion: v1
@@ -266,7 +266,7 @@ kubectl delete -f qs.yaml
 Delete the cluster:
 
 ```bash
-k3d cluster delete wasm-cluster
+kind delete cluster --name wasm-cluster
 ```
 
 ## Next steps

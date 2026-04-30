@@ -15,10 +15,10 @@ curl -fsSL https://developer.fermyon.com/downloads/install.sh | bash
 sudo mv ./spin /usr/local/bin/
 ```
 
-### Run example with K3d:
+### Run example with Kind:
 ```sh
-# start the K3d cluster
-k3d cluster create wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/k3d:v0.24.0 -p "8081:80@loadbalancer"
+# start the Kind cluster
+kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.24.0
 # Install Dapr
 dapr init -k --wait
 # or via helm
@@ -30,11 +30,9 @@ dapr init -k --wait
 cd images/spin-dapr
 spin build
 cd -
-# create an image and load it into K3d
+# create an image and load it into Kind
 docker build images/spin-dapr -t spin-dapr:latest --load
-mkdir -p test/out_spin-dapr/
-docker save spin-dapr:latest -o test/out_spin-dapr/img.tar
-k3d image load -c wasm-cluster spin-dapr:latest test/out_spin-dapr/img.tar 
+kind load docker-image spin-dapr:latest --name wasm-cluster
 # Apply the manifest
 kubectl apply -f https://github.com/spinframework/containerd-shim-spin/raw/main/deployments/workloads/runtime.yaml
 kubectl apply -f images/spin-dapr/deploy.yaml

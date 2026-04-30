@@ -61,12 +61,12 @@ The `--load` flag tells Docker to load the image into the local Docker daemon. A
 docker save wasmtest_spin:latest -o wasmtest_spin.tar
 ```
 
-### Load the image to k3d
+### Load the image to Kind
 
-Refer to this [document](https://github.com/spinkube/containerd-shim-spin/tree/main/deployments/k3d#how-build-get-started-from-source) to create a k3d cluster.
+Refer to this [document](https://github.com/spinframework/containerd-shim-spin/tree/main/deployments/kind#how-build-get-started-from-source) to create a Kind cluster.
 
-Assume you have a k3d cluster named `k3d-default`, you can load the image to the cluster using the following command.
+Assume you have a Kind cluster named `wasm-cluster`, you can load the image to the cluster using the following command.
 
 ```shell
-k3d image load wasmtest_spin.tar
+kind load docker-image wasmtest_spin:latest --name wasm-cluster
 ```

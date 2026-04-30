@@ -29,8 +29,8 @@ jobs:
             do tar -xzf "$f" -C ./bin
           done
 
-      - name: Install k3d
-        run: make install-k3d
+      - name: Install kind
+        run: make install-kind
       
       - name: Install wkg
         run: make install-wkg
@@ -54,6 +54,6 @@ jobs:
         if: failure()
         run: df -h
 
-      - name: Clean up k3d
+      - name: Clean up kind
         if: always()
         run: make tests/clean

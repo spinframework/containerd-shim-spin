@@ -74,21 +74,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build and push k3d shim image
-      - name: Extract musl artifacts into ./deployments/k3d/.tmp/linux/(amd64|arm64) dir
+      # Build and push kind shim image
+      - name: Extract musl artifacts into ./deployments/kind/.tmp/linux/(amd64|arm64) dir
         run: |
-          mkdir -p ./deployments/k3d/.tmp/linux/amd64
-          mkdir -p ./deployments/k3d/.tmp/linux/arm64
-          for f in ./_artifacts/*/*-x86_64.tar.gz; do tar -xf $f --directory ./deployments/k3d/.tmp/linux/amd64; done
-          for f in ./_artifacts/*/*-aarch64.tar.gz; do tar -xf $f --directory ./deployments/k3d/.tmp/linux/arm64; done
+          mkdir -p ./deployments/kind/.tmp/linux/amd64
+          mkdir -p ./deployments/kind/.tmp/linux/arm64
+          for f in ./_artifacts/*/*-x86_64.tar.gz; do tar -xf $f --directory ./deployments/kind/.tmp/linux/amd64; done
+          for f in ./_artifacts/*/*-aarch64.tar.gz; do tar -xf $f --directory ./deployments/kind/.tmp/linux/arm64; done
 
-      - name: Build and push k3d shim image
+      - name: Build and push kind shim image
         uses: docker/build-push-action@v7
         with:
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/k3d:${{ env.RELEASE_VERSION }}
-          context: deployments/k3d
+            ghcr.io/${{ github.repository }}/kind:${{ env.RELEASE_VERSION }}
+          context: deployments/kind
           platforms: linux/amd64,linux/arm64
           build-args: |
             STAGE=release

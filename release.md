@@ -44,22 +44,20 @@ following:
       assets to a new GitHub release for the pushed tag. Release notes are
       auto-generated but edit as needed especially around breaking changes or
       other notable items.
-    - The release action also creates test applications, a k3d node image with
+    - The release action also creates test applications, a Kind node image with
       the `containerd-shim-spin`, and a new node installer image to be used by
       the runtime class manager.
 
 1. [Optional] Smoke test the release by running the following commands, replacing the version number with the new release:
 
     ```console
-    k3d cluster create wasm-cluster \
-      --image ghcr.io/spinframework/containerd-shim-spin/k3d:v0.15.0 \
-      -p "8081:80@loadbalancer" \
-      --agents 2
+    kind create cluster --name wasm-cluster \
+      --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.15.0
    kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.15.0/runtime.yaml
    kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.15.0/workload.yaml
     ```
    
-This will create a k3d cluster with the new release and deploy a test workload to it.
+This will create a Kind cluster with the new release and deploy a test workload to it.
   
 1. Update [SpinKube documentation](https://github.com/spinframework/spinkube-docs) as
    necessary. Ensure the latest [node installer

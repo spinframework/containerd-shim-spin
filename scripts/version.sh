@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OTHER_FILES=${MD_FILES_TO_UPDATE:-"containerd-shim-spin/quickstart.md, images/spin-dapr/README.md, deployments/k3d/README.md"}
+OTHER_FILES=${MD_FILES_TO_UPDATE:-"containerd-shim-spin/quickstart.md, images/spin-dapr/README.md, deployments/kind/README.md"}
 
 get_version()
 {
