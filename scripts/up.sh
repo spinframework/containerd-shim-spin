@@ -29,6 +29,11 @@ containerdConfigPatches:
 - |-
   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:${registry_port}"]
     endpoint = ["http://${registry_name}:5000"]
+- |-
+  [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin]
+    runtime_type = "io.containerd.spin.v2"
+  [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin.options]
+    SystemdCgroup = true
 nodes:
 - role: control-plane
   kubeadmConfigPatches:
