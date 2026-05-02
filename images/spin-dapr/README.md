@@ -18,7 +18,16 @@ sudo mv ./spin /usr/local/bin/
 ### Run example with Kind:
 ```sh
 # start the Kind cluster
-kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.24.0
+cat <<EOF | kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.24.0 --config=-
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+- |-
+	[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
+		runtime_type = "io.containerd.spin.v2"
+	[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin.options]
+		SystemdCgroup = false
+EOF
 # Install Dapr
 dapr init -k --wait
 # or via helm

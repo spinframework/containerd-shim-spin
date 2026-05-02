@@ -14,7 +14,16 @@ Before you begin, you need to have the following installed:
 Start a Kind cluster with the wasm shims already installed:
 
 ```bash
-kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.24.0
+cat <<EOF | kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.24.0 --config=-
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
+    runtime_type = "io.containerd.spin.v2"
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin.options]
+    SystemdCgroup = false
+EOF
 ```
 
 Apply RuntimeClass for spin applications to use the spin wasm shim:
@@ -25,13 +34,13 @@ kubectl apply -f https://raw.githubusercontent.com/spinframework/containerd-shim
 
 ## Deploy an existing sample spin application
 
-Deploy a pre-built sample spin application:
+Deploy a pre-built sample spin application and port-forward its service to access it locally:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/spinframework/containerd-shim-spin/main/deployments/workloads/workload.yaml
 echo "waiting 5 seconds for workload to be ready"
 sleep 5
-curl -v http://0.0.0.0:8081/hello
+kubectl port-forward svc/wasm-spin 8081:80
 ```
 
 Confirm you see a response from the sample application. For example:

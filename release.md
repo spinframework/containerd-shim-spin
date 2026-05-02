@@ -51,10 +51,18 @@ following:
 1. [Optional] Smoke test the release by running the following commands, replacing the version number with the new release:
 
     ```console
-    kind create cluster --name wasm-cluster \
-      --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.15.0
-   kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.15.0/runtime.yaml
-   kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.15.0/workload.yaml
+   cat <<EOF | kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.24.0 --config=-
+   kind: Cluster
+   apiVersion: kind.x-k8s.io/v1alpha4
+   containerdConfigPatches:
+   - |-
+   [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
+      runtime_type = "io.containerd.spin.v2"
+   [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin.options]
+      SystemdCgroup = false
+   EOF
+   kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.24.0/runtime.yaml
+   kubectl apply -f https://github.com/spinframework/containerd-shim-spin/releases/download/v0.24.0/workload.yaml
     ```
    
 This will create a Kind cluster with the new release and deploy a test workload to it.

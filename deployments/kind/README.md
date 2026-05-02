@@ -15,7 +15,16 @@ $ tree .
 The shell script below will create a Kind cluster locally with the Spin shim installed and containerd configured. The script then applies the runtime classes for the shim and an example service and deployment. Finally, we curl the `/hello` and receive a response from the example workload.
 ```shell
 docker build -t kind-shim-test deployments/kind
-kind create cluster --name wasm-cluster --image kind-shim-test
+cat <<EOF | kind create cluster --name wasm-cluster --image kind-shim-test --config=-
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+- |-
+	[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
+		runtime_type = "io.containerd.spin.v2"
+	[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin.options]
+		SystemdCgroup = false
+EOF
 kubectl apply -f https://github.com/spinframework/containerd-shim-spin/raw/main/deployments/workloads/runtime.yaml
 kubectl apply -f https://github.com/spinframework/containerd-shim-spin/raw/main/deployments/workloads/workload.yaml
 echo "waiting 15 seconds for workload to be ready"
