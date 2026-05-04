@@ -43,7 +43,7 @@ sleep 5
 kubectl port-forward svc/wasm-spin 8081:80
 ```
 
-Confirm you see a response from the sample application. For example:
+In another terminal, confirm you see a response from the sample application. For example:
 
 ```output
 $ curl -v http://0.0.0.0:8081/hello
@@ -159,11 +159,11 @@ source = "qs_wasm_spin.wasm"
 ...
 ```
 
-Use `docker` to build the container image and push it to a local registry:
+Use `docker` to build the container image and push it to a registry. We use [TTL.sh](https://ttl.sh/) as an example registry for quick publishing, but you can use any registry. For example:
 
 ```bash
-docker buildx build --platform=wasip1/wasm -t localhost:5000/qs-wasm-spin .
-docker push localhost:5000/qs-wasm-spin:latest
+docker buildx build --platform=wasip1/wasm -t ttl.sh/spin-quickstart/qs-wasm-spin .
+docker push ttl.sh/spin-quickstart/qs-wasm-spin:latest
 ```
 
 ### Creating a OCI WASM Image
@@ -172,7 +172,7 @@ It is possible to publish spin applications to [OCI registries](https://develope
 
 ```
 # must be spin 2.0
-spin registry push localhost:5000/spin-wasm-shim:latest-2.0
+spin registry push ttl.sh/spin-quickstart/qs-wasm-spin:latest
 ```
 
 ## Deploy the application
@@ -197,7 +197,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: testwasm
-          image: localhost:5000/qs-wasm-spin:latest
+          image: ttl.sh/spin-quickstart/qs-wasm-spin:latest
           command: ["/"]
 ---
 apiVersion: v1

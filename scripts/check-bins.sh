@@ -10,7 +10,7 @@
 
 # Dependencies:
 # The script expects the following binaries to be present in the system's PATH:
-# kind, cross, docker, kubectl
+# kind, docker, kubectl
 
 set -euo pipefail
 

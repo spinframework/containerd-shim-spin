@@ -24,9 +24,9 @@ apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:
 - |-
 	[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
-		runtime_type = "io.containerd.spin.v2"
+	   runtime_type = "io.containerd.spin.v2"
 	[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin.options]
-		SystemdCgroup = false
+	   SystemdCgroup = false
 EOF
 # Install Dapr
 dapr init -k --wait

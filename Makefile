@@ -158,9 +158,6 @@ install-cross:
 	@if [ -z $$(which cross) ]; then RUSTFLAGS="-A warnings" cargo install cross --git https://github.com/cross-rs/cross --rev 49338b18fdb82dedb2a813664e2e565ca73e2047; fi
 	@cross -V 2>/dev/null | grep 49338b1 || echo "WARN: unsupported version of cross found. Building containerd-shim-spin requires specific version of cross.\n\nPlease uninstall and run make install-cross to install the supported version."
 
-install-kind:
-	go install sigs.k8s.io/kind@latest
-
 install-wkg: 
 	cargo install wkg
 
