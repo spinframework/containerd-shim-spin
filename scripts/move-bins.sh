@@ -22,7 +22,7 @@ set -euo pipefail
 target="${2:-x86_64-unknown-linux-musl}"
 release_pattern="${1:-target/$target/release}"
 
-dockerfile_path="deployments/k3d"
+dockerfile_path="deployments/kind"
 bin_path="${dockerfile_path}/.tmp/"
 cluster_name="test-cluster"
 

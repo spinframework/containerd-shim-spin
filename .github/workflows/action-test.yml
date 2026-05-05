@@ -29,8 +29,11 @@ jobs:
             do tar -xzf "$f" -C ./bin
           done
 
-      - name: Install k3d
-        run: make install-k3d
+      - name: Install kind
+        run: |
+        	[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-linux-amd64
+          chmod +x ./kind
+          mv ./kind /usr/local/bin/kind
       
       - name: Install wkg
         run: make install-wkg
@@ -54,6 +57,6 @@ jobs:
         if: failure()
         run: df -h
 
-      - name: Clean up k3d
+      - name: Clean up kind
         if: always()
         run: make tests/clean

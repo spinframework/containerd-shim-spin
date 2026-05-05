@@ -153,13 +153,10 @@ tests/clean:
 
 # install cross
 # pin cross to a specific commit to avoid breaking changes
-.PHONY: install-cross install-k3d check-bins pod-status-check setup
+.PHONY: install-cross install-kind check-bins pod-status-check setup
 install-cross:
 	@if [ -z $$(which cross) ]; then RUSTFLAGS="-A warnings" cargo install cross --git https://github.com/cross-rs/cross --rev 49338b18fdb82dedb2a813664e2e565ca73e2047; fi
 	@cross -V 2>/dev/null | grep 49338b1 || echo "WARN: unsupported version of cross found. Building containerd-shim-spin requires specific version of cross.\n\nPlease uninstall and run make install-cross to install the supported version."
-
-install-k3d:
-	wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
 install-wkg: 
 	cargo install wkg

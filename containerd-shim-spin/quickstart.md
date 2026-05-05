@@ -4,17 +4,26 @@
 Before you begin, you need to have the following installed:
 
 - [Docker](https://docs.docker.com/install/) version 4.13.1 (90346) or later with [containerd enabled](https://docs.docker.com/desktop/containerd/)
-- [k3d](https://k3d.io/v5.4.6/#installation)
+- [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [Spin v2.0+ and templates](https://developer.fermyon.com/spin/quickstart/)
 - [Rust 1.71+](https://www.rust-lang.org/tools/install)
 
-## Start and configure a k3d cluster
+## Start and configure a Kind cluster
 
-Start a k3d cluster with the wasm shims already installed:
+Start a Kind cluster with the wasm shims already installed:
 
 ```bash
-k3d cluster create wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/k3d:v0.24.0 -p "8081:80@loadbalancer" --agents 2 --registry-create mycluster-registry:12345
+cat <<EOF | kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.24.0 --config=-
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin]
+    runtime_type = "io.containerd.spin.v2"
+  [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin.options]
+    SystemdCgroup = true
+EOF
 ```
 
 Apply RuntimeClass for spin applications to use the spin wasm shim:
@@ -25,16 +34,16 @@ kubectl apply -f https://raw.githubusercontent.com/spinframework/containerd-shim
 
 ## Deploy an existing sample spin application
 
-Deploy a pre-built sample spin application:
+Deploy a pre-built sample spin application and port-forward its service to access it locally:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/spinframework/containerd-shim-spin/main/deployments/workloads/workload.yaml
 echo "waiting 5 seconds for workload to be ready"
 sleep 5
-curl -v http://0.0.0.0:8081/hello
+kubectl port-forward svc/wasm-spin 8081:80
 ```
 
-Confirm you see a response from the sample application. For example:
+In another terminal, confirm you see a response from the sample application. For example:
 
 ```output
 $ curl -v http://0.0.0.0:8081/hello
@@ -150,11 +159,11 @@ source = "qs_wasm_spin.wasm"
 ...
 ```
 
-Use `docker` to build the container image and push it to the k3d registry:
+Use `docker` to build the container image and push it to a registry. We use [TTL.sh](https://ttl.sh/) as an example registry for quick publishing, but you can use any registry. For example:
 
 ```bash
-docker buildx build --platform=wasip1/wasm -t localhost:12345/qs-wasm-spin .
-docker push localhost:12345/qs-wasm-spin:latest
+docker buildx build --platform=wasip1/wasm -t ttl.sh/spin-quickstart/qs-wasm-spin .
+docker push ttl.sh/spin-quickstart/qs-wasm-spin:latest
 ```
 
 ### Creating a OCI WASM Image
@@ -163,7 +172,7 @@ It is possible to publish spin applications to [OCI registries](https://develope
 
 ```
 # must be spin 2.0
-spin registry push localhost:12345/spin-wasm-shim:latest-2.0
+spin registry push ttl.sh/spin-quickstart/qs-wasm-spin:latest
 ```
 
 ## Deploy the application
@@ -188,7 +197,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: testwasm
-          image: mycluster-registry:12345/qs-wasm-spin:latest
+          image: ttl.sh/spin-quickstart/qs-wasm-spin:latest
           command: ["/"]
 ---
 apiVersion: v1
@@ -266,7 +275,7 @@ kubectl delete -f qs.yaml
 Delete the cluster:
 
 ```bash
-k3d cluster delete wasm-cluster
+kind delete cluster --name wasm-cluster
 ```
 
 ## Next steps

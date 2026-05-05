@@ -126,13 +126,13 @@ To carry out the installation step-by-step, do the following:
 
 A GitHub release is created for each versioned release with build artifacts attached, including shim binaries for all supported architectures. See the [Releases page](https://github.com/spinkube/containerd-shim-spin/releases) for the full listing.
 
-In addition, container images for k3d, node-installer and example apps are published using the release version for their tags, eg [ghcr.io/spinkube/containerd-shim-spin:v0.15.1](https://github.com/spinkube/containerd-shim-spin/pkgs/container/containerd-shim-spin%2Fnode-installer/240852005?tag=v0.15.1). A listing of all images and their tags can be seen from the [packages page](https://github.com/orgs/spinkube/packages?repo_name=containerd-shim-spin).
+In addition, container images for Kind, node-installer and example apps are published using the release version for their tags, eg [ghcr.io/spinkube/containerd-shim-spin:v0.15.1](https://github.com/spinkube/containerd-shim-spin/pkgs/container/containerd-shim-spin%2Fnode-installer/240852005?tag=v0.15.1). A listing of all images and their tags can be seen from the [packages page](https://github.com/orgs/spinkube/packages?repo_name=containerd-shim-spin).
 
 ### Canary builds
 
 On every push to the `main` branch, the [release workflow](https://github.com/spinkube/containerd-shim-spin/actions/workflows/release.yaml) will run and attach shim binary artifacts once finished.
 
-Container images for k3d, node-installer and example apps are also published, using a unique tag of the form `$(date +%Y%m%d-%H%M%S)-g$(git rev-parse --short HEAD)`. A listing of all images and their tags can be seen from the [packages page](https://github.com/orgs/spinkube/packages?repo_name=containerd-shim-spin).
+Container images for Kind, node-installer and example apps are also published, using a unique tag of the form `$(date +%Y%m%d-%H%M%S)-g$(git rev-parse --short HEAD)`. A listing of all images and their tags can be seen from the [packages page](https://github.com/orgs/spinkube/packages?repo_name=containerd-shim-spin).
 
 ### Branch builds
 

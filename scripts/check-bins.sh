@@ -10,7 +10,7 @@
 
 # Dependencies:
 # The script expects the following binaries to be present in the system's PATH:
-# k3d, cross, docker, kubectl
+# kind, docker, kubectl
 
 set -euo pipefail
 
@@ -34,7 +34,7 @@ which_binary() {
 
 
 # List of binary names
-binaries=("k3d" "docker" "kubectl")
+binaries=("kind" "docker" "kubectl")
 
 for binary in "${binaries[@]}"; do
   which_binary "$binary"

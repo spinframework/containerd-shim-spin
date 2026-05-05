@@ -15,7 +15,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: testwasm
-          image: test-registry:5000/spin-registry-push/spin-hello-world:latest
+          image: localhost:5000/spin-registry-push/spin-hello-world:latest
           imagePullPolicy: IfNotPresent
           command: ["/"]
           resources: # limit the resources to 128Mi of memory and 100m of CPU
@@ -55,7 +55,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: keyvalue
-          image: test-registry:5000/spin-registry-push/spin-keyvalue:latest
+          image: localhost:5000/spin-registry-push/spin-keyvalue:latest
           command: ["/"]
           imagePullPolicy: IfNotPresent
           volumeMounts:
@@ -98,7 +98,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: outbound-redis
-          image: test-registry:5000/spin-registry-push/spin-outbound-redis:latest
+          image: localhost:5000/spin-registry-push/spin-outbound-redis:latest
           command: ["/"]
           imagePullPolicy: IfNotPresent
           env:
@@ -200,7 +200,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
       - name: spin-multi-trigger-app
-        image: test-registry:5000/spin-registry-push/spin-multi-trigger-app:latest
+        image: localhost:5000/spin-registry-push/spin-multi-trigger-app:latest
         imagePullPolicy: IfNotPresent
         command: ["/"]
         ports:
@@ -241,7 +241,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
       - name: spin-static-assets
-        image: test-registry:5000/spin-registry-push/spin-static-assets:latest
+        image: localhost:5000/spin-registry-push/spin-static-assets:latest
         imagePullPolicy: IfNotPresent
         command: ["/"]
         ports:
@@ -277,7 +277,7 @@ spec:
       runtimeClassName: wasmtime-spin
       containers:
         - name: spin-mqtt-message-logger
-          image: test-registry:5000/spin-registry-push/spin-mqtt-message-logger:latest
+          image: localhost:5000/spin-registry-push/spin-mqtt-message-logger:latest
           imagePullPolicy: IfNotPresent
           command: ["/"]
           ports:

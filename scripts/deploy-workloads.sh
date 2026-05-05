@@ -32,7 +32,7 @@ if [ "$1" == "workloads-pushed-using-spin-registry-push" ]; then
     kubectl apply -f tests/workloads-pushed-using-spin-registry-push
 elif [ "$1" == "workloads-pushed-using-docker-build-push" ]; then
     update_mqtt_workload_with_broker_cluster_ip "tests/workloads-pushed-using-docker-build-push"
-    echo "deploying spin apps pushed to registry using 'docker build && k3d image import' command"
+    echo "deploying spin apps pushed to registry using 'docker build && kind load' command"
     kubectl apply -f tests/workloads-pushed-using-docker-build-push
 elif [ "$1" == "workloads-pushed-using-wkg-oci-push" ]; then
     update_mqtt_workload_with_broker_cluster_ip "tests/workloads-pushed-using-wkg-oci-push"

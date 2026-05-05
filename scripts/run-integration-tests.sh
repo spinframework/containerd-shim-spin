@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-## Deploy workloads into k3d cluster
+## Deploy workloads into kind cluster
 if [ "$1" == "workloads-pushed-using-spin-registry-push" ]; then
     make deploy-workloads-pushed-using-spin-registry-push
 elif [ "$1" == "workloads-pushed-using-docker-build-push" ]; then
