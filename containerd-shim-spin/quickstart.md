@@ -19,10 +19,10 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:
 - |-
-  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
+  [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin]
     runtime_type = "io.containerd.spin.v2"
-  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin.options]
-    SystemdCgroup = false
+  [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin.options]
+    SystemdCgroup = true
 EOF
 ```
 

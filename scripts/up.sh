@@ -27,13 +27,13 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:
 - |-
-  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:${registry_port}"]
+  [plugins."io.containerd.cri.v1.runtime".registry.mirrors."localhost:${registry_port}"]
     endpoint = ["http://${registry_name}:5000"]
 - |-
-  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
+  [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin]
     runtime_type = "io.containerd.spin.v2"
-  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin.options]
-    SystemdCgroup = false
+  [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin.options]
+    SystemdCgroup = true
 nodes:
 - role: control-plane
   kubeadmConfigPatches:
@@ -44,7 +44,7 @@ nodes:
         eviction-hard: "imagefs.available<1%,nodefs.available<1%"
         eviction-minimum-reclaim: "imagefs.available=1%,nodefs.available=1%"
   extraPortMappings:
-  - containerPort: 30080
+  - containerPort: 80
     hostPort: 8082
     protocol: TCP
 - role: worker
@@ -58,11 +58,15 @@ fi
 
 kubectl wait --for=condition=ready node --all --timeout=120s
 
-# Install ingress-nginx for local routing in Kind and wait for controller readiness.
-kubectl label nodes --all ingress-ready=true --overwrite
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.15.1/deploy/static/provider/kind/deploy.yaml
-kubectl -n ingress-nginx patch service ingress-nginx-controller --type merge -p '{"spec":{"type":"NodePort","ports":[{"name":"http","port":80,"targetPort":"http","nodePort":30080},{"name":"https","port":443,"targetPort":"https","nodePort":30443}]}}'
-kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=180s
+# Install Traefik as the ingress controller for local routing in Kind.
+helm repo add traefik https://helm.traefik.io/traefik
+helm repo update
+helm install traefik traefik/traefik \
+  --namespace traefik --create-namespace \
+  --set deployment.kind=DaemonSet \
+  --set service.type=ClusterIP \
+  --set ports.web.hostPort=80
+kubectl wait --namespace traefik --for=condition=ready pod --selector=app.kubernetes.io/name=traefik --timeout=180s
 
 # Iterate through the Docker images and build them
 for i in "${!DOCKER_IMAGES[@]}"; do
