@@ -1735,6 +1735,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "containerd-client"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "936cc6911381d95039f381080ec148024d2bb0044a03363542b0a6b0b2c46592"
+dependencies = [
+ "hyper-util",
+ "prost 0.13.5",
+ "prost-build 0.13.5",
+ "prost-types 0.13.5",
+ "tokio",
+ "tonic 0.12.3",
+ "tonic-build",
+ "tower 0.5.3",
+]
+
+[[package]]
 name = "containerd-shim"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1794,7 +1810,7 @@ dependencies = [
  "ctrlc",
  "futures",
  "log",
- "oci-spec 0.7.1",
+ "oci-spec 0.8.4",
  "openssl",
  "serde_json",
  "spin-app",
@@ -1824,13 +1840,12 @@ dependencies = [
 [[package]]
 name = "containerd-shim-wasm"
 version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4d86b4754a7ca0b13a55dbab6836ae9abbc83f12d68ae0c9bbabab14edc58a28"
+source = "git+https://github.com/tanishiking/runwasi?branch=config-spec#135d55e8f071ef479bfe3398056a28167bfa3076"
 dependencies = [
  "anyhow",
  "caps",
  "chrono",
- "containerd-client",
+ "containerd-client 0.8.0",
  "containerd-shim",
  "containerd-shimkit",
  "dbus",
@@ -1840,7 +1855,7 @@ dependencies = [
  "log",
  "mio",
  "nix 0.29.0",
- "oci-spec 0.7.1",
+ "oci-spec 0.8.4",
  "serde",
  "serde_bytes",
  "serde_json",
@@ -1850,7 +1865,7 @@ dependencies = [
  "tokio-stream",
  "trait-variant",
  "ttrpc-codegen",
- "wasmparser 0.228.0",
+ "wasmparser 0.231.0",
  "wat",
  "windows-sys 0.59.0",
 ]
@@ -1858,13 +1873,12 @@ dependencies = [
 [[package]]
 name = "containerd-shimkit"
 version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b50ce3653eadfd6a56ca25b59e8c6cbdbe4f8c215b26a3ef3af06c330c44d74a"
+source = "git+https://github.com/tanishiking/runwasi?branch=config-spec#135d55e8f071ef479bfe3398056a28167bfa3076"
 dependencies = [
  "anyhow",
  "caps",
  "chrono",
- "containerd-client",
+ "containerd-client 0.6.0",
  "containerd-shim",
  "dbus",
  "futures",
@@ -1873,7 +1887,7 @@ dependencies = [
  "log",
  "mio",
  "nix 0.29.0",
- "oci-spec 0.7.1",
+ "oci-spec 0.8.4",
  "opentelemetry 0.23.0",
  "opentelemetry-otlp 0.16.0",
  "opentelemetry_sdk 0.23.0",
@@ -10637,9 +10651,9 @@ dependencies = [
 
 [[package]]
 name = "wasmparser"
-version = "0.228.0"
+version = "0.231.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4abf1132c1fdf747d56bbc1bb52152400c70f336870f968b85e89ea422198ae3"
+checksum = "b1ddaf0d6e069fcd98801b1bf030e3648897d9f09c45ac9ef566d068aca1b76f"
 dependencies = [
  "bitflags 2.11.1",
  "hashbrown 0.15.5",

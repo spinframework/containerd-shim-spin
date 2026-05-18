@@ -1,7 +1,7 @@
 use std::{
     env,
     net::{SocketAddr, ToSocketAddrs},
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 
 use anyhow::{anyhow, Context, Result};
@@ -64,15 +64,25 @@ pub(crate) fn parse_addr(addr: &str) -> Result<SocketAddr> {
     Ok(addrs)
 }
 
-pub(crate) fn wasmtime_config_path() -> PathBuf {
+fn wasmtime_config_path() -> PathBuf {
     env::var(constants::SPIN_WASMTIME_CONFIG_PATH_ENV)
         .map(PathBuf::from)
         .unwrap_or_else(|_| PathBuf::from(constants::DEFAULT_WASMTIME_CONFIG_PATH))
 }
 
 pub(crate) fn spin_core_config_from_wasmtime_config() -> Result<spin_core::Config> {
+    spin_core_config_from_wasmtime_config_path(wasmtime_config_path())
+}
+
+/// Builds a Spin engine config from a Wasmtime config file.
+///
+/// Only Wasm feature flags are applied. Missing config files return the default
+/// Spin config.
+pub(crate) fn spin_core_config_from_wasmtime_config_path(
+    path: impl AsRef<Path>,
+) -> Result<spin_core::Config> {
     let mut config = spin_core::Config::default();
-    let path = wasmtime_config_path();
+    let path = path.as_ref();
     if !path.try_exists()? {
         return Ok(config);
     }
