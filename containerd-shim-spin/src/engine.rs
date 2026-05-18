@@ -28,7 +28,7 @@ use crate::{
     },
     utils::{
         configure_application_variables_from_environment_variables, initialize_cache,
-        is_wasm_content, parse_addr,
+        is_wasm_content, parse_addr, spin_core_config_from_wasmtime_config,
     },
 };
 
@@ -61,7 +61,8 @@ impl Shim for SpinShim {
 
     #[allow(refining_impl_trait)]
     async fn compiler() -> Option<SpinCompiler> {
-        let mut config = spin_core::Config::default();
+        let mut config = spin_core_config_from_wasmtime_config()
+            .expect("failed to apply Wasmtime config from path");
         Some(SpinCompiler(
             wasmtime::Engine::new(config.wasmtime_config()).unwrap(),
         ))

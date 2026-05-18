@@ -23,3 +23,7 @@ pub(crate) const SPIN_TRIGGER_WORKING_DIR: &str = "/";
 /// Defines the subset of application components that should be executable by the shim
 /// If empty or DNE, all components will be supported
 pub(crate) const SPIN_COMPONENTS_TO_RETAIN_ENV: &str = "SPIN_COMPONENTS_TO_RETAIN";
+/// Default path for TOML-formatted Wasmtime configuration.
+pub(crate) const DEFAULT_WASMTIME_CONFIG_PATH: &str = "/runtime/wasmtime.toml";
+/// Shim executor environment variable for overriding the Wasmtime config path.
+pub(crate) const SPIN_WASMTIME_CONFIG_PATH_ENV: &str = "SPIN_WASMTIME_CONFIG_PATH";

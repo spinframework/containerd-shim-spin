@@ -31,6 +31,7 @@ spin-runtime-factors = { git = "https://github.com/spinframework/spin", tag = "v
 spin-core = { git = "https://github.com/spinframework/spin", tag = "v3.6.3" }
 spin-factor-outbound-networking = { git = "https://github.com/spinframework/spin", tag = "v3.6.3" }
 wasmtime = "42.0.2"
+wasmtime-cli-flags = { version = "42.0.2", features = ["component-model", "gc"] }
 openssl = { version = "*", features = ["vendored"] }
 anyhow = "1.0"
 oci-spec = "0.7"

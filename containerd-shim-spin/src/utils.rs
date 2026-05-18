@@ -9,6 +9,7 @@ use containerd_shim_wasm::sandbox::context::WasmLayer;
 use oci_spec::image::MediaType;
 use spin_app::locked::LockedApp;
 use spin_loader::cache::Cache;
+use wasmtime_cli_flags::CommonOptions;
 
 use crate::constants;
 
@@ -61,6 +62,31 @@ pub(crate) fn parse_addr(addr: &str) -> Result<SocketAddr> {
         .next()
         .ok_or_else(|| anyhow!("could not parse address: {addr}"))?;
     Ok(addrs)
+}
+
+pub(crate) fn wasmtime_config_path() -> PathBuf {
+    env::var(constants::SPIN_WASMTIME_CONFIG_PATH_ENV)
+        .map(PathBuf::from)
+        .unwrap_or_else(|_| PathBuf::from(constants::DEFAULT_WASMTIME_CONFIG_PATH))
+}
+
+pub(crate) fn spin_core_config_from_wasmtime_config() -> Result<spin_core::Config> {
+    let mut config = spin_core::Config::default();
+    let path = wasmtime_config_path();
+    if !path.try_exists()? {
+        return Ok(config);
+    }
+
+    // Only apply the wasm feature flags
+    CommonOptions::from_file(&path)?
+        .enable_wasm_features(config.wasmtime_config())
+        .map_err(|err| {
+            anyhow!(
+                "failed to apply Wasmtime config from {}: {err}",
+                path.display()
+            )
+        })?;
+    Ok(config)
 }
 
 // For each Spin app variable, checks if a container environment variable with
