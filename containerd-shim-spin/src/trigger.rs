@@ -16,7 +16,10 @@ use trigger_command::CommandTrigger;
 use trigger_mqtt::MqttTrigger;
 use trigger_sqs::SqsTrigger;
 
-use crate::constants::{RUNTIME_CONFIG_PATH, SPIN_TRIGGER_WORKING_DIR};
+use crate::{
+    constants::{RUNTIME_CONFIG_PATH, SPIN_TRIGGER_WORKING_DIR},
+    utils::spin_core_config_from_wasmtime_config,
+};
 
 pub(crate) const HTTP_TRIGGER_TYPE: &str = <HttpTrigger as Trigger<TriggerFactors>>::TYPE;
 pub(crate) const REDIS_TRIGGER_TYPE: &str = <RedisTrigger as Trigger<TriggerFactors>>::TYPE;
@@ -35,7 +38,8 @@ where
 {
     info!(" >>> running {} trigger", T::TYPE);
     let trigger = T::new(cli_args, &app)?;
-    let builder: TriggerAppBuilder<_, FactorsBuilder> = TriggerAppBuilder::new(trigger);
+    let mut builder: TriggerAppBuilder<_, FactorsBuilder> = TriggerAppBuilder::new(trigger);
+    *builder.engine_config() = spin_core_config_from_wasmtime_config()?;
     let builder_args = match std::env::var("SPIN_MAX_INSTANCE_MEMORY") {
         Ok(limit) => {
             debug!("Setting instance max memory to {limit} bytes");

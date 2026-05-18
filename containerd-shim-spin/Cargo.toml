@@ -11,7 +11,7 @@ Containerd shim for running Spin workloads.
 """
 
 [dependencies]
-containerd-shim-wasm = { version = "1.0.0", default-features = false, features = ["opentelemetry"]}
+containerd-shim-wasm = { git = "https://github.com/tanishiking/runwasi", branch = "config-spec", default-features = false, features = ["opentelemetry"] }
 log = "0.4"
 spin-app = { git = "https://github.com/spinframework/spin", tag = "v3.6.3" }
 spin-componentize = { git = "https://github.com/spinframework/spin", tag = "v3.6.3" }
@@ -31,9 +31,10 @@ spin-runtime-factors = { git = "https://github.com/spinframework/spin", tag = "v
 spin-core = { git = "https://github.com/spinframework/spin", tag = "v3.6.3" }
 spin-factor-outbound-networking = { git = "https://github.com/spinframework/spin", tag = "v3.6.3" }
 wasmtime = "42.0.2"
+wasmtime-cli-flags = { version = "42.0.2", features = ["component-model", "gc"] }
 openssl = { version = "*", features = ["vendored"] }
 anyhow = "1.0"
-oci-spec = "0.7"
+oci-spec = "0.8"
 futures = "0.3"
 ctrlc = { version = "3.5", features = ["termination"] }
 url = "2.3"
