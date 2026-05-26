@@ -1,4 +1,9 @@
-use std::{collections::HashSet, env, hash::Hash};
+use std::{
+    collections::HashSet,
+    env,
+    hash::Hash,
+    path::{Path, PathBuf},
+};
 
 use anyhow::{Context, Result};
 use containerd_shim_wasm::{
@@ -10,6 +15,7 @@ use containerd_shim_wasm::{
 };
 use futures::future;
 use log::info;
+use oci_spec::runtime::Spec;
 use spin_app::locked::LockedApp;
 use spin_factor_outbound_networking::validate_service_chaining_for_components;
 use spin_trigger::cli::NoCliArgs;
@@ -28,7 +34,7 @@ use crate::{
     },
     utils::{
         configure_application_variables_from_environment_variables, initialize_cache,
-        is_wasm_content, parse_addr,
+        is_wasm_content, parse_addr, spin_core_config_from_wasmtime_config_path,
     },
 };
 
@@ -60,8 +66,12 @@ impl Shim for SpinShim {
     }
 
     #[allow(refining_impl_trait)]
-    async fn compiler() -> Option<SpinCompiler> {
-        let mut config = spin_core::Config::default();
+    async fn compiler_with_spec(spec: &Spec) -> Option<SpinCompiler> {
+        let container_path = wasmtime_config_path_from_spec(spec);
+        let host_path =
+            mounted_source_path(spec, &container_path).unwrap_or_else(|| container_path.clone());
+        let mut config = spin_core_config_from_wasmtime_config_path(host_path)
+            .expect("failed to apply Wasmtime config from path");
         Some(SpinCompiler(
             wasmtime::Engine::new(config.wasmtime_config()).unwrap(),
         ))
@@ -256,13 +266,82 @@ impl Compiler for SpinCompiler {
     }
 }
 
+/// Returns the container-visible Wasmtime config path from the OCI spec.
+///
+/// The path comes from `SPIN_WASMTIME_CONFIG_PATH` in the container process
+/// environment, or falls back to `/runtime/wasmtime.toml`.
+fn wasmtime_config_path_from_spec(spec: &Spec) -> PathBuf {
+    spec.process()
+        .as_ref()
+        .and_then(|process| process.env().as_ref())
+        .and_then(|envs| {
+            envs.iter().find_map(|env| {
+                env.split_once('=')
+                    .filter(|(key, _)| *key == constants::SPIN_WASMTIME_CONFIG_PATH_ENV)
+                    .map(|(_, value)| PathBuf::from(value))
+            })
+        })
+        .unwrap_or_else(|| PathBuf::from(constants::DEFAULT_WASMTIME_CONFIG_PATH))
+}
+
+/// Resolves an exact file mount from container path to host path.
+fn mounted_source_path(spec: &Spec, container_path: &Path) -> Option<PathBuf> {
+    spec.mounts().as_ref()?.iter().find_map(|mount| {
+        let source = mount.source().as_ref()?;
+        let destination = mount.destination();
+
+        if container_path == destination {
+            return Some(source.clone());
+        }
+
+        None
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use std::str::FromStr as _;
 
-    use oci_spec::image::{Digest, MediaType};
+    use oci_spec::{
+        image::{Digest, MediaType},
+        runtime::Spec,
+    };
 
     use super::*;
+
+    #[test]
+    fn resolves_wasmtime_config_from_exact_file_mount() {
+        let spec: Spec = serde_json::from_str(&format!(
+            r#"{{
+                "ociVersion": "1.0.2",
+                "process": {{
+                    "user": {{}},
+                    "cwd": "/",
+                    "env": ["{}=/runtime/wasmtime.toml"]
+                }},
+                "mounts": [
+                    {{
+                        "destination": "/runtime/wasmtime.toml",
+                        "type": "bind",
+                        "source": "/var/lib/kubelet/pods/pod/volume-subpaths/wasmtime-config/container/0"
+                    }}
+                ]
+            }}"#,
+            constants::SPIN_WASMTIME_CONFIG_PATH_ENV
+        ))
+        .unwrap();
+
+        assert_eq!(
+            wasmtime_config_path_from_spec(&spec),
+            PathBuf::from("/runtime/wasmtime.toml")
+        );
+        assert_eq!(
+            mounted_source_path(&spec, Path::new("/runtime/wasmtime.toml")),
+            Some(PathBuf::from(
+                "/var/lib/kubelet/pods/pod/volume-subpaths/wasmtime-config/container/0"
+            ))
+        );
+    }
 
     #[tokio::test]
     async fn precompile() {
