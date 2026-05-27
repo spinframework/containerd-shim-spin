@@ -159,6 +159,9 @@ impl SpinSandbox {
             // `spin registry push`
             Source::File(_) => {}
         };
+        // Box::leak gives a 'static reference. The loader lives for the process lifetime,
+        // which is fine since this function runs once per container invocation.
+        let loader: &'static _ = Box::leak(Box::new(loader));
 
         let mut futures_list = Vec::new();
         let mut trigger_type_map = Vec::new();
@@ -187,19 +190,19 @@ impl SpinSandbox {
                         ),
                         format: spin_trigger_http::OutputFormat::default(),
                     };
-                    trigger::run::<HttpTrigger>(cli_args, app, &loader).await?
+                    trigger::run::<HttpTrigger>(cli_args, app, loader).await?
                 }
-                REDIS_TRIGGER_TYPE => trigger::run::<RedisTrigger>(NoCliArgs, app, &loader).await?,
-                SQS_TRIGGER_TYPE => trigger::run::<SqsTrigger>(NoCliArgs, app, &loader).await?,
+                REDIS_TRIGGER_TYPE => trigger::run::<RedisTrigger>(NoCliArgs, app, loader).await?,
+                SQS_TRIGGER_TYPE => trigger::run::<SqsTrigger>(NoCliArgs, app, loader).await?,
                 COMMAND_TRIGGER_TYPE => {
                     let cli_args = trigger_command::CliArgs {
                         guest_args: ctx.args().to_vec(),
                     };
-                    trigger::run::<CommandTrigger>(cli_args, app, &loader).await?
+                    trigger::run::<CommandTrigger>(cli_args, app, loader).await?
                 }
                 MQTT_TRIGGER_TYPE => {
                     let cli_args = trigger_mqtt::CliArgs { test: false };
-                    trigger::run::<MqttTrigger>(cli_args, app, &loader).await?
+                    trigger::run::<MqttTrigger>(cli_args, app, loader).await?
                 }
                 _ => {
                     // This should never happen as we check for supported triggers in get_supported_triggers
