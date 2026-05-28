@@ -6,6 +6,7 @@ set -xeuo pipefail
 cleanup() {
   echo "Cleaning up..."
   docker rm -f docker-test 2>/dev/null || true
+  rm -f "$(dirname "$0")/containerd-shim-spin-v2"
 }
 
 usage() {
@@ -30,13 +31,15 @@ if [ -z "${CONTAINERD_SPIN_SHIM_VERSION:-}" ] && [ -z "${SHIM_FILE:-}" ]; then
   exit 1
 fi
 
+SHIM_COPY="$(dirname "$0")/containerd-shim-spin-v2"
 if [ -n "${SHIM_FILE:-}" ]; then
-  # TODO: figure out how to make this work
   echo "Using SHIM_FILE at $SHIM_FILE"
-  cp "$SHIM_FILE" "$(dirname "$0")/containerd-shim-spin-v2"
+  cp "$SHIM_FILE" "$SHIM_COPY"
   SHIM_LOCATION_ARG="SHIM_FILE=containerd-shim-spin-v2"
 else
   echo "Using CONTAINERD_SPIN_SHIM_VERSION at $CONTAINERD_SPIN_SHIM_VERSION"
+  # Create a placeholder so the Dockerfile COPY always succeeds
+  touch "$SHIM_COPY"
   SHIM_LOCATION_ARG="CONTAINERD_SPIN_SHIM_VERSION=$CONTAINERD_SPIN_SHIM_VERSION"
 fi
 
