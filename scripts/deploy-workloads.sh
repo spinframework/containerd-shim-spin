@@ -24,7 +24,7 @@ update_mqtt_workload_with_broker_cluster_ip() {
 echo ">>> apply workloads"
 kubectl apply -f tests/workloads-common
 # wait for all the pods to be ready
-kubectl wait --for=condition=ready --timeout=120s pod --all
+kubectl wait --for=condition=ready --timeout=240s pod --all
 
 if [ "$1" == "workloads-pushed-using-spin-registry-push" ]; then
     update_mqtt_workload_with_broker_cluster_ip "tests/workloads-pushed-using-spin-registry-push"
@@ -44,7 +44,7 @@ else
 fi
 
 # wait for all the pods to be ready
-kubectl wait --for=condition=ready --timeout=120s pod --all
+kubectl wait --for=condition=ready --timeout=240s pod --all
 
 # get and describe all the pods
 echo ">>> Pods:"

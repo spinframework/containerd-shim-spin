@@ -28,7 +28,7 @@ pub(crate) const COMMAND_TRIGGER_TYPE: &str = <CommandTrigger as Trigger<Trigger
 pub(crate) async fn run<T>(
     cli_args: T::CliArgs,
     app: App,
-    loader: &ComponentLoader,
+    loader: &'static ComponentLoader,
 ) -> Result<BoxFuture<'static, Result<()>>>
 where
     T: Trigger<TriggerFactors> + 'static,

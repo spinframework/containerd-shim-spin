@@ -41,6 +41,10 @@ jobs:
       - name: Run integration tests
         run: BIN_DIR="./bin" IS_CI=true make integration-tests
 
+      - name: Debug failed workloads
+        if: failure()
+        run: kubectl describe pods
+
       - name: Collect debug logs
         if: failure()
         run: make tests/collect-debug-logs
