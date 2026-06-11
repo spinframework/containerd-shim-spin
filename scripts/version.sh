@@ -89,7 +89,7 @@ TOML_VERSION_LINE="version = \"$NEW_VERSION\""
 # 1) Update base Cargo.toml and workspace lockfile
 update_file_version "$BASEDIR/Cargo.toml" "$TOML_VERSION_PATTERN" "$TOML_VERSION_LINE"
 if [ "$?" -eq "1" ]; then exit 1; fi
-cargo update
+cargo check
 
 # 2) Update test images and lockfiles
 for file in $(find $BASEDIR/images -name Cargo.toml); do
@@ -99,7 +99,7 @@ for file in $(find $BASEDIR/images -name Cargo.toml); do
     if [[ $dir != /* ]]; then
         dir=$BASEDIR/$dir
     fi
-    cargo update --manifest-path $dir/Cargo.toml
+    cargo check --manifest-path $dir/Cargo.toml
 done
 
 # 3) Update all requested markdown file versions to $NEW_VERSION

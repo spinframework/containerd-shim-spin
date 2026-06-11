@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ### Changed
-- 
+- arm64 compilation for developer ([#425](https://github.com/spinframework/containerd-shim-spin/pull/425))
+- Create Runtime Class Manager Shim resources in releases ([#443](https://github.com/spinframework/containerd-shim-spin/pull/443))
+- use Kind instead of k3d for tests and released image ([#441](https://github.com/spinframework/containerd-shim-spin/pull/441))
+- Bump to Spin 4.0.1 dependencies and triggers ([#437](https://github.com/spinframework/containerd-shim-spin/pull/437))
 
 ## [v0.24.0] - 2026-04-10
 
