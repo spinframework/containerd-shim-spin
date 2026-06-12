@@ -18,7 +18,7 @@ sudo mv ./spin /usr/local/bin/
 ### Run example with Kind:
 ```sh
 # start the Kind cluster
-cat <<EOF | kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.25.0 --config=-
+cat <<EOF | kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.25.1 --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:

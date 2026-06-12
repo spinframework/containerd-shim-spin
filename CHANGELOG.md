@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [v0.25.1] - 2026-06-12
+### Fixed
+- bump to containerd-shim-wasm v1.0.1 for security improvements ([#447](https://github.com/spinframework/containerd-shim-spin/pull/447))
+
+## [v0.25.0] - 2026-06-11
+
 ### Changed
 - arm64 compilation for developer ([#425](https://github.com/spinframework/containerd-shim-spin/pull/425))
 - Create Runtime Class Manager Shim resources in releases ([#443](https://github.com/spinframework/containerd-shim-spin/pull/443))
