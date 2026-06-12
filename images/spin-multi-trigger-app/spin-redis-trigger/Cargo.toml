@@ -1,6 +1,6 @@
 [package]
 name = "spin-redis-trigger"
-version = "0.25.0"
+version = "0.25.1"
 authors = ["Suneet Nangia <suneetnangia@gmail.com>"]
 edition = "2021"
 

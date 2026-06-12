@@ -14,7 +14,7 @@ Before you begin, you need to have the following installed:
 Start a Kind cluster with the wasm shims already installed:
 
 ```bash
-cat <<EOF | kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.25.0 --config=-
+cat <<EOF | kind create cluster --name wasm-cluster --image ghcr.io/spinframework/containerd-shim-spin/kind:v0.25.1 --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:
