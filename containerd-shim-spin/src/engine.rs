@@ -1,6 +1,6 @@
 use std::{collections::HashSet, env, hash::Hash};
 
-use anyhow::{Context, Result};
+use anyhow::{bail, Context, Result};
 use containerd_shim_wasm::{
     sandbox::{
         context::{RuntimeContext, WasmLayer},
@@ -110,6 +110,24 @@ impl Sandbox for SpinSandbox {
     }
 }
 
+/// Returns true only when every wasm layer in `ctx` originates from the shim's
+/// local containerd precompile cache (indicated by `WasmLayer::precompiled == true`).
+/// AOT component loading must only be enabled when this is the case; otherwise
+/// attacker-supplied precompiled bytes from OCI image layers could be deserialized
+/// unsafely.
+fn layers_from_precompile_cache(ctx: &impl RuntimeContext) -> bool {
+    match ctx.entrypoint().source {
+        containerd_shim_wasm::sandbox::context::Source::Oci(layers) => {
+            let wasm_layers: Vec<_> = layers
+                .iter()
+                .filter(|l| is_wasm_content(l).is_some())
+                .collect();
+            !wasm_layers.is_empty() && wasm_layers.iter().all(|l| l.precompiled)
+        }
+        _ => false,
+    }
+}
+
 impl SpinSandbox {
     async fn wasm_exec_async(&self, ctx: &impl RuntimeContext) -> Result<()> {
         let cache = initialize_cache().await?;
@@ -149,14 +167,17 @@ impl SpinSandbox {
     ) -> Result<()> {
         let mut loader = spin_trigger::loader::ComponentLoader::default();
         match app_source {
-            Source::OciSpin | Source::OciWkg(_) => unsafe {
-                // Configure the loader to support loading AOT compiled components..
-                // Since all components were compiled by the shim (during `precompile`),
-                // this operation can be considered safe.
-                loader.enable_loading_aot_compiled_components();
-            },
-            // Currently, it is only possible to precompile applications distributed using
-            // `spin registry push`
+            Source::OciSpin | Source::OciWkg(_) => {
+                // Enable AOT only when every wasm layer originated from the shim's
+                // containerd precompile cache. If any layer came directly from an OCI
+                // image (precompiled: false), AOT loading is skipped so we never call
+                // unsafe deserialization on attacker-controlled bytes.
+                if layers_from_precompile_cache(ctx) {
+                    unsafe {
+                        loader.enable_loading_aot_compiled_components();
+                    }
+                }
+            }
             Source::File(_) => {}
         };
         // Box::leak gives a 'static reference. The loader lives for the process lifetime,
@@ -243,10 +264,24 @@ impl Compiler for SpinCompiler {
                         "Precompile called for wasm layer {:?}",
                         wasm_layer.config.digest()
                     );
-                    if wasmtime::Engine::detect_precompiled(&wasm_layer.layer).is_some() {
-                        log::info!("Layer already precompiled {:?}", wasm_layer.config.digest());
-                        Ok(Some(wasm_layer.layer))
+                    if wasm_layer.precompiled {
+                        // Layer came from the local containerd precompile cache — only
+                        // accept it if Wasmtime confirms the bytes are a valid artifact.
+                        if wasmtime::Engine::detect_precompiled(&wasm_layer.layer).is_some() {
+                            log::info!(
+                                "Layer already precompiled {:?}",
+                                wasm_layer.config.digest()
+                            );
+                            Ok(None)
+                        } else {
+                            bail!(
+                                "Layer is marked as precompiled but does not appear to be a valid precompiled component"
+                            )
+                        }
                     } else {
+                        // Layer came from an OCI image layer — always recompile from
+                        // WASM bytes, never trust precompiled-looking content from
+                        // untrusted image layers.
                         let component =
                             spin_componentize::componentize_if_necessary(&wasm_layer.layer)?;
                         let precompiled = self.0.precompile_component(&component)?;
@@ -277,9 +312,10 @@ mod tests {
             .serialize()
             .unwrap();
         let wasm_layers: Vec<WasmLayer> = vec![
-            // Needs to be precompiled
+            // Wasm module from OCI — needs compilation
             WasmLayer {
                 layer: module.clone(),
+                precompiled: false,
                 config: oci_spec::image::Descriptor::new(
                     MediaType::Other(constants::OCI_LAYER_MEDIA_TYPE_WASM.to_string()),
                     1024,
@@ -289,9 +325,10 @@ mod tests {
                     .unwrap(),
                 ),
             },
-            // Precompiled
+            // Already-compiled layer from the containerd precompile cache
             WasmLayer {
                 layer: component.to_owned(),
+                precompiled: true,
                 config: oci_spec::image::Descriptor::new(
                     MediaType::Other(constants::OCI_LAYER_MEDIA_TYPE_WASM.to_string()),
                     1024,
@@ -301,9 +338,10 @@ mod tests {
                     .unwrap(),
                 ),
             },
-            // Content that should be skipped
+            // Non-wasm data layer — should be skipped
             WasmLayer {
                 layer: vec![],
+                precompiled: false,
                 config: oci_spec::image::Descriptor::new(
                     MediaType::Other(spin_oci::client::DATA_MEDIATYPE.to_string()),
                     1024,
@@ -321,10 +359,47 @@ mod tests {
             .expect("compile failed");
         assert_eq!(precompiled.len(), 3);
         assert_ne!(precompiled[0].as_deref().expect("no first entry"), module);
-        assert_eq!(
-            precompiled[1].as_deref().expect("no second entry"),
-            component
-        );
+        // Cache layer: returned as None so the framework uses the already-compiled bytes
+        assert_eq!(precompiled[1], None);
         assert!(precompiled[2].is_none());
+    }
+
+    /// An OCI image layer containing valid precompiled
+    /// (native) bytes must be rejected rather than passed through to the AOT
+    /// loader. The `precompiled: false` flag signals "this came from an OCI
+    /// image, not from the trusted local cache."
+    #[tokio::test]
+    async fn precompile_rejects_oci_layer_with_precompiled_bytes() {
+        let wasmtime_engine = wasmtime::Engine::default();
+        // Produce real precompiled bytes using the same engine config
+        let compiled_bytes = wasmtime::component::Component::new(&wasmtime_engine, "(component)")
+            .unwrap()
+            .serialize()
+            .unwrap();
+
+        // Sanity-check: confirm these bytes actually look precompiled
+        assert!(wasmtime::Engine::detect_precompiled(&compiled_bytes).is_some());
+
+        // Simulate an OCI image whose wasm layer already contains precompiled bytes
+        let oci_layer = WasmLayer {
+            layer: compiled_bytes,
+            precompiled: false, // from OCI, not from cache
+            config: oci_spec::image::Descriptor::new(
+                MediaType::Other(constants::OCI_LAYER_MEDIA_TYPE_WASM.to_string()),
+                1024,
+                Digest::from_str(
+                    "sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b",
+                )
+                .unwrap(),
+            ),
+        };
+
+        let compiler = SpinCompiler(wasmtime_engine);
+        let result = compiler.compile(&[oci_layer]).await;
+
+        assert!(
+            result.is_err(),
+            "OCI layer with precompiled bytes must not be trusted"
+        );
     }
 }

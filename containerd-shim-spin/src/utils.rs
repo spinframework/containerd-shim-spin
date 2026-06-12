@@ -141,6 +141,7 @@ mod tests {
     fn is_wasm_content_test() {
         let wasm_content = WasmLayer {
             layer: vec![],
+            precompiled: false,
             config: oci_spec::image::Descriptor::new(
                 MediaType::Other(constants::OCI_LAYER_MEDIA_TYPE_WASM.to_string()),
                 1024,
@@ -153,6 +154,7 @@ mod tests {
         // Should be ignored
         let data_content = WasmLayer {
             layer: vec![],
+            precompiled: false,
             config: oci_spec::image::Descriptor::new(
                 MediaType::Other(spin_oci::client::DATA_MEDIATYPE.to_string()),
                 1024,
