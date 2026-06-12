@@ -10,7 +10,13 @@ ENV CROSS_TOOLCHAIN_PREFIX=${CROSS_CMAKE_SYSTEM_PROCESSOR}-linux-musl-
 # libseccomp-rs requires a static musl-linked libseccomp; we compile it here
 # using the cross-rs musl toolchain so we don't depend on any third-party images.
 RUN apt-get -y update && \
-    apt-get install -y pkg-config protobuf-compiler gperf curl && \
+    apt-get install -y pkg-config gperf curl unzip && \
+    PROTOC_VERSION=25.3 && \
+    PROTOC_ARCH=$(uname -m | sed 's/x86_64/x86_64/;s/aarch64/aarch_64/') && \
+    curl -fsSL "https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-${PROTOC_ARCH}.zip" \
+        -o /tmp/protoc.zip && \
+    unzip /tmp/protoc.zip -d /usr/local bin/protoc "include/*" && \
+    rm /tmp/protoc.zip && \
     curl -fsSL https://github.com/seccomp/libseccomp/releases/download/v2.5.3/libseccomp-2.5.3.tar.gz \
         -o /tmp/libseccomp.tar.gz && \
     tar xf /tmp/libseccomp.tar.gz -C /tmp && \

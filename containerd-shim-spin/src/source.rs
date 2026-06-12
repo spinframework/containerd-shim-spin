@@ -169,6 +169,7 @@ mod tests {
     fn make_layer(media_type: &str, data: Vec<u8>) -> WasmLayer {
         WasmLayer {
             layer: data,
+            precompiled: false,
             config: Descriptor::new(
                 MediaType::Other(media_type.to_string()),
                 1024,
