@@ -37,10 +37,10 @@ cat > "${OUTPUT_FILE}" <<EOF
 apiVersion: runtime.spinkube.dev/${CRD_VERSION}
 kind: Shim
 metadata:
-  name: spin
+  name: spin-v2
   labels:
-    app.kubernetes.io/name: spin
-    app.kubernetes.io/instance: spin
+    app.kubernetes.io/name: spin-v2
+    app.kubernetes.io/instance: spin-v2
     app.kubernetes.io/part-of: runtime-class-manager
 spec:
   nodeSelector:
@@ -69,7 +69,7 @@ spec:
     # Note: this name is used by the Spin Operator project as its default:
     # https://github.com/spinframework/spin-operator/blob/main/config/samples/spin-shim-executor.yaml
     name: wasmtime-spin-v2
-    handler: spin
+    handler: spin-v2
 
   rolloutStrategy:
     type: recreate
