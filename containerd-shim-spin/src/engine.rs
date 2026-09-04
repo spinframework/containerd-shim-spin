@@ -152,7 +152,10 @@ impl SpinSandbox {
         configure_application_variables_from_environment_variables(&locked_app)?;
         let trigger_cmds = get_supported_triggers(&locked_app)
             .with_context(|| format!("Couldn't find trigger executor for {app_source:?}"))?;
-        spin_telemetry::init(version!().version.to_string())?;
+        spin_telemetry::init(
+            version!().version.to_string(),
+            spin_connection_semaphore::metric_histogram_buckets(),
+        )?;
 
         self.run_trigger(ctx, &trigger_cmds, locked_app, app_source)
             .await
