@@ -159,7 +159,7 @@ install-cross:
 	@cross -V 2>/dev/null | grep 49338b1 || echo "WARN: unsupported version of cross found. Building containerd-shim-spin requires specific version of cross.\n\nPlease uninstall and run make install-cross to install the supported version."
 
 install-wkg: 
-	cargo install wkg
+	cargo install wkg --version 0.16.1 --locked
 
 check-bins:
 	./scripts/check-bins.sh
