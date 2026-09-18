@@ -1,3 +1,7 @@
+// The `Sandbox` trait requires a `Send` future. Proving that Spin's combined loader and trigger
+// future is `Send` exceeds rustc's default trait-solver recursion depth.
+#![recursion_limit = "256"]
+
 use containerd_shim_wasm::shim::{Cli, Config};
 use engine::SpinShim;
 

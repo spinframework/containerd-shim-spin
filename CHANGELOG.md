@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+- Bump to Spin 4.1.0 dependencies and compatible trigger plugins ([#450](https://github.com/spinframework/containerd-shim-spin/pull/450))
+
 ## [v0.25.1] - 2026-06-12
 ### Fixed
 - bump to containerd-shim-wasm v1.0.1 for security improvements ([#447](https://github.com/spinframework/containerd-shim-spin/pull/447))
