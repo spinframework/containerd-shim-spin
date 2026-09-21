@@ -1,6 +1,8 @@
-FROM --platform=${BUILDPLATFORM} mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim-amd64 AS build
+FROM --platform=${BUILDPLATFORM} mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim-amd64 AS build
 WORKDIR /opt/build
-RUN apt-get update && apt-get install xz-utils
+RUN apt-get update -o Acquire::Retries=3 \
+    && apt-get install -y --no-install-recommends -o Acquire::Retries=3 xz-utils \
+    && rm -rf /var/lib/apt/lists/*
 RUN curl -LO https://github.com/bytecodealliance/wizer/releases/download/v10.0.0/wizer-v10.0.0-x86_64-linux.tar.xz \
     && tar -xvf wizer-v10.0.0-x86_64-linux.tar.xz \
     && rm wizer-v10.0.0-x86_64-linux.tar.xz \
@@ -8,7 +10,7 @@ RUN curl -LO https://github.com/bytecodealliance/wizer/releases/download/v10.0.0
 
 FROM build AS build-dotnet
 COPY . .
-RUN dotnet build -c Release 
+RUN dotnet build -c Release
 
 FROM scratch
 COPY --from=build-dotnet /opt/build/bin/Release/net7.0/MyTestProject.wasm ./bin/Release/net7.0/MyTestProject.wasm
