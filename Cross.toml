@@ -3,6 +3,8 @@ default-target = "x86_64-unknown-linux-musl"
 
 [target.x86_64-unknown-linux-musl]
 dockerfile = { file = "./cross/Dockerfile", build-args = { CROSS_CMAKE_SYSTEM_PROCESSOR = "x86_64", CROSS_SYSROOT = "/usr/local/x86_64-linux-musl" } }
+image = "ghcr.io/cross-rs/x86_64-unknown-linux-musl:0.2.5"
 
 [target.aarch64-unknown-linux-musl]
-dockerfile = { file = "./cross/Dockerfile", build-args = { CROSS_CMAKE_SYSTEM_PROCESSOR = "aarch64", CROSS_SYSROOT = "/usr/local/aarch64-linux-musl" } } 
+dockerfile = { file = "./cross/Dockerfile", build-args = { CROSS_CMAKE_SYSTEM_PROCESSOR = "aarch64", CROSS_SYSROOT = "/usr/local/aarch64-linux-musl" } }
+image = "ghcr.io/cross-rs/aarch64-unknown-linux-musl:0.2.5"
