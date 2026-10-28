@@ -4,9 +4,9 @@ RUN rustup target add wasm32-wasip1
 COPY . .
 RUN cargo build --target wasm32-wasip1 --release
 
-FROM --platform=linux/amd64 golang:1.24.3-bullseye AS build-go
+FROM --platform=linux/amd64 golang:1.26.10-bookworm AS build-go
 WORKDIR /opt/build
-RUN curl -LO https://github.com/tinygo-org/tinygo/releases/download/v0.38.0/tinygo_0.38.0_amd64.deb && dpkg -i tinygo_0.38.0_amd64.deb
+RUN curl -LO https://github.com/tinygo-org/tinygo/releases/download/v0.41.1/tinygo_0.41.1_amd64.deb && dpkg -i tinygo_0.41.1_amd64.deb
 COPY . .
 WORKDIR /opt/build/go-hello
 RUN if [ -f go.mod ]; then go mod download; fi

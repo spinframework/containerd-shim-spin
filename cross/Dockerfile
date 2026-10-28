@@ -1,15 +1,15 @@
-ARG CROSS_BASE_IMAGE
-FROM $CROSS_BASE_IMAGE
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
 
-ARG CROSS_CMAKE_SYSTEM_PROCESSOR
-ARG CROSS_SYSROOT
-
-ENV CROSS_TOOLCHAIN_PREFIX=${CROSS_CMAKE_SYSTEM_PROCESSOR}-linux-musl-
+# The base image must set CROSS_TOOLCHAIN_PREFIX and CROSS_SYSROOT. Passing the
+# prefix without its trailing dash as --host makes configure use the
+# toolchain's ar and ranlib, not the host's.
 
 # Build libseccomp from source against the musl sysroot.
 # libseccomp-rs requires a static musl-linked libseccomp; we compile it here
 # using the cross-rs musl toolchain so we don't depend on any third-party images.
-RUN apt-get -y update && \
+RUN : "${CROSS_TOOLCHAIN_PREFIX:?}" "${CROSS_SYSROOT:?}" && \
+    apt-get -y update && \
     apt-get install -y pkg-config gperf curl unzip && \
     PROTOC_VERSION=25.3 && \
     PROTOC_ARCH=$(uname -m | sed 's/x86_64/x86_64/;s/aarch64/aarch_64/') && \
@@ -22,7 +22,7 @@ RUN apt-get -y update && \
     tar xf /tmp/libseccomp.tar.gz -C /tmp && \
     cd /tmp/libseccomp-2.5.3 && \
     ./configure \
-        --host=${CROSS_CMAKE_SYSTEM_PROCESSOR}-linux-musl \
+        --host=${CROSS_TOOLCHAIN_PREFIX%-} \
         CC=${CROSS_TOOLCHAIN_PREFIX}gcc \
         --prefix=${CROSS_SYSROOT} \
         --disable-shared \

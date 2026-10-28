@@ -1,8 +1,12 @@
 [build]
 default-target = "x86_64-unknown-linux-musl"
 
+# BASE_IMAGE pins cross's moving `:main` image by digest. Pinning it with
+# `image` would break every build after the first, because cross also tags
+# the image that it builds from cross/Dockerfile with that name. The next
+# build would then start from the previous build's output.
 [target.x86_64-unknown-linux-musl]
-dockerfile = { file = "./cross/Dockerfile", build-args = { CROSS_CMAKE_SYSTEM_PROCESSOR = "x86_64", CROSS_SYSROOT = "/usr/local/x86_64-linux-musl" } }
+dockerfile = { file = "./cross/Dockerfile", build-args = { BASE_IMAGE = "ghcr.io/cross-rs/x86_64-unknown-linux-musl:main@sha256:c32c7d8c69916dbd4e436a27c928121bca683db64920e7fd3b6cd37c8ad39e33" } }
 
 [target.aarch64-unknown-linux-musl]
-dockerfile = { file = "./cross/Dockerfile", build-args = { CROSS_CMAKE_SYSTEM_PROCESSOR = "aarch64", CROSS_SYSROOT = "/usr/local/aarch64-linux-musl" } } 
+dockerfile = { file = "./cross/Dockerfile", build-args = { BASE_IMAGE = "ghcr.io/cross-rs/aarch64-unknown-linux-musl:main@sha256:3a01d8e2b3eb780d77843ffc6dc4bae48920dd075d16287984e5bd6ea777d743" } }
