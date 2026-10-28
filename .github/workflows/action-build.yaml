@@ -23,7 +23,9 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          cache-key: rust-cache-${{ matrix.config.os }}-${{ matrix.config.arch}}
+          # Include the cross image, because CMakeCache.txt files in target/ record the image's compiler path.
+          # Include the cross rev that the Makefile pins, because install-cross keeps whatever cross binary the cache restores.
+          cache-key: rust-cache-${{ matrix.config.os }}-${{ matrix.config.arch}}-${{ hashFiles('Cross.toml', 'cross/Dockerfile', 'Makefile') }}
       - name: Setup build env
         run: |
           make setup
