@@ -66,6 +66,16 @@ mod test {
         .await?;
         assert_eq!(String::from_utf8_lossy(&res), "Hello world from Spin!");
 
+        // curl for go-hello
+        println!(" >>> curl http://localhost:{host_port}/spin/go-hello");
+        let res = retry_get(
+            &format!("http://localhost:{host_port}/spin/go-hello"),
+            RETRY_TIMES,
+            INTERVAL_IN_SECS,
+        )
+        .await?;
+        assert!(String::from_utf8_lossy(&res).ends_with("Hello Spin Shim!\n"));
+
         Ok(())
     }
 
