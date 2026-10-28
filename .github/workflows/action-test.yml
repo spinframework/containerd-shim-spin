@@ -17,6 +17,12 @@ jobs:
       - uses: fermyon/actions/spin/setup@v1
         with:
           version: "v2.7.0"
+      # TinyGo (installed by make setup) rejects Go releases outside a fixed range.
+      # Pin one here, because the runner image's default Go changes with the image.
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.26"
+          cache: false
 
       - name: Setup build env
         run: |
