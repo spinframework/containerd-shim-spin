@@ -1,0 +1,36 @@
+package spin:sqs@3.0.0;
+
+interface sqs-types {
+
+    variant message-attribute-value {
+        str(string),  // TODO: parse for the number case?
+        binary(list<u8>),
+    }
+
+    record message-attribute {
+        name: string,
+        data-type: option<string>,
+        value: message-attribute-value,
+    }
+
+    record message {
+        id: option<string>,
+        // TODO: built-in attributes?  E.g. timestamps
+        message-attributes: list<message-attribute>,
+        body: option<string>,
+    }
+
+    variant error {
+        other(string),
+    }
+
+    enum message-action {
+        delete,
+        leave,
+    }
+}
+
+world spin-sqs {
+    use sqs-types.{message, message-action, error};
+    export handle-queue-message: async func(message: message) -> result<message-action, error>;
+}

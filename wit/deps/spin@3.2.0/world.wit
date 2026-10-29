@@ -1,0 +1,19 @@
+package spin:up@3.2.0;
+
+/// The full world of a guest targeting an http-trigger
+world http-trigger {
+  include platform;
+  export wasi:http/incoming-handler@0.2.0;
+}
+
+/// The imports needed for a guest to run on a Spin host
+world platform {
+  include wasi:cli/imports@0.2.3;
+  import wasi:http/outgoing-handler@0.2.3;
+
+  include fermyon:spin/platform@2.0.0;
+  include wasi:keyvalue/imports@0.2.0-draft2;
+  import spin:postgres/postgres@3.0.0;
+  import spin:sqlite/sqlite@3.0.0;
+  import wasi:config/store@0.2.0-draft-2024-09-27;
+}

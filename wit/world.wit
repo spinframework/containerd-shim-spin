@@ -1,0 +1,106 @@
+package spinkube:containerd-shim-spin@0.26.0;
+
+// HTTP trigger
+
+world http-trigger-async {
+  include platform;
+  export wasi:http/handler@0.3.0;
+}
+
+world http-trigger-async-rc20260315 {
+  include platform;
+  export wasi:http/handler@0.3.0-rc-2026-03-15;
+}
+
+world http-trigger {
+  include platform;
+  export wasi:http/incoming-handler@0.2.6;
+}
+
+world http-trigger-rc20231018 {
+  include platform;
+  export wasi:http/incoming-handler@0.2.0-rc-2023-10-18;
+}
+
+world http-trigger-rc20231110 {
+  include platform;
+  export wasi:http/incoming-handler@0.2.0-rc-2023-11-10;
+}
+
+world http-trigger-legacy {
+  include platform;
+  export fermyon:spin/inbound-http;
+}
+
+// Redis trigger
+
+world redis-trigger {
+  include platform;
+  export spin:redis/inbound-redis@3.0.0;
+}
+
+world redis-trigger-legacy {
+  include platform;
+  export fermyon:spin/inbound-redis;
+}
+
+// MQTT trigger (https://github.com/spinframework/spin-trigger-plugins/tree/main/crates/trigger-mqtt)
+
+world mqtt-trigger {
+  include platform;
+  include spin:mqtt-trigger/spin-mqtt@3.0.0;
+}
+
+// Components built with the SDK from the archived https://github.com/spinframework/spin-trigger-mqtt
+world mqtt-trigger-legacy {
+  include platform;
+  include spin:mqtt-trigger/spin-mqtt;
+}
+
+// SQS trigger (https://github.com/spinframework/spin-trigger-plugins/tree/main/crates/trigger-sqs)
+
+world sqs-trigger {
+  include platform;
+  include spin:sqs/spin-sqs@3.0.0;
+}
+
+// Command trigger (https://github.com/spinframework/spin-trigger-plugins/tree/main/crates/trigger-command)
+
+world command-trigger-async {
+  include platform;
+  export wasi:cli/run@0.3.0;
+}
+
+world command-trigger {
+  include platform;
+  export wasi:cli/run@0.2.6;
+}
+
+// The imports needed for a guest to run on the containerd-shim-spin
+world platform {
+  include wasi:cli/reactor@0.2.0-rc-2023-10-18;
+  include wasi:cli/reactor@0.2.0-rc-2023-11-10;
+  include wasi:cli/imports@0.2.6;
+  include wasi:cli/imports@0.3.0-rc-2026-03-15;
+  include wasi:cli/imports@0.3.0;
+  import wasi:http/outgoing-handler@0.2.0-rc-2023-10-18;
+  import wasi:http/outgoing-handler@0.2.0-rc-2023-11-10;
+  import wasi:http/outgoing-handler@0.2.6;
+  import wasi:http/client@0.3.0-rc-2026-03-15;
+  import wasi:http/client@0.3.0;
+  include fermyon:spin/platform;
+  include fermyon:spin/platform@2.0.0;
+  include wasi:keyvalue/imports@0.2.0-draft2;
+  import spin:key-value/key-value@3.0.0;
+  import spin:mqtt/mqtt@3.0.0;
+  import spin:mysql/mysql@3.0.0;
+  import spin:postgres/postgres@3.0.0;
+  import spin:postgres/postgres@4.0.0;
+  import spin:postgres/postgres@4.1.0;
+  import spin:postgres/postgres@4.2.0;
+  import spin:redis/redis@3.0.0;
+  import spin:sqlite/sqlite@3.0.0;
+  import spin:sqlite/sqlite@3.1.0;
+  import spin:variables/variables@3.0.0;
+  import wasi:config/store@0.2.0-draft-2024-09-27;
+}
