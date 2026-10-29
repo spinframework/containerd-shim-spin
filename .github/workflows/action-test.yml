@@ -16,7 +16,7 @@ jobs:
       - uses: azure/setup-kubectl@v5
       - uses: fermyon/actions/spin/setup@v1
         with:
-          version: "v2.7.0"
+          version: "v4.2.5"
       # TinyGo (installed by make setup) rejects Go releases outside a fixed range.
       # Pin one here, because the runner image's default Go changes with the image.
       - uses: actions/setup-go@v7
