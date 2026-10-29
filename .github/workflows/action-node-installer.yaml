@@ -12,7 +12,11 @@ jobs:
   build-and-test:
     permissions:
       contents: read
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      KUBERNETES_VERSION: ${{ vars.KUBERNETES_VERSION || '1.36' }}
+      KIND_VERSION: v0.33.0
     strategy:
       fail-fast: false
       matrix:
@@ -21,6 +25,27 @@ jobs:
       release_version: ${{ steps.set_version.outputs.RELEASE_VERSION }}
     steps:
       - uses: actions/checkout@v6
+
+      - name: Resolve Kubernetes version
+        id: kubernetes
+        run: |
+          if [[ ! "$KUBERNETES_VERSION" =~ ^1\.[0-9]+$ ]]; then
+            echo "::error::KUBERNETES_VERSION must be a minor version such as 1.36"
+            exit 1
+          fi
+          version=$(curl --fail --silent --show-error --location \
+            "https://dl.k8s.io/release/stable-${KUBERNETES_VERSION}.txt")
+          if [[ ! "$version" =~ ^v${KUBERNETES_VERSION//./\\.}\.[0-9]+$ ]]; then
+            echo "::error::Unexpected Kubernetes version: $version"
+            exit 1
+          fi
+          echo "KUBERNETES_PATCH_VERSION=$version" >> "$GITHUB_ENV"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Testing Kubernetes $KUBERNETES_VERSION (upstream patch: $version)"
+
+      - uses: azure/setup-kubectl@v4
+        with:
+          version: ${{ steps.kubernetes.outputs.version }}
 
       - name: Set RELEASE_VERSION env var
         id: set_version
@@ -55,48 +80,57 @@ jobs:
         run: make build-dev-installer-image
         working-directory: node-installer
 
+      - name: Resolve kind node image
+        if: matrix.distribution == 'kind'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          image=$(curl --fail --silent --show-error --location \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/kubernetes-sigs/kind/releases/tags/${KIND_VERSION}" |
+            jq --exit-status --raw-output --arg prefix "kindest/node:v${KUBERNETES_VERSION}." '
+              [.body | scan("kindest/node:v[0-9]+\\.[0-9]+\\.[0-9]+@sha256:[a-f0-9]{64}")
+                | select(startswith($prefix))] | unique
+              | if length == 1 then .[0]
+                else error("Expected one kind node image for the selected Kubernetes minor")
+                end')
+          echo "KIND_NODE_IMAGE=$image" >> "$GITHUB_ENV"
+          echo "Testing kind $KIND_VERSION with $image"
+
       - uses: helm/kind-action@v1.14.0
         if: matrix.distribution == 'kind'
         with:
           install_only: true
+          version: ${{ env.KIND_VERSION }}
+          kubectl_version: ${{ steps.kubernetes.outputs.version }}
 
       - uses: medyagh/setup-minikube@v0.0.21
         if: matrix.distribution == 'minikube'
         with:
           start: false
+          minikube-version: latest
           container-runtime: containerd
 
       - if: matrix.distribution == 'microk8s'
         name: Install MicroK8s
         run: |
-          set -x
-          sudo snap install microk8s --classic --channel=1.32/stable
-          sudo microk8s status --wait-ready
-          sudo usermod -a -G microk8s $USER
-          mkdir -p $HOME/.kube
-          sudo microk8s kubectl config view --raw > $HOME/.kube/config
-          sudo chown $(id -u):$(id -g) $HOME/.kube/config
-          until sudo microk8s status --wait-ready; do sleep 5s; echo "Try again"; done
+          cat /etc/os-release
+          sudo --version
+          snap version
+          sudo snap install microk8s --classic --channel="${KUBERNETES_VERSION}/stable"
+          snap list microk8s
+          sudo microk8s status --wait-ready --timeout=180
 
-      - name: Run KIND test
-        if: matrix.distribution == 'kind'
-        run: make test-kind
+      - name: Run ${{ matrix.distribution }} integration test
+        run: make test-${{ matrix.distribution }}
         working-directory: node-installer
 
-      - name: Run MiniKube test
-        if: matrix.distribution == 'minikube'
-        run: make test-minikube
-        working-directory: node-installer
-
-      - name: Run MicroK8s test
-        if: matrix.distribution == 'microk8s'
-        run: make test-microk8s
-        working-directory: node-installer
-
-      - name: Run K3s test
-        if: matrix.distribution == 'k3s'
-        run: make test-k3s
-        working-directory: node-installer
+      - name: Collect MicroK8s debug logs
+        if: matrix.distribution == 'microk8s' && failure()
+        run: |
+          sudo snap services microk8s
+          sudo journalctl -u snapd.service --no-pager -n 100
+          sudo microk8s inspect
       
       - name: Collect k3s debug logs
         if: matrix.distribution == 'k3s' && failure()

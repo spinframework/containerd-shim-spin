@@ -4,8 +4,12 @@ set -euo pipefail
 : ${IMAGE_NAME:=ghcr.io/spinframework/containerd-shim-spin/node-installer:dev}
 
 echo "=== Step 1: Create a MiniKube cluster ==="
-docker build -t minikube-custom:v0.0.46-fixed -f ./tests/Dockerfile.minikube-custom .
-minikube start -p minikube --driver=docker --container-runtime=containerd --base-image="minikube-custom:v0.0.46-fixed"
+minikube_args=(start -p minikube --driver=docker --container-runtime=containerd)
+if [[ -n "${KUBERNETES_PATCH_VERSION:-}" ]]; then
+  minikube_args+=(--kubernetes-version "$KUBERNETES_PATCH_VERSION")
+fi
+minikube "${minikube_args[@]}"
+kubectl version
 
 echo "=== Step 2: Create namespace and deploy RuntimeClass ==="
 kubectl create namespace kwasm || true

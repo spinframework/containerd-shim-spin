@@ -10,18 +10,19 @@ if ! command -v microk8s >/dev/null 2>&1; then
   exit 1
 fi
 
-if ! microk8s status | grep -q "microk8s is running"; then
-  echo "Starting MicroK8s..."
+# CI installs a fresh cluster; only reset pre-existing local test clusters.
+if [[ "${CI:-false}" != "true" ]]; then
   sudo microk8s start
-else
+  sudo microk8s status --wait-ready --timeout=180
   sudo microk8s reset
 fi
 
-sudo microk8s status --wait-ready
+sudo microk8s status --wait-ready --timeout=180
 
 sudo microk8s enable dns
 
 alias kubectl='sudo microk8s kubectl'
+kubectl version
 
 echo "=== Step 2: Create namespace and deploy RuntimeClass ==="
 kubectl create namespace kwasm || true
@@ -80,9 +81,6 @@ kubectl get pods
 echo "=== Step 5: Test the workload ==="
 echo "Waiting for service to be ready..."
 sleep 10
-
-sudo microk8s enable ingress
-sleep 5
 
 echo "Testing workload with curl..."
 kubectl port-forward svc/wasm-spin 8888:80 &

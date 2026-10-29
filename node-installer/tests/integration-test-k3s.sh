@@ -4,7 +4,9 @@ set -euo pipefail
 : ${IMAGE_NAME:=ghcr.io/spinframework/containerd-shim-spin/node-installer:dev}
 
 echo "Installing K3s..."
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik --write-kubeconfig-mode=644" sh -
+curl -sfL https://get.k3s.io |
+  INSTALL_K3S_CHANNEL="${KUBERNETES_VERSION:+v${KUBERNETES_VERSION}}" \
+  INSTALL_K3S_EXEC="--disable=traefik --write-kubeconfig-mode=644" sh -
 
 echo "Waiting for K3s to be ready..."
 sleep 10
@@ -13,6 +15,7 @@ until kubectl get nodes | grep -q " Ready"; do
   echo "Waiting for node to be ready..."
   sleep 5
 done
+kubectl version
 
 echo "=== Step 2: Create namespace and deploy RuntimeClass ==="
 kubectl create namespace kwasm || true

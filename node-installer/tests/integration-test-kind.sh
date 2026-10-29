@@ -10,7 +10,11 @@ if kind get clusters | grep -q "spin-test"; then
 fi
 
 echo "Creating kind cluster..."
-kind create cluster --config - << EOF
+kind_args=(create cluster --config -)
+if [[ -n "${KIND_NODE_IMAGE:-}" ]]; then
+  kind_args+=(--image "$KIND_NODE_IMAGE")
+fi
+kind "${kind_args[@]}" << EOF
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: spin-test
@@ -22,6 +26,7 @@ nodes:
     protocol: TCP
 EOF
 kubectl --context=kind-spin-test wait --for=condition=Ready nodes --all --timeout=90s
+kubectl --context=kind-spin-test version
 
 echo "=== Step 2: Create namespace and deploy RuntimeClass ==="
 kubectl --context=kind-spin-test create namespace kwasm || true
