@@ -10,7 +10,6 @@ crate-type = ["cdylib"]
 [dependencies]
 anyhow = "1"
 bytes = "1"
-# Do not change spin sdk version without testing the e2e.
-spin-sdk = "2.2.0"
+spin-sdk = "7.0.0"
 
 [workspace]

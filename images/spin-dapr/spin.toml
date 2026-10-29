@@ -1,17 +1,19 @@
-spin_manifest_version = "1"
+spin_manifest_version = 2
+
+[application]
 authors = ["Sven Pfennig <s.pfennig@reply.de>"]
 description = "Example application to use Dapr with Spin"
 name = "spin-dapr"
-trigger = { type = "http", base = "/" }
 version = "0.1.0"
 
-[[component]]
-id = "spin-dapr"
-source = "target/wasm32-wasip1/release/spin_dapr.wasm"
-allowed_http_hosts = []
-[component.trigger]
+[[trigger.http]]
 route = "/..."
+component = "spin-dapr"
 
-[component.build]
-command = "cargo build --target wasm32-wasip1 --release"
+[component.spin-dapr]
+source = "target/wasm32-wasip2/release/spin_dapr.wasm"
+allowed_outbound_hosts = ["redis://localhost:6379"]
+
+[component.spin-dapr.build]
+command = "cargo build --target wasm32-wasip2 --release"
 watch = ["src/**/*.rs", "Cargo.toml"]

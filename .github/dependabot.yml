@@ -1,5 +1,9 @@
 version: 2
 updates:
+  - package-ecosystem: gomod
+    directory: "/images/spin/go-hello"
+    schedule:
+      interval: "weekly"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
