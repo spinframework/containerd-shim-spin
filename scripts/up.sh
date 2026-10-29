@@ -103,8 +103,8 @@ done
 
 # Build with cargo and push with wkg the simple Spin hello world app. Use ttl.sh since wkg does not support localhost registries with http. See https://github.com/bytecodealliance/wasm-pkg-tools/issues/149.
 TEMP_DIR=$( mktemp -d )
-cargo build --release --target=wasm32-wasip1 --manifest-path ./images/${WKG_SOURCE}/Cargo.toml --target-dir "$TEMP_DIR"
-wkg oci push "ttl.sh/containerd-shim-tests/wkg-oci-push/${WKG_IMAGE}:latest" "$TEMP_DIR/wasm32-wasip1/release/spin_rust_hello.wasm"
+cargo build --release --target=wasm32-wasip2 --manifest-path ./images/${WKG_SOURCE}/Cargo.toml --target-dir "$TEMP_DIR"
+wkg oci push "ttl.sh/containerd-shim-tests/wkg-oci-push/${WKG_IMAGE}:latest" "$TEMP_DIR/wasm32-wasip2/release/spin_rust_hello.wasm"
 rm -rf "$TEMP_DIR"
 
 sleep 5

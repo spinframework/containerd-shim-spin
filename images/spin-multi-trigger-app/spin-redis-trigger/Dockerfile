@@ -1,9 +1,9 @@
-FROM --platform=${BUILDPLATFORM} rust:1.91 AS build
+FROM --platform=${BUILDPLATFORM} rust:1.97 AS build
 WORKDIR /opt/build
-RUN rustup target add wasm32-wasip1
+RUN rustup target add wasm32-wasip2
 COPY . .
-RUN cargo build --target wasm32-wasip1 --release
+RUN cargo build --target wasm32-wasip2 --release
 
 FROM scratch
-COPY --from=build /opt/build/target/wasm32-wasip1/release/spin_redis_trigger.wasm ./target/wasm32-wasip1/release/spin_redis_trigger.wasm
+COPY --from=build /opt/build/target/wasm32-wasip2/release/spin_redis_trigger.wasm ./target/wasm32-wasip2/release/spin_redis_trigger.wasm
 COPY --from=build /opt/build/spin.toml .

@@ -10,6 +10,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1"
-spin-sdk = "2.2.0"
+bytes = "1"
+spin-sdk = "7.0.0"
 
 [workspace]
