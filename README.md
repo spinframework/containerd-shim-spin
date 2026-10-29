@@ -144,8 +144,4 @@ If the feature branch is created from the origin repo, the [node-installer image
 
 ## Feedback
 
-For questions or support, please visit our [Slack channel](https://cloud-native.slack.com/archives/C06PC7JA1EE): #spinkube. 
-
-## Contributing
-
-If you would like to contribute, please visit this [contributing](https://www.spinkube.dev/docs/contrib/) page.
+For questions or support, please visit our [Slack channel](https://cloud-native.slack.com/archives/C06PC7JA1EE): #spinkube.
