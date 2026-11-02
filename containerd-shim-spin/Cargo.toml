@@ -13,7 +13,7 @@ Containerd shim for running Spin workloads.
 [dependencies]
 containerd-shim-wasm = { version = "1.0.1", default-features = false, features = ["opentelemetry"]}
 log = "0.4"
-spin-app = { git = "https://github.com/spinframework/spin", tag = "v4.2.5" }
+spin-app = { git = "https://github.com/spinframework/spin", tag = "v4.2.6" }
 spin-componentize = { git = "https://github.com/spinframework/spin", tag = "v4.2.5" }
 spin-connection-semaphore = { git = "https://github.com/spinframework/spin", tag = "v4.2.5" }
 # Enable loading components precompiled by the shim
