@@ -17,7 +17,7 @@ spin-app = { git = "https://github.com/spinframework/spin", tag = "v4.2.5" }
 spin-componentize = { git = "https://github.com/spinframework/spin", tag = "v4.2.5" }
 spin-connection-semaphore = { git = "https://github.com/spinframework/spin", tag = "v4.2.5" }
 # Enable loading components precompiled by the shim
-spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v4.2.5", features = [
+spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v4.2.6", features = [
     "unsafe-aot-compilation",
 ] }
 spin-trigger-http = { git = "https://github.com/spinframework/spin", tag = "v4.2.5" }

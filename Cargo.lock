@@ -1682,16 +1682,16 @@ dependencies = [
  "oci-spec 0.9.0",
  "openssl",
  "serde_json",
- "spin-app",
- "spin-componentize",
- "spin-connection-semaphore",
- "spin-core",
+ "spin-app 4.2.5",
+ "spin-componentize 4.2.5",
+ "spin-connection-semaphore 4.2.5",
+ "spin-core 4.2.5",
  "spin-factor-outbound-networking",
  "spin-loader",
  "spin-oci",
  "spin-runtime-factors",
- "spin-telemetry",
- "spin-trigger",
+ "spin-telemetry 4.2.5",
+ "spin-trigger 4.2.6",
  "spin-trigger-http",
  "spin-trigger-redis",
  "temp-env",
@@ -4636,6 +4636,15 @@ dependencies = [
 
 [[package]]
 name = "memoffset"
+version = "0.6.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
+dependencies = [
+ "autocfg",
+]
+
+[[package]]
+name = "memoffset"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5de893c32cde5f383baa4c04c5d6dbdd735cfd4a794b0debdb2bb1b421da5ff4"
@@ -4730,12 +4739,6 @@ name = "multimap"
 version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e5ce46fe64a9d73be07dcbe690a38ce1b293be448fd8ce1e6c1b8062c9f72c6a"
-
-[[package]]
-name = "multimap"
-version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d87ecb2933e8aeadb3e3a02b828fed80a7528047e68b4f424523a0981a3a084"
 
 [[package]]
 name = "multiversion_no_op"
@@ -4873,6 +4876,8 @@ dependencies = [
  "bitflags 1.3.2",
  "cfg-if 1.0.5",
  "libc",
+ "memoffset 0.6.5",
+ "pin-utils",
 ]
 
 [[package]]
@@ -6114,7 +6119,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "059a34f111a9dee2ce1ac2826a68b24601c4298cfeb1a587c3cb493d5ab46f52"
 dependencies = [
  "libc",
- "nix 0.31.3",
+ "nix 0.25.1",
 ]
 
 [[package]]
@@ -6219,7 +6224,7 @@ dependencies = [
  "heck 0.3.3",
  "itertools 0.10.5",
  "log",
- "multimap 0.8.3",
+ "multimap",
  "petgraph 0.5.1",
  "prost 0.8.0",
  "prost-types 0.8.0",
@@ -6235,9 +6240,9 @@ checksum = "22505a5c94da8e3b7c2996394d1c933236c4d743e81a410bcca4e6989fc066a4"
 dependencies = [
  "bytes",
  "heck 0.5.0",
- "itertools 0.12.1",
+ "itertools 0.10.5",
  "log",
- "multimap 0.10.1",
+ "multimap",
  "once_cell",
  "petgraph 0.6.5",
  "prettyplease",
@@ -6255,9 +6260,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be769465445e8c1474e9c5dac2018218498557af32d9ed057325ec9a41ae81bf"
 dependencies = [
  "heck 0.5.0",
- "itertools 0.14.0",
+ "itertools 0.10.5",
  "log",
- "multimap 0.10.1",
+ "multimap",
  "once_cell",
  "petgraph 0.7.1",
  "prettyplease",
@@ -6288,7 +6293,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81bddcdb20abf9501610992b6759a4c888aef7d1a7247ef75e2404275ac24af1"
 dependencies = [
  "anyhow",
- "itertools 0.12.1",
+ "itertools 0.10.5",
  "proc-macro2",
  "quote",
  "syn 2.0.119",
@@ -6301,7 +6306,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8a56d757972c98b346a9b766e3f02746cde6dd1cd1d1d563472929fdd74bec4d"
 dependencies = [
  "anyhow",
- "itertools 0.14.0",
+ "itertools 0.10.5",
  "proc-macro2",
  "quote",
  "syn 2.0.119",
@@ -8044,7 +8049,18 @@ dependencies = [
  "anyhow",
  "serde",
  "serde_json",
- "spin-locked-app",
+ "spin-locked-app 4.2.5",
+]
+
+[[package]]
+name = "spin-app"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "serde",
+ "serde_json",
+ "spin-locked-app 4.2.6",
 ]
 
 [[package]]
@@ -8059,9 +8075,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "spin-capabilities"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "wac-graph",
+ "wasm-encoder 0.262.0",
+ "wasmparser 0.262.0",
+]
+
+[[package]]
 name = "spin-common"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
+dependencies = [
+ "anyhow",
+ "clap",
+ "dirs 6.0.0",
+ "sha2 0.10.9",
+ "tempfile",
+ "tokio",
+ "url",
+]
+
+[[package]]
+name = "spin-common"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
 dependencies = [
  "anyhow",
  "clap",
@@ -8087,6 +8128,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "spin-componentize"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "tracing",
+ "wasm-encoder 0.262.0",
+ "wasm-metadata 0.262.0",
+ "wasmparser 0.262.0",
+ "wit-component 0.262.0",
+ "wit-parser 0.262.0",
+]
+
+[[package]]
 name = "spin-compose"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
@@ -8096,11 +8151,31 @@ dependencies = [
  "indexmap 2.14.2",
  "itertools 0.15.0",
  "semver",
- "spin-app",
- "spin-capabilities",
- "spin-common",
- "spin-componentize",
- "spin-serde",
+ "spin-app 4.2.5",
+ "spin-capabilities 4.2.5",
+ "spin-common 4.2.5",
+ "spin-componentize 4.2.5",
+ "spin-serde 4.2.5",
+ "thiserror 2.0.21",
+ "tokio",
+ "wac-graph",
+]
+
+[[package]]
+name = "spin-compose"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "indexmap 2.14.2",
+ "itertools 0.15.0",
+ "semver",
+ "spin-app 4.2.6",
+ "spin-capabilities 4.2.6",
+ "spin-common 4.2.6",
+ "spin-componentize 4.2.6",
+ "spin-serde 4.2.6",
  "thiserror 2.0.21",
  "tokio",
  "wac-graph",
@@ -8112,7 +8187,18 @@ version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
 dependencies = [
  "anyhow",
- "spin-telemetry",
+ "spin-telemetry 4.2.5",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "spin-connection-semaphore"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "spin-telemetry 4.2.6",
  "tokio",
  "tracing",
 ]
@@ -8129,6 +8215,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "spin-core"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "tracing",
+ "wasmtime",
+]
+
+[[package]]
 name = "spin-expressions"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
@@ -8136,7 +8233,19 @@ dependencies = [
  "anyhow",
  "async-trait",
  "futures",
- "spin-locked-app",
+ "spin-locked-app 4.2.5",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "spin-expressions"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "futures",
+ "spin-locked-app 4.2.6",
  "thiserror 2.0.21",
 ]
 
@@ -8147,15 +8256,37 @@ source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1c
 dependencies = [
  "anyhow",
  "serde",
- "spin-connection-semaphore",
- "spin-core",
- "spin-factor-otel",
- "spin-factors",
- "spin-locked-app",
- "spin-resource-table",
- "spin-telemetry",
- "spin-wasi-async",
- "spin-world",
+ "spin-connection-semaphore 4.2.5",
+ "spin-core 4.2.5",
+ "spin-factor-otel 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-locked-app 4.2.5",
+ "spin-resource-table 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-wasi-async 4.2.5",
+ "spin-world 4.2.5",
+ "thiserror 2.0.21",
+ "tokio",
+ "toml 0.8.23",
+ "tracing",
+]
+
+[[package]]
+name = "spin-factor-key-value"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "serde",
+ "spin-connection-semaphore 4.2.6",
+ "spin-core 4.2.6",
+ "spin-factor-otel 4.2.6",
+ "spin-factors 4.2.6",
+ "spin-locked-app 4.2.6",
+ "spin-resource-table 4.2.6",
+ "spin-telemetry 4.2.6",
+ "spin-wasi-async 4.2.6",
+ "spin-world 4.2.6",
  "thiserror 2.0.21",
  "tokio",
  "toml 0.8.23",
@@ -8170,12 +8301,12 @@ dependencies = [
  "anyhow",
  "async-trait",
  "serde",
- "spin-factor-otel",
- "spin-factors",
+ "spin-factor-otel 4.2.5",
+ "spin-factors 4.2.5",
  "spin-llm-remote-http",
- "spin-locked-app",
- "spin-telemetry",
- "spin-world",
+ "spin-locked-app 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
  "toml 0.8.23",
  "tracing",
@@ -8192,11 +8323,30 @@ dependencies = [
  "opentelemetry 0.29.1",
  "opentelemetry-otlp 0.29.0",
  "opentelemetry_sdk 0.29.0",
- "spin-core",
- "spin-factors",
- "spin-resource-table",
- "spin-telemetry",
- "spin-world",
+ "spin-core 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-resource-table 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-world 4.2.5",
+ "tracing",
+ "tracing-opentelemetry 0.30.0",
+]
+
+[[package]]
+name = "spin-factor-otel"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "indexmap 2.14.2",
+ "opentelemetry 0.29.1",
+ "opentelemetry-otlp 0.29.0",
+ "opentelemetry_sdk 0.29.0",
+ "spin-core 4.2.6",
+ "spin-factors 4.2.6",
+ "spin-resource-table 4.2.6",
+ "spin-telemetry 4.2.6",
+ "spin-world 4.2.6",
  "tracing",
  "tracing-opentelemetry 0.30.0",
 ]
@@ -8219,13 +8369,13 @@ dependencies = [
  "reqwest 0.12.28",
  "rustls 0.23.46",
  "serde",
- "spin-factor-otel",
+ "spin-factor-otel 4.2.5",
  "spin-factor-outbound-networking",
- "spin-factor-wasi",
- "spin-factors",
- "spin-telemetry",
- "spin-world",
- "terminal",
+ "spin-factor-wasi 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-world 4.2.5",
+ "terminal 4.2.5",
  "tokio",
  "tokio-rustls 0.26.6",
  "tower-service",
@@ -8244,12 +8394,12 @@ dependencies = [
  "anyhow",
  "rumqttc 0.25.1 (git+https://github.com/spinframework/rumqtt?rev=65b7b39a70b12d1781acb61cc07f1f1b680e7643)",
  "serde",
- "spin-core",
- "spin-factor-otel",
+ "spin-core 4.2.5",
+ "spin-factor-otel 4.2.5",
  "spin-factor-outbound-networking",
- "spin-factors",
- "spin-resource-table",
- "spin-world",
+ "spin-factors 4.2.5",
+ "spin-resource-table 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
  "tracing",
 ]
@@ -8264,14 +8414,14 @@ dependencies = [
  "mysql_async",
  "opentelemetry-semantic-conventions",
  "serde",
- "spin-core",
- "spin-factor-otel",
+ "spin-core 4.2.5",
+ "spin-factor-otel 4.2.5",
  "spin-factor-outbound-networking",
- "spin-factors",
- "spin-resource-table",
- "spin-telemetry",
- "spin-wasi-async",
- "spin-world",
+ "spin-factors 4.2.5",
+ "spin-resource-table 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-wasi-async 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
  "tracing",
  "url",
@@ -8291,14 +8441,14 @@ dependencies = [
  "rustls-pki-types",
  "rustls-platform-verifier",
  "serde",
- "spin-connection-semaphore",
- "spin-factor-variables",
- "spin-factor-wasi",
- "spin-factors",
- "spin-locked-app",
+ "spin-connection-semaphore 4.2.5",
+ "spin-factor-variables 4.2.5",
+ "spin-factor-wasi 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-locked-app 4.2.5",
  "spin-manifest",
  "spin-outbound-networking-config",
- "spin-serde",
+ "spin-serde 4.2.5",
  "tokio",
  "tracing",
  "url",
@@ -8323,16 +8473,16 @@ dependencies = [
  "rust_decimal",
  "serde",
  "serde_json",
- "spin-common",
- "spin-core",
- "spin-factor-otel",
+ "spin-common 4.2.5",
+ "spin-core 4.2.5",
+ "spin-factor-otel 4.2.5",
  "spin-factor-outbound-networking",
- "spin-factors",
- "spin-locked-app",
- "spin-resource-table",
- "spin-telemetry",
- "spin-wasi-async",
- "spin-world",
+ "spin-factors 4.2.5",
+ "spin-locked-app 4.2.5",
+ "spin-resource-table 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-wasi-async 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
  "tokio-postgres",
  "tokio-rustls 0.26.6",
@@ -8350,12 +8500,12 @@ dependencies = [
  "opentelemetry-semantic-conventions",
  "redis 0.32.7",
  "serde",
- "spin-core",
- "spin-factor-otel",
+ "spin-core 4.2.5",
+ "spin-factor-otel 4.2.5",
  "spin-factor-outbound-networking",
- "spin-factors",
- "spin-resource-table",
- "spin-world",
+ "spin-factors 4.2.5",
+ "spin-resource-table 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
  "tracing",
 ]
@@ -8367,14 +8517,33 @@ source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1c
 dependencies = [
  "async-trait",
  "opentelemetry-semantic-conventions",
- "spin-core",
- "spin-factor-otel",
- "spin-factors",
- "spin-locked-app",
- "spin-resource-table",
- "spin-telemetry",
- "spin-wasi-async",
- "spin-world",
+ "spin-core 4.2.5",
+ "spin-factor-otel 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-locked-app 4.2.5",
+ "spin-resource-table 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-wasi-async 4.2.5",
+ "spin-world 4.2.5",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "spin-factor-sqlite"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "async-trait",
+ "opentelemetry-semantic-conventions",
+ "spin-core 4.2.6",
+ "spin-factor-otel 4.2.6",
+ "spin-factors 4.2.6",
+ "spin-locked-app 4.2.6",
+ "spin-resource-table 4.2.6",
+ "spin-telemetry 4.2.6",
+ "spin-wasi-async 4.2.6",
+ "spin-world 4.2.6",
  "tokio",
  "tracing",
 ]
@@ -8384,12 +8553,26 @@ name = "spin-factor-variables"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
 dependencies = [
- "spin-core",
- "spin-expressions",
- "spin-factor-otel",
- "spin-factors",
- "spin-telemetry",
- "spin-world",
+ "spin-core 4.2.5",
+ "spin-expressions 4.2.5",
+ "spin-factor-otel 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-world 4.2.5",
+ "tracing",
+]
+
+[[package]]
+name = "spin-factor-variables"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "spin-core 4.2.6",
+ "spin-expressions 4.2.6",
+ "spin-factor-otel 4.2.6",
+ "spin-factors 4.2.6",
+ "spin-telemetry 4.2.6",
+ "spin-world 4.2.6",
  "tracing",
 ]
 
@@ -8402,9 +8585,27 @@ dependencies = [
  "bytes",
  "futures",
  "pin-project-lite",
- "spin-common",
- "spin-connection-semaphore",
- "spin-factors",
+ "spin-common 4.2.5",
+ "spin-connection-semaphore 4.2.5",
+ "spin-factors 4.2.5",
+ "tokio",
+ "tracing",
+ "wasmtime",
+ "wasmtime-wasi",
+]
+
+[[package]]
+name = "spin-factor-wasi"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "futures",
+ "pin-project-lite",
+ "spin-common 4.2.6",
+ "spin-connection-semaphore 4.2.6",
+ "spin-factors 4.2.6",
  "tokio",
  "tracing",
  "wasmtime",
@@ -8418,8 +8619,22 @@ source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1c
 dependencies = [
  "anyhow",
  "serde",
- "spin-app",
- "spin-factors-derive",
+ "spin-app 4.2.5",
+ "spin-factors-derive 4.2.5",
+ "thiserror 2.0.21",
+ "toml 0.8.23",
+ "wasmtime",
+]
+
+[[package]]
+name = "spin-factors"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "serde",
+ "spin-app 4.2.6",
+ "spin-factors-derive 4.2.6",
  "thiserror 2.0.21",
  "toml 0.8.23",
  "wasmtime",
@@ -8436,15 +8651,39 @@ dependencies = [
 ]
 
 [[package]]
+name = "spin-factors-derive"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 3.0.9",
+]
+
+[[package]]
 name = "spin-factors-executor"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
 dependencies = [
  "anyhow",
- "spin-app",
- "spin-core",
- "spin-factors",
- "spin-telemetry",
+ "spin-app 4.2.5",
+ "spin-core 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-telemetry 4.2.5",
+ "tracing",
+ "wasmtime",
+]
+
+[[package]]
+name = "spin-factors-executor"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "spin-app 4.2.6",
+ "spin-core 4.2.6",
+ "spin-factors 4.2.6",
+ "spin-telemetry 4.2.6",
  "tracing",
  "wasmtime",
 ]
@@ -8462,10 +8701,10 @@ dependencies = [
  "percent-encoding",
  "routefinder",
  "serde",
- "spin-app",
+ "spin-app 4.2.5",
  "spin-factor-outbound-http",
  "spin-http-routes",
- "terminal",
+ "terminal 4.2.5",
  "tracing",
  "wasmtime",
  "wasmtime-wasi",
@@ -8496,8 +8735,8 @@ dependencies = [
  "aws-credential-types",
  "aws-sdk-dynamodb",
  "serde",
- "spin-core",
- "spin-factor-key-value",
+ "spin-core 4.2.5",
+ "spin-factor-key-value 4.2.5",
  "tokio",
 ]
 
@@ -8514,7 +8753,7 @@ dependencies = [
  "futures",
  "reqwest 0.12.28",
  "serde",
- "spin-factor-key-value",
+ "spin-factor-key-value 4.2.5",
  "tokio",
 ]
 
@@ -8526,8 +8765,8 @@ dependencies = [
  "anyhow",
  "redis 0.32.7",
  "serde",
- "spin-core",
- "spin-factor-key-value",
+ "spin-core 4.2.5",
+ "spin-factor-key-value 4.2.5",
  "tokio",
  "url",
 ]
@@ -8540,10 +8779,10 @@ dependencies = [
  "anyhow",
  "rusqlite",
  "serde",
- "spin-core",
- "spin-factor-key-value",
- "spin-wasi-async",
- "spin-world",
+ "spin-core 4.2.5",
+ "spin-factor-key-value 4.2.5",
+ "spin-wasi-async 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
 ]
 
@@ -8557,8 +8796,8 @@ dependencies = [
  "reqwest 0.12.28",
  "serde",
  "serde_json",
- "spin-telemetry",
- "spin-world",
+ "spin-telemetry 4.2.5",
+ "spin-world 4.2.5",
  "tracing",
 ]
 
@@ -8577,14 +8816,14 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2 0.10.9",
- "spin-common",
- "spin-expressions",
- "spin-locked-app",
+ "spin-common 4.2.5",
+ "spin-expressions 4.2.5",
+ "spin-locked-app 4.2.5",
  "spin-manifest",
  "spin-outbound-networking-config",
- "spin-serde",
+ "spin-serde 4.2.5",
  "tempfile",
- "terminal",
+ "terminal 4.2.5",
  "tokio",
  "toml 0.8.23",
  "tracing",
@@ -8601,7 +8840,21 @@ dependencies = [
  "itertools 0.15.0",
  "serde",
  "serde_json",
- "spin-serde",
+ "spin-serde 4.2.5",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "spin-locked-app"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "itertools 0.15.0",
+ "serde",
+ "serde_json",
+ "spin-serde 4.2.6",
  "thiserror 2.0.21",
 ]
 
@@ -8616,8 +8869,8 @@ dependencies = [
  "schemars 1.2.3",
  "semver",
  "serde",
- "spin-serde",
- "terminal",
+ "spin-serde 4.2.5",
+ "terminal 4.2.5",
  "thiserror 2.0.21",
  "toml 0.8.23",
  "url",
@@ -8645,10 +8898,10 @@ dependencies = [
  "reqwest 0.13.5",
  "serde",
  "serde_json",
- "spin-common",
- "spin-compose",
+ "spin-common 4.2.5",
+ "spin-compose 4.2.5",
  "spin-loader",
- "spin-locked-app",
+ "spin-locked-app 4.2.5",
  "tempfile",
  "tokio",
  "tokio-util",
@@ -8668,7 +8921,7 @@ dependencies = [
  "http 1.5.0",
  "ip_network",
  "ip_network_table",
- "spin-expressions",
+ "spin-expressions 4.2.5",
  "tracing",
  "url",
  "urlencoding",
@@ -8680,33 +8933,38 @@ version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
 
 [[package]]
+name = "spin-resource-table"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+
+[[package]]
 name = "spin-runtime-config"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
 dependencies = [
  "anyhow",
  "serde",
- "spin-common",
- "spin-expressions",
- "spin-factor-key-value",
+ "spin-common 4.2.5",
+ "spin-expressions 4.2.5",
+ "spin-factor-key-value 4.2.5",
  "spin-factor-llm",
- "spin-factor-otel",
+ "spin-factor-otel 4.2.5",
  "spin-factor-outbound-http",
  "spin-factor-outbound-mqtt",
  "spin-factor-outbound-mysql",
  "spin-factor-outbound-networking",
  "spin-factor-outbound-pg",
  "spin-factor-outbound-redis",
- "spin-factor-sqlite",
- "spin-factor-variables",
- "spin-factor-wasi",
- "spin-factors",
+ "spin-factor-sqlite 4.2.5",
+ "spin-factor-variables 4.2.5",
+ "spin-factor-wasi 4.2.5",
+ "spin-factors 4.2.5",
  "spin-key-value-aws",
  "spin-key-value-azure",
  "spin-key-value-redis",
  "spin-key-value-spin",
  "spin-sqlite",
- "spin-trigger",
+ "spin-trigger 4.2.5",
  "spin-variables-azure",
  "spin-variables-env",
  "spin-variables-static",
@@ -8721,25 +8979,25 @@ source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1c
 dependencies = [
  "anyhow",
  "clap",
- "spin-common",
- "spin-factor-key-value",
+ "spin-common 4.2.5",
+ "spin-factor-key-value 4.2.5",
  "spin-factor-llm",
- "spin-factor-otel",
+ "spin-factor-otel 4.2.5",
  "spin-factor-outbound-http",
  "spin-factor-outbound-mqtt",
  "spin-factor-outbound-mysql",
  "spin-factor-outbound-networking",
  "spin-factor-outbound-pg",
  "spin-factor-outbound-redis",
- "spin-factor-sqlite",
- "spin-factor-variables",
- "spin-factor-wasi",
- "spin-factors",
- "spin-factors-executor",
+ "spin-factor-sqlite 4.2.5",
+ "spin-factor-variables 4.2.5",
+ "spin-factor-wasi 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-factors-executor 4.2.5",
  "spin-runtime-config",
- "spin-trigger",
+ "spin-trigger 4.2.5",
  "spin-variables-static",
- "terminal",
+ "terminal 4.2.5",
  "tracing",
 ]
 
@@ -8757,13 +9015,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "spin-serde"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "base64 0.22.1",
+ "schemars 1.2.3",
+ "semver",
+ "serde",
+ "wasm-pkg-common",
+]
+
+[[package]]
 name = "spin-sqlite"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
 dependencies = [
  "serde",
- "spin-factor-sqlite",
- "spin-factors",
+ "spin-factor-sqlite 4.2.5",
+ "spin-factors 4.2.5",
  "spin-sqlite-inproc",
  "spin-sqlite-libsql",
  "toml 0.8.23",
@@ -8778,9 +9049,9 @@ dependencies = [
  "async-trait",
  "futures",
  "rusqlite",
- "spin-factor-sqlite",
- "spin-wasi-async",
- "spin-world",
+ "spin-factor-sqlite 4.2.5",
+ "spin-wasi-async 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
 ]
 
@@ -8792,8 +9063,8 @@ dependencies = [
  "anyhow",
  "async-trait",
  "libsql",
- "spin-factor-sqlite",
- "spin-world",
+ "spin-factor-sqlite 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
 ]
 
@@ -8811,7 +9082,27 @@ dependencies = [
  "opentelemetry-semantic-conventions",
  "opentelemetry_sdk 0.29.0",
  "reqwest 0.12.28",
- "terminal",
+ "terminal 4.2.5",
+ "tracing",
+ "tracing-opentelemetry 0.30.0",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "spin-telemetry"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "http 0.2.12",
+ "http 1.5.0",
+ "opentelemetry 0.29.1",
+ "opentelemetry-appender-tracing",
+ "opentelemetry-otlp 0.29.0",
+ "opentelemetry-semantic-conventions",
+ "opentelemetry_sdk 0.29.0",
+ "reqwest 0.12.28",
+ "terminal 4.2.6",
  "tracing",
  "tracing-opentelemetry 0.30.0",
  "tracing-subscriber",
@@ -8821,6 +9112,14 @@ dependencies = [
 name = "spin-tls"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
+dependencies = [
+ "rustls 0.23.46",
+]
+
+[[package]]
+name = "spin-tls"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
 dependencies = [
  "rustls 0.23.46",
 ]
@@ -8838,19 +9137,49 @@ dependencies = [
  "sanitize-filename",
  "serde",
  "serde_json",
- "spin-app",
- "spin-common",
- "spin-compose",
- "spin-core",
- "spin-factor-key-value",
- "spin-factor-sqlite",
- "spin-factor-variables",
- "spin-factor-wasi",
- "spin-factors",
- "spin-factors-executor",
- "spin-telemetry",
- "spin-tls",
- "spin-world",
+ "spin-app 4.2.5",
+ "spin-common 4.2.5",
+ "spin-compose 4.2.5",
+ "spin-core 4.2.5",
+ "spin-factor-key-value 4.2.5",
+ "spin-factor-sqlite 4.2.5",
+ "spin-factor-variables 4.2.5",
+ "spin-factor-wasi 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-factors-executor 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-tls 4.2.5",
+ "spin-world 4.2.5",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "spin-trigger"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "clap",
+ "ctrlc",
+ "futures",
+ "heck 0.5.0",
+ "sanitize-filename",
+ "serde",
+ "serde_json",
+ "spin-app 4.2.6",
+ "spin-common 4.2.6",
+ "spin-compose 4.2.6",
+ "spin-core 4.2.6",
+ "spin-factor-key-value 4.2.6",
+ "spin-factor-sqlite 4.2.6",
+ "spin-factor-variables 4.2.6",
+ "spin-factor-wasi 4.2.6",
+ "spin-factors 4.2.6",
+ "spin-factors-executor 4.2.6",
+ "spin-telemetry 4.2.6",
+ "spin-tls 4.2.6",
+ "spin-world 4.2.6",
  "tokio",
  "tracing",
 ]
@@ -8875,20 +9204,20 @@ dependencies = [
  "rustls-pki-types",
  "serde",
  "serde_json",
- "spin-app",
- "spin-compose",
- "spin-core",
- "spin-factor-otel",
+ "spin-app 4.2.5",
+ "spin-compose 4.2.5",
+ "spin-core 4.2.5",
+ "spin-factor-otel 4.2.5",
  "spin-factor-outbound-http",
  "spin-factor-outbound-networking",
- "spin-factor-wasi",
- "spin-factors",
- "spin-factors-executor",
+ "spin-factor-wasi 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-factors-executor 4.2.5",
  "spin-http",
- "spin-telemetry",
- "spin-trigger",
- "spin-world",
- "terminal",
+ "spin-telemetry 4.2.5",
+ "spin-trigger 4.2.5",
+ "spin-world 4.2.5",
+ "terminal 4.2.5",
  "tokio",
  "tokio-rustls 0.26.6",
  "tracing",
@@ -8906,11 +9235,11 @@ dependencies = [
  "futures",
  "redis 0.32.7",
  "serde",
- "spin-factor-variables",
- "spin-factors",
- "spin-telemetry",
- "spin-trigger",
- "spin-world",
+ "spin-factor-variables 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-telemetry 4.2.5",
+ "spin-trigger 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
  "tracing",
 ]
@@ -8924,9 +9253,9 @@ dependencies = [
  "azure_identity 0.20.0",
  "azure_security_keyvault",
  "serde",
- "spin-expressions",
- "spin-factors",
- "spin-world",
+ "spin-expressions 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-world 4.2.5",
  "tracing",
 ]
 
@@ -8937,9 +9266,9 @@ source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1c
 dependencies = [
  "dotenvy",
  "serde",
- "spin-expressions",
- "spin-factors",
- "spin-world",
+ "spin-expressions 4.2.5",
+ "spin-factors 4.2.5",
+ "spin-world 4.2.5",
  "tokio",
  "tracing",
 ]
@@ -8951,9 +9280,9 @@ source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1c
 dependencies = [
  "serde",
  "serde_json",
- "spin-common",
- "spin-expressions",
- "spin-factors",
+ "spin-common 4.2.5",
+ "spin-expressions 4.2.5",
+ "spin-factors 4.2.5",
  "toml 0.8.23",
 ]
 
@@ -8963,8 +9292,8 @@ version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
 dependencies = [
  "serde",
- "spin-expressions",
- "spin-factors",
+ "spin-expressions 4.2.5",
+ "spin-factors 4.2.5",
  "tracing",
  "vaultrs",
 ]
@@ -8975,7 +9304,17 @@ version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
 dependencies = [
  "anyhow",
- "spin-core",
+ "spin-core 4.2.5",
+ "tokio",
+]
+
+[[package]]
+name = "spin-wasi-async"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
+dependencies = [
+ "anyhow",
+ "spin-core 4.2.6",
  "tokio",
 ]
 
@@ -8983,6 +9322,21 @@ dependencies = [
 name = "spin-world"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "base64 0.22.1",
+ "opentelemetry 0.29.1",
+ "opentelemetry_sdk 0.29.0",
+ "serde",
+ "serde_json",
+ "wasmtime",
+]
+
+[[package]]
+name = "spin-world"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9303,6 +9657,14 @@ dependencies = [
 name = "terminal"
 version = "4.2.5"
 source = "git+https://github.com/spinframework/spin?tag=v4.2.5#e09d7d5c69f8fef1ca23c80b879445692207801e"
+dependencies = [
+ "termcolor",
+]
+
+[[package]]
+name = "terminal"
+version = "4.2.6"
+source = "git+https://github.com/spinframework/spin?tag=v4.2.6#2ecc7e7280355948a10898acf5a6f4804d7dbfdd"
 dependencies = [
  "termcolor",
 ]
@@ -9971,12 +10333,12 @@ dependencies = [
  "clap",
  "openssl",
  "serde",
- "spin-core",
- "spin-factor-wasi",
- "spin-factors",
+ "spin-core 4.2.5",
+ "spin-factor-wasi 4.2.5",
+ "spin-factors 4.2.5",
  "spin-runtime-factors",
- "spin-telemetry",
- "spin-trigger",
+ "spin-telemetry 4.2.5",
+ "spin-trigger 4.2.5",
  "tokio",
  "tracing",
  "wasmtime-wasi",
@@ -9993,14 +10355,14 @@ dependencies = [
  "openssl",
  "paho-mqtt",
  "serde",
- "spin-app",
- "spin-core",
- "spin-expressions",
- "spin-factor-variables",
- "spin-factors",
+ "spin-app 4.2.5",
+ "spin-core 4.2.5",
+ "spin-expressions 4.2.5",
+ "spin-factor-variables 4.2.5",
+ "spin-factors 4.2.5",
  "spin-runtime-factors",
- "spin-telemetry",
- "spin-trigger",
+ "spin-telemetry 4.2.5",
+ "spin-trigger 4.2.5",
  "tokio",
  "tracing",
  "wasmtime",
@@ -10019,11 +10381,11 @@ dependencies = [
  "openssl",
  "rustls 0.23.46",
  "serde",
- "spin-core",
- "spin-factors",
+ "spin-core 4.2.5",
+ "spin-factors 4.2.5",
  "spin-runtime-factors",
- "spin-telemetry",
- "spin-trigger",
+ "spin-telemetry 4.2.5",
+ "spin-trigger 4.2.5",
  "tokio",
  "tokio-scoped",
  "tracing",
