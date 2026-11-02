@@ -34,7 +34,7 @@ spin-factor-outbound-networking = { git = "https://github.com/spinframework/spin
 wasmtime = "50.0.1"
 openssl = { version = "*", features = ["vendored"] }
 anyhow = "1.0"
-oci-spec = "0.9"
+oci-spec = "0.10"
 futures = "0.3"
 ctrlc = { version = "3.5", features = ["termination"] }
 url = "2.3"
