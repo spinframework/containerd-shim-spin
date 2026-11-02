@@ -43,7 +43,7 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "Testing Kubernetes $KUBERNETES_VERSION (upstream patch: $version)"
 
-      - uses: azure/setup-kubectl@v4
+      - uses: azure/setup-kubectl@v5
         with:
           version: ${{ steps.kubernetes.outputs.version }}
 
