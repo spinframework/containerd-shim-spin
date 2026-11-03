@@ -17,6 +17,12 @@ spec:
         - name: spin-hello
           image: ghcr.io/spinframework/containerd-shim-spin/examples/spin-rust-hello:latest
           command: ["/"]
+          readinessProbe:
+            httpGet:
+              path: /hello
+              port: 80
+            periodSeconds: 5
+            timeoutSeconds: 5
           resources: # limit the resources to 128Mi of memory and 100m of CPU
             limits:
               cpu: 100m
