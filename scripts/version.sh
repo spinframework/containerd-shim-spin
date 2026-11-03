@@ -102,7 +102,11 @@ for file in $(find $BASEDIR/images -name Cargo.toml); do
     cargo check --manifest-path $dir/Cargo.toml
 done
 
-# 3) Update all requested markdown file versions to $NEW_VERSION
+# 3) Update the WIT package version describing the worlds supported by the shim
+update_file_version "$BASEDIR/wit/world.wit" "^package spinkube:containerd-shim-spin@.*;" "package spinkube:containerd-shim-spin@$NEW_VERSION;"
+if [ "$?" -eq "1" ]; then exit 1; fi
+
+# 4) Update all requested markdown file versions to $NEW_VERSION
 for file in $(echo $OTHER_FILES | tr ',' ' '); do
     update_file_version "$BASEDIR/$file" $OLD_VERSION $NEW_VERSION
     if [ "$?" -eq "1" ]; then exit 1; fi
