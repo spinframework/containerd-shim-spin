@@ -5,7 +5,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ### Changed
-- Bump to Spin 4.1.0 dependencies and compatible trigger plugins ([#450](https://github.com/spinframework/containerd-shim-spin/pull/450))
+- TODO
+
+## [v0.27.2] - 2026-11-02
+
+### Changed
+- Update to Spin v4.2.6 dependencies ([#468](https://github.com/spinframework/containerd-shim-spin/pull/468))
+- Update Rust dependencies ([#468](https://github.com/spinframework/containerd-shim-spin/pull/468))
+- Update sample apps to latest Spin SDK and runtime versions ([#463](https://github.com/spinframework/containerd-shim-spin/pull/463))
+
+## [v0.27.1] - 2026-10-29
+
+### Changed
+- Update Rust dependencies ([#465](https://github.com/spinframework/containerd-shim-spin/pull/465))
+- Update the integration test Spin CLI to v4.2.5 ([#460](https://github.com/spinframework/containerd-shim-spin/pull/460))
+- Update end-to-end CI to use the latest Kubernetes version ([#462](https://github.com/spinframework/containerd-shim-spin/pull/462))
+- Expand the contributing documentation ([#464](https://github.com/spinframework/containerd-shim-spin/pull/464))
+
+## [v0.27.0] - 2026-10-28
+
+### Changed
+- Update to Spin v4.2.5 dependencies and Rust 1.97 ([#455](https://github.com/spinframework/containerd-shim-spin/pull/455))
+- Pin the cross-compilation base image for reliable builds ([#455](https://github.com/spinframework/containerd-shim-spin/pull/455))
+- Update the Go test component build to TinyGo 0.41.1 and Go 1.26, and include it in integration tests ([#455](https://github.com/spinframework/containerd-shim-spin/pull/455))
+
+## [v0.26.0] - 2026-09-18
+
+### Changed
+- Update to Spin v4.1.0 dependencies and compatible trigger plugins ([#450](https://github.com/spinframework/containerd-shim-spin/pull/450))
+- Increase the compiler recursion limit ([#450](https://github.com/spinframework/containerd-shim-spin/pull/450))
 
 ## [v0.25.1] - 2026-06-12
 ### Fixed
@@ -127,7 +155,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
-[Unreleased]: <https://github.com/spinframework/containerd-shim-spin/compare/v0.23.0..HEAD>
+[Unreleased]: <https://github.com/spinframework/containerd-shim-spin/compare/v0.27.1..HEAD>
+[v0.27.1]: <https://github.com/spinframework/containerd-shim-spin/compare/v0.27.0...v0.27.1>
+[v0.27.0]: <https://github.com/spinframework/containerd-shim-spin/compare/v0.26.0...v0.27.0>
+[v0.26.0]: <https://github.com/spinframework/containerd-shim-spin/compare/v0.25.1...v0.26.0>
 [v0.23.0]: <https://github.com/spinframework/containerd-shim-spin/compare/v0.22.0...v0.23.0>
 [v0.22.0]: <https://github.com/spinkube/containerd-shim-spin/compare/v0.21.0...v0.22.0>
 [v0.21.0]: <https://github.com/spinkube/containerd-shim-spin/compare/v0.20.0...v0.21.0>
