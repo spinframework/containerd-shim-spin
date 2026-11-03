@@ -21,7 +21,7 @@ jobs:
       ARCH: ${{ matrix.config.arch }}
     steps:
       - uses: actions/checkout@v6
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
         with:
           # Include the cross image, because CMakeCache.txt files in target/ record the image's compiler path.
           # Include the cross rev that the Makefile pins, because install-cross keeps whatever cross binary the cache restores.
