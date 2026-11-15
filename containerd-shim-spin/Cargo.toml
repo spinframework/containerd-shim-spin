@@ -21,7 +21,7 @@ spin-trigger = { git = "https://github.com/spinframework/spin", tag = "v4.2.6", 
     "unsafe-aot-compilation",
 ] }
 spin-trigger-http = { git = "https://github.com/spinframework/spin", tag = "v4.2.6" }
-spin-trigger-redis = { git = "https://github.com/spinframework/spin", tag = "v4.2.6" }
+spin-trigger-redis = { git = "https://github.com/spinframework/spin", tag = "v4.3.0" }
 trigger-mqtt = { git = "https://github.com/spinframework/spin-trigger-plugins", tag = "mqtt-v0.9.6" }
 trigger-sqs = { git = "https://github.com/spinframework/spin-trigger-plugins", tag = "sqs-v0.14.6" }
 trigger-command = { git = "https://github.com/spinframework/spin-trigger-plugins", tag = "command-v0.7.6" }
